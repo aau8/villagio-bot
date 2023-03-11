@@ -1,10 +1,17 @@
-import { addUsers, getAllUsers } from "./users.js";
-import $mongo from "./config.js";
+import { getAdminId, getCatalogUrl, getSettings } from "./settings.js";
+import { addUser, checkUser, getUser, getUserAll } from "./users.js";
 
 const $db = {
 	user: {
-		getAll: getAllUsers,
-		add: addUsers,
+		get: getUser,
+		getAll: getUserAll,
+		add: addUser,
+		check: checkUser,
+	},
+	settings: {
+		get: getSettings,
+		getAdminId: getAdminId,
+		getCatalogUrl: getCatalogUrl,
 	}
 }
 

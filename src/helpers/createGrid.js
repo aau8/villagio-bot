@@ -4,7 +4,7 @@
  * @param {number} columns количество колонок
  * @returns массив с подмасивами с количеством элементов равным значению columns
  */
-export default (arr, columns) => {
+const createGrid = (arr, columns) => {
     const grid = []
 
     for (let i = 0; i < Math.ceil(arr.length / columns); i++) {
@@ -13,3 +13,5 @@ export default (arr, columns) => {
 
     return grid
 }
+
+export default createGrid

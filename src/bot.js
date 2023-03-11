@@ -2,10 +2,12 @@ import { Telegraf, Scenes, session } from "telegraf"
 import * as dotenv from "dotenv"
 // import { db, send } from "./helpers/index.js"
 import fs from 'fs'
-import { getAllUsers } from "./db/users.js"
+import { getUserAll } from "./db/users.js"
 import $mongo from "./db/config.js"
 import $db from "./db/index.js"
-import raiseObjectFrom from "./helpers/raiseObjectFrom.js"
+import raiseUserData from "./helpers/raiseObjectFrom.js"
+import { getSettings } from "./db/settings.js"
+import $screen from "./screens/index.js"
 // import $mongo from "./db/config.js"
 
 
@@ -21,7 +23,6 @@ const bot = new Telegraf(process.env.TG_BOT_TOKEN)
 bot.context.mongo = $mongo
 
 
-
 // const stage = new Scenes.Stage([...bookScenes])
 
 // bot.use(session())
@@ -35,31 +36,16 @@ bot.context.mongo = $mongo
 // bookHandlers(bot)
 
 
-// Главный экран
-// bot.command("start", sendStart)
-// bot.action("start", sendStart)
+
+// Главный экран (публичный)
+bot.command("start", $screen.public.start)
+bot.action("start", $screen.public.start)
+
+// Главный экран (приватный)
+bot.command("admin", $screen.private.start)
+bot.action("admin", $screen.private.start)
 
 
-
-bot.command("start", ctx => {
-	ctx.reply('Hello')
-
-	const from = raiseObjectFrom(ctx.update.message.from)
-
-	console.log(from)
-
-	// console.log(ctx)
-
-	// $db.user.add({ ...from,  })
-	// .then(res => {
-
-	// 	$db.user.getAll()
-	// 	.then(data => {
-	// 		console.log(data)
-	// 	})
-	// })
-
-})
 
 bot.launch()
 

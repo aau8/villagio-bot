@@ -3,7 +3,7 @@
  * @param {object} from - данные пользователя
  * @returns обработанный объект с измененными и дополненными данными, часть из которых указана по умолчанию
  */
-const raiseObjectFrom = (from) => {
+const raiseUserData = (from) => {
 	const id = from.id
 	delete from.id
 
@@ -14,8 +14,8 @@ const raiseObjectFrom = (from) => {
 		phone: null,
 		language_selected: from.language_code || null,
 		subscription: true,
-		realty: null,
+		viewed_realty: null,
 	}
 }
 
-export default raiseObjectFrom
+export default raiseUserData

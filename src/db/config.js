@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from "mongodb"
+import { MongoClient } from "mongodb"
 import * as dotenv from "dotenv"
 
 dotenv.config()
@@ -6,7 +6,7 @@ dotenv.config()
 const mongoClient = new MongoClient(process.env.MONGODB_URL)
 const $mongo = Object.assign(mongoClient, {
     dbName: "villagio",
-    collect: {
+    collection: {
         settings: "settings",
         users: "users",
     },
