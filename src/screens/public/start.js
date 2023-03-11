@@ -9,21 +9,15 @@ const sendStartPublic = async (ctx) => {
 		await $db.user.add(raiseUserData(user))
 	}
 
-	const text = `
-Здравствуйте! Я бот по подбору недвижимости в ОАЭ. У меня Вы можете:
-1. Самостоятельно подобрать объект по Вашим параметрам
-2. Скачать каталог лучших предложений на рынке ОАЭ
-3. Получить консультацию эксперта по подбору недвижимости
-	`
-
+	const text = ctx.$locale.start.text
 	send(ctx, text, {
 		reply_markup: {
 			inline_keyboard: [
-				[ { text: "🤖 Подобрать объект", callback_data: "dd" }, ],
-				[ { text: "🏠 Каталог объектов", callback_data: "dd" }, ],
-				[ { text: "☎ Получить консультацию", callback_data: "dd" }, ],
-				[ { text: "📣 Управление подпиской ", callback_data: "dd" }, ],
-				[ { text: "🇬🇧 Change the language", callback_data: "dd" }, ],
+				[ { text: ctx.$locale.start.keyboard[0], callback_data: "dd" }, ],
+				[ { text: ctx.$locale.start.keyboard[1], callback_data: "dd" }, ],
+				[ { text: ctx.$locale.start.keyboard[2], callback_data: "dd" }, ],
+				[ { text: ctx.$locale.start.keyboard[3], callback_data: "dd" }, ],
+				[ { text: ctx.$locale.start.keyboard[4], callback_data: "change-lang" }, ],
 			]
 		}
 	})

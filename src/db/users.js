@@ -25,6 +25,28 @@ export const getUserAll = async (options = {}) => {
 }
 
 /**
+ * Обновить пользователя
+ * @param {object} searchOptions - опции записей, которые нужно обновить
+ * @param {object} updateOptions - что нужно обновить
+ * @returns
+ */
+export const updateUser = async (searchOptions = {}, updateOptions = {}) => {
+	try {
+		if (typeof updateOptions !== 'object') throw Error('updateOptions must be object')
+		if (typeof searchOptions !== 'object') throw Error('searchOptions must be object')
+		await $mongo.connect()
+		return await $mongo
+			.db($mongo.dbName)
+			.collection($mongo.collection.users)
+			.updateOne(searchOptions, { $set: updateOptions })
+	}
+	catch(err) {
+		console.log(err)
+		throw Error(err)
+	}
+}
+
+/**
  * Получить одного пользователя
  * @param {object} options опции фильтра
  * @returns
@@ -71,6 +93,25 @@ export const checkUser = async (options = {}) => {
 		if (typeof options !== 'object') throw Error('users must be object')
 		const user = await getUser(options)
 		return !!user
+	}
+	catch(err) {
+		console.log(err)
+		throw Error(err)
+	}
+}
+
+/**
+ * Изменить язык пользователя
+ * @param {string} lang - язык пользователя
+ * @param {object} options - данные пользователя, по которым нужно найти запись
+ * @returns boolean
+ */
+export const setLangUser = async (lang, options = {}) => {
+	try {
+		if (typeof options !== 'object') throw Error('users must be object')
+		if (typeof lang !== 'string') throw Error('lang must be string')
+		const user = await updateUser(options, { lang: lang })
+		return user
 	}
 	catch(err) {
 		console.log(err)

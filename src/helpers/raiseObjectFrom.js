@@ -12,7 +12,7 @@ const raiseUserData = (from) => {
 		start_date: new Date(),
 		...from,
 		phone: null,
-		language_selected: from.language_code || null,
+		lang: from.language_code || null,
 		subscription: true,
 		viewed_realty: null,
 	}
