@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb"
-import $mongo from "./config.js"
+import $mongo from "./mongo.js"
 
 /**
  * Получить настройки бота из БД

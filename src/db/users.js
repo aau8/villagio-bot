@@ -1,4 +1,4 @@
-import $mongo from "./config.js"
+import $mongo from "./mongo.js"
 
 // export const checkCollectionUsers = () => {
 

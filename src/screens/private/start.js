@@ -10,16 +10,13 @@ const sendStartPrivate = async (ctx) => {
 		return
 	}
 
-	const text = `
-⚙ Административная панель
-`
-
+	const text = `⚙ Административная панель`
 	send(ctx, text, {
 		reply_markup: {
 			inline_keyboard: [
 				[
 					{ text: "📈 Статистика", callback_data: "dd" },
-					{ text: "ℹ Справка", callback_data: "dd" },
+					{ text: "ℹ Справка", callback_data: "help" },
 				],
 				[
 					{ text: "✘ Выйти", callback_data: "start" },

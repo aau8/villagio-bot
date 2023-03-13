@@ -1,6 +1,6 @@
 import { Telegraf, Scenes, session } from "telegraf"
 import * as dotenv from "dotenv"
-import $mongo from "./db/config.js"
+import $mongo from "./db/mongo.js"
 import $screen from "./screens/index.js"
 import $db from "./db/index.js"
 import setUserData from "./middlewares/setUserData.js"
@@ -17,8 +17,10 @@ bot.context.mongo = $mongo
 // bot.use(stage.middleware())
 
 //////////////////////////////
-//////////  Обработчики
+//////////  Публичный доступ
 //////////////////////////////
+
+
 
 // Модуль "Book"
 // bookHandlers(bot)
@@ -29,13 +31,24 @@ bot.use(setUserData)
 bot.command("start", $screen.public.start)
 bot.action("start", $screen.public.start)
 
+// Изменить язык
+bot.action("change-lang", changeLang)
+
+// Управление подпиской
+bot.action("subscribe", $screen.public.subscribe)
+
+
+//////////////////////////////
+//////////  Приватный доступ (Админ. панель)
+//////////////////////////////
+
 // Главный экран (приватный)
 bot.command("admin", $screen.private.start)
 bot.action("admin", $screen.private.start)
 
-// Изменить язык
-bot.action("change-lang", changeLang)
-
+// Справка
+bot.command("admin_help", $screen.private.help)
+bot.action("help", $screen.private.help)
 
 bot.launch()
 

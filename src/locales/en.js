@@ -8,7 +8,14 @@ const EN = {
 			'📣 Subscription Management',
 			'🇷🇺 Измените язык',
 		]
-	}
+	},
+	subscribe: {
+		text: "📣 Subscription Management",
+		keyboard: [
+			"Disable subscription"
+		]
+	},
+	key_back: "Back",
 }
 
 export default EN
