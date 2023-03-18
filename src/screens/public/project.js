@@ -1,18 +1,13 @@
-import $bot from "../../bot.js"
 import $db from "../../db/index.js"
-import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
 
 export const projectPrefix = 'project'
-export const projectExecutor = async (ctx) => {
+
+const sendProjectPublic = async (ctx) => {
 	const projectId = ctx.match.input.replace(ctx.match[0], '')
-	const data = await $db.project.get({ project_id: parseInt(projectId) })
+	let data = await $db.project.get({ project_id: parseInt(projectId) })
+	data = data[0]
 
-	sendProjectPublic(ctx, data[0])
-}
-
-const sendProjectPublic = async (ctx, data) => {
-	console.log(data.type)
 	const type = data.type[0].toUpperCase() + data.type.slice(1)
 	const name = data.name
 	const description = data.description
@@ -36,7 +31,7 @@ ${description}
 			]
 		},
 		parse_mode: 'HTML',
-		edit_message: false,
+		not_edit_message: true,
 	})
 }
 

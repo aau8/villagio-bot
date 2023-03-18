@@ -7,9 +7,9 @@ import $bot from "./bot.js"
 import scenes from "./screens/public/scenes/index.js"
 import "./locales/index.js"
 import $db from "./db/index.js"
-import { projectExecutor, projectPrefix } from "./screens/public/project.js"
+import { projectPrefix } from "./screens/public/project.js"
 
-dotenv.config()
+// dotenv.config()
 
 const stage = new Scenes.Stage([ ...scenes ])
 
@@ -22,6 +22,7 @@ $bot.use(setUserData)
 //////////////////////////////
 
 // Главный экран (публичный)
+$bot.command("main", $screen.public.start)
 $bot.command("start", $screen.public.start)
 $bot.action("start", $screen.public.start)
 
@@ -29,14 +30,16 @@ $bot.action("start", $screen.public.start)
 $bot.command("help", $screen.public.help)
 
 // Изменить язык
+$bot.command("change-lang", changeLang)
 $bot.action("change-lang", changeLang)
 
 // Управление подпиской
+$bot.command("subscribe", $screen.public.subscribe)
 $bot.action("subscribe", $screen.public.subscribe)
 
 // Получить проект
 // $bot.command(new RegExp(`^${projectPrefix}_`), projectExecutor)
-$bot.action(new RegExp(`^${projectPrefix}:`), projectExecutor)
+$bot.action(new RegExp(`^${projectPrefix}:`), $screen.public.project)
 
 
 //////////////////////////////

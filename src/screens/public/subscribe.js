@@ -7,6 +7,7 @@ import { $i18n } from "../../locales/index.js"
 const sendSubscribePublic = async (ctx) => {
 	const action = $user.subscription ? 'on' : 'off'
 
+	console.log('ok')
 	send(ctx, $i18n('subscribe.text'), {
 		reply_markup: {
 			inline_keyboard: [

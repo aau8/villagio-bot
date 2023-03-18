@@ -1,8 +1,10 @@
 import { Scenes } from "telegraf"
+import $db from "../../../db/index.js"
 import createGrid from "../../../helpers/createGrid.js"
 import send from "../../../helpers/send.js"
 import { $i18n } from "../../../locales/index.js"
 import $screen from "../../index.js"
+import { projectPrefix } from "../project.js"
 
 const screen3Checkboxes = {
 	"Квартира": true,
@@ -128,26 +130,30 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
 	scene.data.price = value
 
-	send(ctx, $i18n('scenes.qsp.selection'))
+	send(ctx, $i18n('scenes.qsp.select_options'))
 
-	setTimeout(() => {
-		send(ctx, $i18n('scenes.qsp.result.text'), {
-			reply_markup: {
-				inline_keyboard: [
-					...createGrid([
-						{ text: '1', callback_data: `PROJECT:1` },
-						{ text: '2', callback_data: `PROJECT:2` },
-						{ text: '3', callback_data: `PROJECT:3` },
-						{ text: '4', callback_data: `PROJECT:4` },
-						{ text: '5', callback_data: `PROJECT:4` },
-					], 5),
-					[ { text: $i18n('scenes.qsp.result.kb.consult'), callback_data: "consultation" } ],
-					[ { text: $i18n('kb.menu'), callback_data: "start" } ],
-				],
-			},
-		})
-		ctx.scene.leave()
-	}, 1000)
+	const projects = await $db.project.get({
+		city: scene.data.city
+	})
+
+	console.log(projects)
+
+	send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length }), {
+		reply_markup: {
+			inline_keyboard: [
+				...createGrid([
+					...projects.map((project, i) => {
+						return { text: i + 1, callback_data: `${projectPrefix}:${project.project_id}` }
+					})
+				], 5),
+				[ { text: $i18n('kb.consult'), callback_data: "consultation" } ],
+				[ { text: $i18n('kb.menu'), callback_data: "start" } ],
+			],
+		},
+	})
+	ctx.scene.leave()
+	// setTimeout(() => {
+	// }, 1000)
 })
 
 scene.on("message", async ctx => {

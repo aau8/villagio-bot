@@ -2,6 +2,7 @@ import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
 
 const sendHelpPublic = async (ctx) => {
+	console.log('help')
 	send(ctx, $i18n('help'), {
 		reply_markup: {
 			inline_keyboard: [
