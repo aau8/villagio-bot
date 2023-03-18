@@ -12,3 +12,4 @@ export let $user = {
 }
 export const setUser = (data) => $user = data
 export const setUserLang = (lang) => $user = { ...$user, lang: lang }
+export const setUserSubscr = (subscrOn) => $user = { ...$user, subscription: subscrOn }

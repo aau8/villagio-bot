@@ -108,9 +108,24 @@ export const checkUser = async (options = {}) => {
  */
 export const setLangUser = async (lang, options = {}) => {
 	try {
-		if (typeof options !== 'object') throw Error('users must be object')
-		if (typeof lang !== 'string') throw Error('lang must be string')
 		const user = await updateUser(options, { lang: lang })
+		return user
+	}
+	catch(err) {
+		console.log(err)
+		throw Error(err)
+	}
+}
+
+/**
+ * Изменить подписку
+ * @param {string} subscribeOn - Подписка включена
+ * @param {object} options - данные пользователя, по которым нужно найти запись
+ * @returns boolean
+ */
+export const setSubscriptionUser = async (subscribeOn, options = {}) => {
+	try {
+		const user = await updateUser(options, { subscription: subscribeOn })
 		return user
 	}
 	catch(err) {

@@ -1,5 +1,5 @@
 import { getAdminId, getCatalogUrl, getSettings } from "./settings.js";
-import { addUser, checkUser, getUser, getUserAll, setLangUser, updateUser } from "./users.js";
+import { addUser, checkUser, getUser, getUserAll, setLangUser, setSubscriptionUser, updateUser } from "./users.js";
 
 const $db = {
 	user: {
@@ -9,6 +9,7 @@ const $db = {
 		check: checkUser,
 		update: updateUser,
 		setLang: setLangUser,
+		setSubscr: setSubscriptionUser,
 	},
 	settings: {
 		get: getSettings,
