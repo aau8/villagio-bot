@@ -23,6 +23,9 @@ $bot.use(setUserData)
 $bot.command("start", $screen.public.start)
 $bot.action("start", $screen.public.start)
 
+// Помощь
+$bot.command("help", $screen.public.help)
+
 // Изменить язык
 $bot.action("change-lang", changeLang)
 

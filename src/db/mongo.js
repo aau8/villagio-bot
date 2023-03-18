@@ -9,6 +9,7 @@ const $mongo = Object.assign(mongoClient, {
     collection: {
         settings: "settings",
         users: "users",
+		projects: "projects",
     },
 })
 
