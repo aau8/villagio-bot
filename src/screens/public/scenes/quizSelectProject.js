@@ -136,14 +136,14 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 		city: scene.data.city
 	})
 
-	console.log(projects)
+	console.log('projects', projects)
 
 	send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length }), {
 		reply_markup: {
 			inline_keyboard: [
 				...createGrid([
 					...projects.map((project, i) => {
-						return { text: i + 1, callback_data: `${projectPrefix}:${project.project_id}` }
+						return { text: i + 1, callback_data: projectPrefix + project.project_id }
 					})
 				], 5),
 				[ { text: $i18n('kb.consult'), callback_data: "consultation" } ],

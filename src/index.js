@@ -37,9 +37,14 @@ $bot.action("change-lang", changeLang)
 $bot.command("subscribe", $screen.public.subscribe)
 $bot.action("subscribe", $screen.public.subscribe)
 
+// Каталог
+$bot.command("catalog", $screen.public.catalog)
+$bot.action("catalog", $screen.public.catalog)
+
+
 // Получить проект
-// $bot.command(new RegExp(`^${projectPrefix}_`), projectExecutor)
-$bot.action(new RegExp(`^${projectPrefix}:`), $screen.public.project)
+$bot.command(new RegExp(`^${projectPrefix}`), $screen.public.project)
+$bot.action(new RegExp(`^${projectPrefix}`), $screen.public.project)
 
 
 //////////////////////////////

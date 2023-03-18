@@ -37,14 +37,14 @@ export const getProject = async (options) => {
 
 
 
+
 // $db.project.add({
-// 	name: "11111111",
-// 	description: "22222 fds fs в Palm Beach Towers",
+// 	name: "9999999 000000",
+// 	description: "111 344",
 // 	city: "Абу-Даби",
 // 	status: "Готовый",
 // 	url: "https://villagio-vip.ru/villages/111/",
 // 	images: [
-// 		"https://static.villagio-vip.ru/cache-new/800x600/51/47/5147fd02-2578-48fe-b7b0-69c8c47d467e.webp.jpg",
 // 		"https://static.villagio-vip.ru/cache-new/800x600/c2/91/c291e836-898d-407f-9ee3-39f09cb263b9.webp.jpg",
 // 		"https://static.villagio-vip.ru/cache-new/800x600/a9/6f/a96f0a31-d952-45b9-839a-c71512dd94e3.webp.jpg",
 // 	],
@@ -53,4 +53,5 @@ export const getProject = async (options) => {
 // 		max: 1656000,
 // 	},
 // 	type: "таунхаус",
+//  project_id: null
 // })
