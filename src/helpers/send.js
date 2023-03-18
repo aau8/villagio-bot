@@ -4,7 +4,11 @@
  * @param {object} extra дополнительный ui (кнопки, тип парсинга...)
  * @see https://github.com/nieopierzony/lolz-telegraf-article/blob/main/src/helpers/send.js
  */
-const send = async (ctx, text, extra) => {
+const send = async (ctx, text, extra = {}) => {
+	if (!extra.parse_mode) {
+		extra.parse_mode = 'HTML'
+	}
+
     try {
         if (ctx.updateType === "message") {
             await ctx.reply(text, extra)

@@ -1,21 +1,18 @@
 const EN = {
-	start: {
-		text: "Hello, i'm Villagio bot",
-		keyboard: [
-			'🤖 Pick up an object',
-			'🏠 Object catalog',
-			'☎ Get a consultation',
-			'📣 Subscription Management',
-			'🇷🇺 Измените язык',
-		]
-	},
-	subscribe: {
-		text: "📣 Subscription Management",
-		keyboard: [
-			"Disable subscription"
-		]
-	},
-	key_back: "Back",
+	start: "Hello, i'm Villagio bot",
+	subscribe: "📣 Subscription Management",
+	kb: {
+		project_selection: "🤖 Pick up an object",
+		catalog: '🏠 Object catalog',
+		consult: '☎ Get a consultation',
+		manage_subscr: '📣 Subscription Management',
+		change_lng: '🇷🇺 Измените язык',
+		subscr: {
+			on: "Enable subscription",
+			off: "Disable subscription",
+		},
+		back: "Back",
+	}
 }
 
 export default EN

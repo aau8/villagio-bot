@@ -1,24 +1,15 @@
-import $db from "../../db/index.js"
-import raiseUserData from "../../helpers/raiseObjectFrom.js"
 import send from "../../helpers/send.js"
+import { $i18n } from "../../locales/index.js"
 
 const sendStartPublic = async (ctx) => {
-	// const user = ctx.from
-	// const userExists = await $db.user.check({ tg_id: user.id })
-
-	// if (!userExists) {
-	// 	await $db.user.add(raiseUserData(user))
-	// }
-
-	const text = ctx.$locale.start.text
-	send(ctx, text, {
+	send(ctx, $i18n('start'), {
 		reply_markup: {
 			inline_keyboard: [
-				[ { text: ctx.$locale.start.keyboard[0], callback_data: "dd" }, ],
-				[ { text: ctx.$locale.start.keyboard[1], callback_data: "dd" }, ],
-				[ { text: ctx.$locale.start.keyboard[2], callback_data: "dd" }, ],
-				[ { text: ctx.$locale.start.keyboard[3], callback_data: "subscribe" }, ],
-				[ { text: ctx.$locale.start.keyboard[4], callback_data: "change-lang" }, ],
+				[ { text: $i18n('kb.project_selection'), callback_data: "quiz_select_project" }, ],
+				[ { text: $i18n('kb.catalog'), callback_data: "dd" }, ],
+				[ { text: $i18n('kb.consult'), callback_data: "dd" }, ],
+				[ { text: $i18n('kb.change_lng'), callback_data: "change-lang" }, ],
+				[ { text: $i18n('kb.manage_subscr'), callback_data: "subscribe" }, ],
 			]
 		}
 	})
