@@ -1,7 +1,10 @@
 import checkIsAdmin from "../../helpers/checkIsAdmin.js"
 import send from "../../helpers/send.js"
+import { $i18n } from "../../locales/index.js"
 
-const sendHelpPrivate = async (ctx) => {
+export const statisticCsvPrefix = 'statistic_csv_'
+const sendStatCsvPrivate = async (ctx) => {
+	console.log('ok')
 	const user = ctx.from
 	const isAdmin = await checkIsAdmin(user.id)
 	if (!isAdmin) {
@@ -9,16 +12,13 @@ const sendHelpPrivate = async (ctx) => {
 		return
 	}
 
-	const text = 'ℹ Справка об админ. панели\nЗдесь описан основной функционал и команды админки.'
-	send(ctx, text, {
+	send(ctx, "Здесь будет csv-файл", {
 		reply_markup: {
 			inline_keyboard: [
-				[
-					{ text: "Обратно", callback_data: "admin" }
-				]
+				[ { text: $i18n('private.statistic', { lng: 'ru' }), callback_data: "statistic" }, ],
 			]
 		}
 	})
 }
 
-export default sendHelpPrivate
+export default sendStatCsvPrivate

@@ -11,7 +11,7 @@ const EN = {
 			on: "Enable subscription",
 			off: "Disable subscription",
 		},
-		back: "Back",
+		back: "« Back",
 	}
 }
 

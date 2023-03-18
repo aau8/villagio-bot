@@ -15,8 +15,8 @@ const sendStartPrivate = async (ctx) => {
 		reply_markup: {
 			inline_keyboard: [
 				[
-					{ text: "📈 Статистика", callback_data: "dd" },
-					{ text: "ℹ Справка", callback_data: "help" },
+					{ text: "📈 Статистика", callback_data: "statistic" },
+					{ text: "ℹ Справка", callback_data: "admin_help" },
 				],
 				[
 					{ text: "✘ Выйти", callback_data: "start" },

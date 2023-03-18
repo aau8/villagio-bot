@@ -130,7 +130,7 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
 	scene.data.price = value
 
-	send(ctx, $i18n('scenes.qsp.select_options'))
+	await send(ctx, $i18n('scenes.qsp.select_options'))
 
 	const projects = await $db.project.get({
 		city: scene.data.city
@@ -138,7 +138,7 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 
 	console.log('projects', projects)
 
-	send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length }), {
+	await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length }), {
 		reply_markup: {
 			inline_keyboard: [
 				...createGrid([

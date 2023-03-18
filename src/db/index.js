@@ -1,5 +1,5 @@
 import { addProject, getProject } from "./projects.js";
-import { getAdminId, getCatalogUrl, getSettings } from "./settings.js";
+import { getAdminId, getCatalogPdfLink, getSettings } from "./settings.js";
 import { addUser, checkUser, getUser, getUserAll, setLangUser, setSubscriptionUser, updateUser } from "./users.js";
 
 const $db = {
@@ -15,7 +15,7 @@ const $db = {
 	settings: {
 		get: getSettings,
 		getAdminId: getAdminId,
-		getCatalogUrl: getCatalogUrl,
+		getCatalogPdfLink: getCatalogPdfLink,
 	},
 	project: {
 		get: getProject,

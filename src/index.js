@@ -8,6 +8,8 @@ import scenes from "./screens/public/scenes/index.js"
 import "./locales/index.js"
 import $db from "./db/index.js"
 import { projectPrefix } from "./screens/public/project.js"
+import { statisticPrefix } from "./screens/private/statistic.js"
+import { statisticCsvPrefix } from "./screens/private/statisticCsv.js"
 
 // dotenv.config()
 
@@ -30,8 +32,8 @@ $bot.action("start", $screen.public.start)
 $bot.command("help", $screen.public.help)
 
 // Изменить язык
-$bot.command("change-lang", changeLang)
-$bot.action("change-lang", changeLang)
+$bot.command("change_lang", changeLang)
+$bot.action("change_lang", changeLang)
 
 // Управление подпиской
 $bot.command("subscribe", $screen.public.subscribe)
@@ -41,11 +43,21 @@ $bot.action("subscribe", $screen.public.subscribe)
 $bot.command("catalog", $screen.public.catalog)
 $bot.action("catalog", $screen.public.catalog)
 
+// Каталог (pdf-документ)
+$bot.command("catalog_pdf", $screen.public.catalog_pdf)
+$bot.action("catalog_pdf", $screen.public.catalog_pdf)
 
 // Получить проект
 $bot.command(new RegExp(`^${projectPrefix}`), $screen.public.project)
 $bot.action(new RegExp(`^${projectPrefix}`), $screen.public.project)
 
+// Квиз "Подобрать проект"
+$bot.command('quiz_select_project', ctx => {
+	ctx.scene.enter('quiz_select_project')
+})
+$bot.action('quiz_select_project', ctx => {
+	ctx.scene.enter('quiz_select_project')
+})
 
 //////////////////////////////
 //////////  Приватный доступ (Админ. панель)
@@ -57,14 +69,20 @@ $bot.action("admin", $screen.private.start)
 
 // Справка
 $bot.command("admin_help", $screen.private.help)
-$bot.action("help", $screen.private.help)
+$bot.action("admin_help", $screen.private.help)
 
-$bot.command('quiz_select_project', ctx => {
-	ctx.scene.enter('quiz_select_project')
-})
-$bot.action('quiz_select_project', ctx => {
-	ctx.scene.enter('quiz_select_project')
-})
+// Статистика
+$bot.command("statistic", $screen.private.statistic)
+$bot.action("statistic", $screen.private.statistic)
+
+// Получить статистику по категории
+$bot.command(new RegExp(`^${statisticPrefix}`), $screen.private.statistic_cat)
+$bot.action(new RegExp(`^${statisticPrefix}`), $screen.private.statistic_cat)
+
+// Получить csv-файл по категории
+$bot.command(new RegExp(`^csv`), $screen.private.statistic_csv)
+$bot.action(new RegExp(`^csv`), $screen.private.statistic_csv)
+
 
 $bot.launch()
 

@@ -4,6 +4,8 @@ import { $i18n } from "../../locales/index.js"
 import { projectPrefix } from "./project.js"
 
 const sendCatalogPublic = async (ctx) => {
+	await send(ctx, $i18n('download'))
+
 	const projects = await $db.project.get()
 	const types = {
 		aparts: [],
@@ -30,14 +32,14 @@ const sendCatalogPublic = async (ctx) => {
 
 	const typesToString = (type) => type.map((villa, i) => `${i + 1}. ${villa.name} - \/${projectPrefix + villa.project_id}`).join('\n')
 
-	send(ctx, $i18n('catalog', {
+	await send(ctx, $i18n('catalog', {
 		aparts: typesToString(types.aparts),
 		townhouses: typesToString(types.townhouses),
 		villas: typesToString(types.villas),
 	}), {
 		reply_markup: {
 			inline_keyboard: [
-				[ { text: $i18n('kb.doc_pdf'), callback_data: "catalog_pdf" }, ],
+				[ { text: $i18n('kb.catalog_pdf'), callback_data: "catalog_pdf" }, ],
 				[ { text: $i18n('kb.back'), callback_data: "start" }, ],
 			]
 		}

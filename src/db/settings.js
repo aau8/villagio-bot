@@ -38,7 +38,7 @@ export const getAdminId = async () => {
  * Получить ссылку на url каталога
  * @returns string
  */
-export const getCatalogUrl = async () => {
+export const getCatalogPdfLink = async () => {
 	try {
 		const data = await getSettings()
 		return data[0].catalog_url

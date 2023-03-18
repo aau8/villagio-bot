@@ -4,7 +4,7 @@
  * @param {number} columns количество колонок
  * @returns массив с подмасивами с количеством элементов равным значению columns
  */
-const createGrid = (arr, columns) => {
+const createGrid = (arr, columns = 1) => {
     const grid = []
 
     for (let i = 0; i < Math.ceil(arr.length / columns); i++) {
