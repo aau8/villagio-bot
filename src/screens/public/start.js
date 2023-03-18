@@ -10,6 +10,7 @@ const sendStartPublic = async (ctx) => {
 				[ { text: $i18n('kb.consult'), callback_data: "dd" }, ],
 				[ { text: $i18n('kb.change_lng'), callback_data: "change-lang" }, ],
 				[ { text: $i18n('kb.manage_subscr'), callback_data: "subscribe" }, ],
+				[ { text: "Получить проект", callback_data: "PROJECT:414" }, ],
 			]
 		}
 	})

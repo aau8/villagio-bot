@@ -6,6 +6,8 @@ import changeLang from "./actions/changeLang.js"
 import $bot from "./bot.js"
 import scenes from "./screens/public/scenes/index.js"
 import "./locales/index.js"
+import $db from "./db/index.js"
+import { projectExecutor, projectPrefix } from "./screens/public/project.js"
 
 dotenv.config()
 
@@ -31,6 +33,10 @@ $bot.action("change-lang", changeLang)
 
 // Управление подпиской
 $bot.action("subscribe", $screen.public.subscribe)
+
+// Получить проект
+// $bot.command(new RegExp(`^${projectPrefix}_`), projectExecutor)
+$bot.action(new RegExp(`^${projectPrefix}:`), projectExecutor)
 
 
 //////////////////////////////

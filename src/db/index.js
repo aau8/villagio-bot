@@ -1,3 +1,4 @@
+import { addProject, getProject } from "./projects.js";
 import { getAdminId, getCatalogUrl, getSettings } from "./settings.js";
 import { addUser, checkUser, getUser, getUserAll, setLangUser, setSubscriptionUser, updateUser } from "./users.js";
 
@@ -15,7 +16,11 @@ const $db = {
 		get: getSettings,
 		getAdminId: getAdminId,
 		getCatalogUrl: getCatalogUrl,
-	}
+	},
+	project: {
+		get: getProject,
+		add: addProject,
+	},
 }
 
 export default $db

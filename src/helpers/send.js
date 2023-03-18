@@ -10,7 +10,7 @@ const send = async (ctx, text, extra = {}) => {
 	}
 
     try {
-        if (ctx.updateType === "message") {
+        if (ctx.updateType === "message" || !extra.edit_message) {
             await ctx.reply(text, extra)
         } else if (ctx.updateType === "callback_query") {
             await ctx.answerCbQuery()
