@@ -1,11 +1,12 @@
 import { Scenes } from "telegraf"
+import createGrid from "../../../helpers/createGrid.js"
 import send from "../../../helpers/send.js"
 import { $i18n } from "../../../locales/index.js"
 import sendStartPublic from "../start.js"
 
 const scene = Object.assign( new Scenes.BaseScene('quiz_select_project'), {
 	name: 'QSP',
-	data: [],
+	data: {},
 })
 
 scene.enter(ctx => {
@@ -25,9 +26,8 @@ scene.enter(ctx => {
 })
 
 scene.action(new RegExp(`^${scene.name}:1:`), async ctx => {
-	const input = ctx.match.input
-	const match = ctx.match[0]
-	scene.data.push(input.replace(match, ''))
+	const value = ctx.match.input.replace(ctx.match[0], '')
+	scene.data.city = value
 
 	send(ctx, $i18n('scenes.qsp.2.text'), {
 		reply_markup: {
@@ -44,21 +44,17 @@ scene.action(new RegExp(`^${scene.name}:1:`), async ctx => {
 	})
 })
 
-scene.action(new RegExp(`^${scene.name}:2:`), async ctx => {
-	const input = ctx.match.input
-	const match = ctx.match[0]
-	scene.data.push(input.replace(match, ''))
-
+const sendScreen3 = (ctx, checked) => {
 	send(ctx, $i18n('scenes.qsp.3.text'), {
 		reply_markup: {
 			inline_keyboard: [
 				[
-					{ text: `✅ ${$i18n('scenes.qsp.3.kb.apartment')}`, callback_data: `${scene.name}:3:Квартира` },
-					{ text: `⛔ ${$i18n('scenes.qsp.3.kb.townhouse')}`, callback_data: `${scene.name}:3:Таунхаус` },
-					{ text: `⛔ ${$i18n('scenes.qsp.3.kb.villa')}`, callback_data: `${scene.name}:3:Вилла` },
+					{ text: `${checked[0] ? '✅' : '⛔'} ${$i18n('scenes.qsp.3.kb.apartment')}`, callback_data: `${scene.name}:3:Квартира` },
+					{ text: `${checked[1] ? '✅' : '⛔'} ${$i18n('scenes.qsp.3.kb.townhouse')}`, callback_data: `${scene.name}:3:Таунхаус` },
+					{ text: `${checked[2] ? '✅' : '⛔'} ${$i18n('scenes.qsp.3.kb.villa')}`, callback_data: `${scene.name}:3:Вилла` },
 				],
 				[
-					{ text: $i18n('kb.continue'), callback_data: "/continue" }
+					{ text: $i18n('kb.continue'), callback_data: `${scene.name}:3:continue` }
 				],
 				[
 					{ text: $i18n('kb.cancel'), callback_data: "/undo" }
@@ -66,38 +62,77 @@ scene.action(new RegExp(`^${scene.name}:2:`), async ctx => {
 			],
 		},
 	})
+}
+const screen3Checkboxes = {
+	"Квартира": true,
+	"Таунхаус": true,
+	"Вилла": false,
+}
+
+scene.action(new RegExp(`^${scene.name}:2:`), async ctx => {
+	const value = ctx.match.input.replace(ctx.match[0], '')
+	scene.data.stage = value
+
+	sendScreen3(ctx, [ ...Object.values(screen3Checkboxes) ])
 })
 
 scene.action(new RegExp(`^${scene.name}:3:`), async ctx => {
-	const input = ctx.match.input
-	const match = ctx.match[0]
-	scene.data.push(input.replace(match, ''))
-	// scene.screens['3'](ctx)
+	const value = ctx.match.input.replace(ctx.match[0], '')
+
+	// Если пользователь нажал на чекбокс, то его состояние поменяется, только если это не последний активный чекбокс
+	if (value !== 'continue') {
+		screen3Checkboxes[value] = !screen3Checkboxes[value]
+
+		if (!Object.values(screen3Checkboxes).some(checked => checked)) {
+			screen3Checkboxes[value] = !screen3Checkboxes[value]
+		}
+		else {
+			sendScreen3(ctx, [ ...Object.values(screen3Checkboxes) ])
+		}
+	}
+	else {
+		scene.data.type = Object.keys(screen3Checkboxes).join(', ')
+		send(ctx, $i18n('scenes.qsp.4.text'), {
+			reply_markup: {
+				inline_keyboard: [
+					[ { text: $i18n('scenes.qsp.4.kb.1'), callback_data: `${scene.name}:4:<500` } ],
+					[ { text: $i18n('scenes.qsp.4.kb.2'), callback_data: `${scene.name}:4:500-1000` } ],
+					[ { text: $i18n('scenes.qsp.4.kb.3'), callback_data: `${scene.name}:4:1000-3000` } ],
+					[ { text: $i18n('scenes.qsp.4.kb.4'), callback_data: `${scene.name}:4:>3000` } ],
+					[ { text: $i18n('kb.cancel'), callback_data: "/undo" } ]
+				],
+			},
+		})
+	}
 })
 
-// level(3, (ctx) => {
-// 	// scene.screens['4'](ctx)
-// })
+scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
+	const value = ctx.match.input.replace(ctx.match[0], '')
+	scene.data.price = value
 
-// level(4, (ctx) => {
-// 	send(ctx, 'Подбираю варианты...')
-// 	console.log(scene.data)
-// })
+	send(ctx, $i18n('scenes.qsp.selection'))
+	console.log(scene.data)
 
-// scene.action(new RegExp(`^${scene.name}:1:`), async ctx => {
-// 	const input = ctx.match.input
-// 	const match = ctx.match[0]
-// 	scene.data.push(input.replace(match, ''))
-// 	scene.screens['2'](ctx)
-// })
+	setTimeout(() => {
 
-// scene.action(new RegExp(`^${scene.name}:2:`), async ctx => {
-// 	const input = ctx.match.input
-// 	const match = ctx.match[0]
-// 	scene.data.push(input.replace(match, ''))
-// 	send(ctx, 'Подбираю варианты...')
-// 	console.log(scene.data)
-// })
+		send(ctx, $i18n('scenes.qsp.result.text'), {
+			reply_markup: {
+				inline_keyboard: [
+					...createGrid([
+						{ text: '1', callback_data: `PROJECT:1` },
+						{ text: '2', callback_data: `PROJECT:2` },
+						{ text: '3', callback_data: `PROJECT:3` },
+						{ text: '4', callback_data: `PROJECT:4` },
+						{ text: '5', callback_data: `PROJECT:4` },
+					], 5),
+					[ { text: $i18n('scenes.qsp.result.kb.consult'), callback_data: "consultation" } ],
+					[ { text: $i18n('kb.menu'), callback_data: "start" } ],
+				],
+			},
+		})
+		ctx.scene.leave()
+	}, 1000)
+})
 
 scene.on("message", async ctx => {
 	send(ctx, $i18n('kb.back'))

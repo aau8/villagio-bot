@@ -11,6 +11,8 @@ const createGrid = (arr, columns) => {
         grid[i] = arr.slice(i * columns, i * columns + columns)
     }
 
+	// console.log('grid', grid)
+
     return grid
 }
 
