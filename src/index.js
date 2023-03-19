@@ -59,6 +59,14 @@ $bot.action('quiz_select_project', ctx => {
 	ctx.scene.enter('quiz_select_project')
 })
 
+// Квиз "Получить консультацию"
+$bot.command('quiz_consult', ctx => {
+	ctx.scene.enter('quiz_consult')
+})
+$bot.action('quiz_consult', ctx => {
+	ctx.scene.enter('quiz_consult')
+})
+
 //////////////////////////////
 //////////  Приватный доступ (Админ. панель)
 //////////////////////////////

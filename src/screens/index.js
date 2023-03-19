@@ -1,3 +1,4 @@
+import changeLang from "../actions/changeLang.js"
 import sendHelpPrivate from "./private/help.js"
 import sendStartPrivate from "./private/start.js"
 import sendStatisticPrivate from "./private/statistic.js"
@@ -18,6 +19,7 @@ const $screen = {
 		project: sendProjectPublic,
 		catalog: sendCatalogPublic,
 		catalog_pdf: sendCatalogPdfPublic,
+		change_lang: changeLang,
 	},
 	private: {
 		start: sendStartPrivate,

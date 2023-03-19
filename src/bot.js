@@ -8,3 +8,6 @@ const $bot = new Telegraf(process.env.TG_BOT_TOKEN)
 
 export default $bot
 
+// $bot.telegram
+
+// $bot.telegram.deleteMessage
