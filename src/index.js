@@ -10,6 +10,8 @@ import $db from "./db/index.js"
 import { projectPrefix } from "./screens/public/project.js"
 import { statisticPrefix } from "./screens/private/statistic.js"
 import { statisticCsvPrefix } from "./screens/private/statisticCsv.js"
+import { setQuest } from "./contexts/ConsultContext.js"
+import { catalogPrefix } from "./screens/public/catalog.js"
 
 // dotenv.config()
 
@@ -43,6 +45,10 @@ $bot.action("subscribe", $screen.public.subscribe)
 $bot.command("catalog", $screen.public.catalog)
 $bot.action("catalog", $screen.public.catalog)
 
+// Каталог (категории)
+$bot.command(new RegExp(`^${catalogPrefix}`), $screen.public.catalog_cat)
+$bot.action(new RegExp(`^${catalogPrefix}`), $screen.public.catalog_cat)
+
 // Каталог (pdf-документ)
 $bot.command("catalog_pdf", $screen.public.catalog_pdf)
 $bot.action("catalog_pdf", $screen.public.catalog_pdf)
@@ -60,11 +66,12 @@ $bot.action('quiz_select_project', ctx => {
 })
 
 // Квиз "Получить консультацию"
-$bot.command('quiz_consult', ctx => {
-	ctx.scene.enter('quiz_consult')
+$bot.command('consult', ctx => {
+	// setQuest(ctx)
+	ctx.scene.enter('consult')
 })
-$bot.action('quiz_consult', ctx => {
-	ctx.scene.enter('quiz_consult')
+$bot.action('consult', ctx => {
+	ctx.scene.enter('consult')
 })
 
 //////////////////////////////

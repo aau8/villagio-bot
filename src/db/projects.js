@@ -33,6 +33,20 @@ export const getProject = async (options) => {
 	}
 }
 
+export const changeProject = async (options, set) => {
+	try {
+		await $mongo.connect()
+		return await $mongo
+			.db($mongo.dbName)
+			.collection($mongo.collection.projects)
+			.updateMany(options, set)
+	}
+	catch(err) {
+		console.log(err)
+		throw Error(err)
+	}
+}
+
 
 
 

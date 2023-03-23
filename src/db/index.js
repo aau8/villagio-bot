@@ -1,4 +1,4 @@
-import { addProject, getProject } from "./projects.js";
+import { addProject, changeProject, getProject } from "./projects.js";
 import { getAdminId, getCatalogPdfLink, getSettings } from "./settings.js";
 import { addUser, checkUser, getUser, getUserAll, setLangUser, setSubscriptionUser, updateUser } from "./users.js";
 
@@ -20,6 +20,7 @@ const $db = {
 	project: {
 		get: getProject,
 		add: addProject,
+		change: changeProject,
 	},
 }
 

@@ -1,5 +1,5 @@
 const EN = {
-	start: "Hello, i'm Villagio bot",
+	start: "Hello! I am a real estate selection bot in the UAE. With me you can:\n1. Independently select an object according to your parameters\n2. Download the catalog of the best offers on the UAE market\n3. Get advice from an expert on the selection of real estate",
 	subscribe: "📣 Subscription Management",
 	kb: {
 		project_selection: "🤖 Pick up an object",

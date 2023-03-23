@@ -18,7 +18,7 @@ const quests = {
 	installment: $i18n('scenes.qc.quests.installment'),
 	stages: $i18n('scenes.qc.quests.stages'),
 }
-const scene = Object.assign( new Scenes.BaseScene('quiz_consult'), {
+const scene = Object.assign( new Scenes.BaseScene('consult'), {
 	name: 'QC',
 	data: {},
 	screens: {
@@ -89,11 +89,11 @@ const scene = Object.assign( new Scenes.BaseScene('quiz_consult'), {
 		"name": (ctx) => {
 			send(ctx, $i18n('scenes.qc.name.text'))
 		},
-		"send": (ctx) => {
-			send(ctx, $i18n('scenes.qc.send.text'))
+		"sender": async (ctx) => {
+			return send(ctx, $i18n('scenes.qc.sender.text'))
 		},
-		"end": (ctx) => {
-			send(ctx, $i18n('scenes.qc.end.text'), {
+		"end": async (ctx) => {
+			return send(ctx, $i18n('scenes.qc.end.text'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
@@ -134,10 +134,8 @@ scene.action(new RegExp(`^${scene.name}:commun:`), async ctx => {
 
 	scene.data.commun = value
 	phoneNow = true
-	// ctx.deleteMessage(ctx.update.callback_query.message - 1)
 	goScreen("phone", ctx)
 })
-
 
 scene.on("message", async ctx => {
 
@@ -153,17 +151,23 @@ scene.on("message", async ctx => {
 		nameNow = true
 		goScreen("name", ctx)
 
-		console.log(scene.data)
+		// console.log(scene.data)
 	}
 	else if (nameNow) {
 		scene.data.name = ctx.message.text
 		nameNow = false
 
-		await goScreen("send", ctx)
+		// await goScreen("sender", ctx)
+		// await scene.screens['sender'](ctx)
+		const senderMsg = await goScreen('sender', ctx)
+
 		setTimeout(async () => {
-			console.log(scene.data)
+			console.log(senderMsg)
+			ctx.deleteMessage(senderMsg.message_id)
+
 			await goScreen("end", ctx)
 		}, 1000)
+		// console.log(scene.data)
 	}
 	else {
 		const answered = Object.keys(scene.screens).length - Object.keys(scene.data).length

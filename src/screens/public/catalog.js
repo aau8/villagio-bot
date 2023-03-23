@@ -1,44 +1,20 @@
 import $db from "../../db/index.js"
+import createGrid from "../../helpers/createGrid.js"
 import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
 import { projectPrefix } from "./project.js"
 
+export const catalogPrefix = 'catalog_'
 const sendCatalogPublic = async (ctx) => {
-	await send(ctx, $i18n('download'))
 
-	const projects = await $db.project.get()
-	const types = {
-		aparts: [],
-		townhouses: [],
-		villas: [],
-	}
-
-	for (const project of projects) {
-		const projectType = project.type.toLowerCase()
-
-		switch (projectType) {
-			case 'вилла':
-				types.villas.push(project)
-				break;
-			case 'таунхаус':
-				types.townhouses.push(project)
-				break;
-			case 'апартаменты':
-				types.aparts.push(project)
-				break;
-
-		}
-	}
-
-	const typesToString = (type) => type.map((villa, i) => `${i + 1}. ${villa.name} - \/${projectPrefix + villa.project_id}`).join('\n')
-
-	await send(ctx, $i18n('catalog', {
-		aparts: typesToString(types.aparts),
-		townhouses: typesToString(types.townhouses),
-		villas: typesToString(types.villas),
-	}), {
+	await send(ctx, $i18n('catalog.text'), {
 		reply_markup: {
 			inline_keyboard: [
+				...createGrid([
+					{ text: $i18n('catalog.kb.aparts'), callback_data: `${catalogPrefix}aparts` },
+					{ text: $i18n('catalog.kb.townhouses'), callback_data: `${catalogPrefix}townhouses` },
+					{ text: $i18n('catalog.kb.villas'), callback_data: `${catalogPrefix}villas` },
+				], 2),
 				[ { text: $i18n('kb.catalog_pdf'), callback_data: "catalog_pdf" }, ],
 				[ { text: $i18n('kb.back'), callback_data: "start" }, ],
 			]

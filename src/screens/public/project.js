@@ -25,7 +25,7 @@ ${description}
 		caption: text,
 		reply_markup: {
 			inline_keyboard: [
-				[ { text: $i18n('kb.consult'), callback_data: "consultation" }, ],
+				[ { text: $i18n('kb.consult'), callback_data: "consult" }, ],
 				[ { text: $i18n('kb.catalog'), callback_data: "catalog" }, ],
 				[ { text: $i18n('kb.menu'), callback_data: "start" }, ],
 			]

@@ -1,8 +1,5 @@
 import $mongo from "./mongo.js"
 
-// export const checkCollectionUsers = () => {
-
-// }
 
 /**
  * Получить всех пользователей по указанному фильтру
