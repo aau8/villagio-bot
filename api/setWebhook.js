@@ -1,10 +1,12 @@
 import $bot from '../src/index.js'
 import axios from 'axios'
+import * as dotenv from "dotenv"
+dotenv.config()
 
 const webhookUrl = (url) => `https://${url}/api/telegram.js`
 
 export default async (data, { json }) => {
-	const url = `https://api.telegram.org/bot6059186880:AAFr9rK6fK9SNL1RzyqQLXjHNNoV007G11g/setWebhook?url=${webhookUrl(data.headers['x-forwarded-host'])}`
+	const url = `https://api.telegram.org/bot${process.env.TG_BOT_TOKEN}/setWebhook?url=${webhookUrl(data.headers['x-forwarded-host'])}`
 	axios.get(url)
 	.then(res => {
 		// console.log(url)
