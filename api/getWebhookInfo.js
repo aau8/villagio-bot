@@ -1,13 +1,6 @@
-import axios from "axios"
+import $bot from "../src/index.js"
 
-export default (data, { json }) => {
-	const url = `https://api.telegram.org/bot6059186880:AAFr9rK6fK9SNL1RzyqQLXjHNNoV007G11g/getWebhookInfo`
-	axios.get(url)
-	.then(res => {
-		// console.log(url)
-		json(res.data)
-	})
-	.catch(err => {
-		throw Error(err)
-	})
+export default async (data, { json }) => {
+	const webhookInfo = await $bot.telegram.getWebhookInfo()
+	json(webhookInfo)
 }

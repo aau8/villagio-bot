@@ -2,11 +2,11 @@ import $bot from '../src/index.js'
 
 export default async (data, { json }) => {
 	console.log(data.body)
-	// const ctx = JSON.parse(data.body.toString('utf8'))
-	const ctx = data.body
-	const response = await $bot.handleUpdate(ctx)
 
-	console.log('response', response)
+	const ctx = data.body
+	await $bot.handleUpdate(ctx)
+
+	// console.log('response', response)
 	// console.log(["root POST", ctx]);
 
 	json([])
