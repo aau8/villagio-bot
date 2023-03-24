@@ -1,0 +1,209 @@
+import { Composer, Markup, Scenes } from "telegraf"
+// import { removeKeyboard } from "telegraf/typings/markup.js"
+// import { keyboard } from "telegraf/typings/markup.js"
+import { $consult } from "../../../../contexts/ConsultContext.js"
+import $db from "../../../../db/index.js"
+import createGrid from "../../../../helpers/createGrid.js"
+import send from "../../../../helpers/send.js"
+import { $i18n } from "../../../../locales/index.js"
+import $screen from "../../../index.js"
+import { activeScreen, goScreen, scr } from "./config.js"
+import selectQuest from "./selectQuest.js"
+// import { projectPrefix } from "../../project.js"
+
+// let anotherQuestNow = false
+// let phoneNow = false
+// let nameNow = false
+// const quests = {
+// 	dubai: $i18n('scenes.qc.quests.dubai'),
+// 	abudabi: $i18n('scenes.qc.quests.abudabi'),
+// 	installment: $i18n('scenes.qc.quests.installment'),
+// 	stages: $i18n('scenes.qc.quests.stages'),
+// }
+// const screens = {
+// 	"start": async (ctx) => {
+// 		return send(ctx, $i18n('scenes.qc.start.text', { quests: Object.values(quests).map((quest, i) => `${i + 1}. ${quest}`).join('\n') }), {
+// 			reply_markup: {
+// 				inline_keyboard: [
+// 					...createGrid([
+// 						...Object.entries(quests).map((quest, i) => {
+// 							// console.log('quest', quest)
+// 							return { text: i + 1, callback_data: `quest_${quest[0]}` }
+// 						})
+// 					], 5),
+// 					[
+// 						{ text: $i18n('scenes.qc.start.kb.another'), callback_data: `another_quest` },
+// 					],
+// 					[
+// 						{ text: $i18n('kb.menu'), callback_data: `stop:/start` },
+// 					]
+// 				],
+// 			},
+// 		})
+// 	},
+// 	"another_quest": async (ctx) => {
+// 		return send(ctx, $i18n('scenes.qc.another_quest'))
+// 	},
+// 	"commun": async (ctx) => {
+// 		return send(ctx, $i18n('scenes.qc.commun.text'), {
+// 			reply_markup: {
+// 				inline_keyboard: [
+// 					[
+// 						{ text: $i18n('scenes.qc.commun.kb.tg'), callback_data: `${scene.name}:commun:telegram` },
+// 						{ text: $i18n('scenes.qc.commun.kb.call'), callback_data: `${scene.name}:commun:call` },
+// 					],
+// 				],
+// 			},
+// 		})
+// 	},
+// 	"phone": async (ctx) => {
+// 		return send(ctx, $i18n('scenes.qc.phone.text'))
+// 	},
+// 	"name": async (ctx) => {
+// 		return send(ctx, $i18n('scenes.qc.name.text'))
+// 	},
+// 	"sender": async (ctx) => {
+// 		return send(ctx, $i18n('scenes.qc.sender.text'))
+// 	},
+// 	"end": async (ctx) => {
+// 		return send(ctx, $i18n('scenes.qc.end.text'), {
+// 			reply_markup: {
+// 				inline_keyboard: [
+// 					[
+// 						{ text: $i18n('kb.menu'), callback_data: `/start` },
+// 					],
+// 				],
+// 			},
+// 		})
+// 	},
+// 	"stop": async (ctx) => {
+// 		const answered = 4 - ctx.wizard.cursor + 1
+
+// 		return send(ctx, $i18n('scenes.qsp.stop.text', { value: answered }), {
+// 			reply_markup: {
+// 				inline_keyboard: [
+// 					[
+// 						{ text: $i18n('scenes.qsp.stop.kb.yes'), callback_data: `stop:${ctx.message.text}` },
+// 						{ text: $i18n('scenes.qsp.stop.kb.no'), callback_data: "resume" },
+// 					],
+// 				],
+// 			},
+// 		})
+// 	}
+// }
+
+// const answerOne = new Composer()
+const anotherQuest = new Composer()
+
+const isStop = (ctx) => ctx.message.text.includes('stop:')
+const stop = async (ctx) => ctx.scene.leave();
+// const command = ctx.match.input.replace('stop:', '').replace('/', '')
+
+// answerOne.action('another_quest', async ctx => {
+// 	// console.log('ctx', ctx)
+// 	// await send(ctx, $i18n('scenes.qc.another_quest'))
+// 	await goScreen('another_quest', ctx)
+// 	return ctx.wizard.next()
+// })
+
+// answerOne.action(/^quest_/, async ctx => {
+// 	const command = parseCommand(ctx, 'quest_')
+
+// 	await goScreen('commun', ctx)
+// 	return ctx.wizard.selectStep(ctx.wizard.cursor + 2)
+// })
+
+// answerOne.action(/^stop:/, async ctx => {
+// 	const command = ctx.match.input.replace('stop:', '').replace('/', '')
+
+// 	if ($screen.public[command]) {
+// 		$screen.public[command](ctx)
+// 	}
+// 	else {
+// 		$screen.public.start(ctx)
+// 	}
+
+// 	return await ctx.scene.leave();
+// })
+
+anotherQuest.on('message', async ctx => {
+	await goScreen('commun', ctx)
+	return ctx.wizard.next()
+})
+
+const scene = new Scenes.WizardScene(
+	"consult",
+	async ctx => {
+		await goScreen('start', ctx)
+		return ctx.wizard.next();
+	},
+	selectQuest,
+	anotherQuest,
+	async ctx => {
+		// if (isStop(ctx)) {
+		// 	stop(ctx)
+		// 	return
+		// }
+		// await ctx.reply("Step 2");
+		await goScreen('phone', ctx)
+		return ctx.wizard.next();
+	},
+	async ctx => {
+		await goScreen('name', ctx)
+		return ctx.wizard.next();
+	},
+	async ctx => {
+		// if (isStop(ctx)) {
+		// 	stop(ctx)
+		// 	return
+		// }
+		// await ctx.reply("Done");
+		const senderMsg = await goScreen('sender', ctx)
+
+		setTimeout(async () => {
+			// console.log(senderMsg)
+			ctx.deleteMessage(senderMsg.message_id)
+
+			await goScreen("end", ctx)
+		}, 1000)
+		return await ctx.scene.leave();
+	},
+)
+
+// scene.use(async (ctx, next) => {
+// 	console.log(ctx)
+// 	await next()
+// })
+
+// scene.on('message', async ctx => {
+// 	if (activeScreen === 'another_quest') {
+// 		return
+// 	}
+
+
+// 	// console.log('cursor', 4 - ctx.wizard.cursor + 1)
+// 	goScreen('stop', ctx)
+
+// })
+
+scene.action('resume', async ctx => {
+	// console.log(activeScreen)
+	goScreen(scr.active, ctx)
+})
+
+scene.action(/^stop:/, async ctx => {
+	const command = ctx.match.input.replace('stop:', '').replace('/', '')
+
+	console.log('stop')
+
+	if ($screen.public[command]) {
+		$screen.public[command](ctx)
+	}
+	else {
+		$screen.public.start(ctx)
+	}
+
+	return await ctx.scene.leave();
+})
+
+export default scene

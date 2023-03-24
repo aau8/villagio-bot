@@ -11,7 +11,7 @@ export const getSettings = async () => {
 		return await $mongo
 			.db($mongo.dbName)
 			.collection($mongo.collection.settings)
-			.find({ _id: ObjectId('640c70e25a354e7751ec7de6') }).toArray()
+			.find({ _id: ObjectId('641d6971bfbf4c6d2adf4442') }).toArray()
 	}
 	catch(err) {
 		console.log(err)

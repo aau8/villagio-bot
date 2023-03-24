@@ -4,14 +4,17 @@ import $mongo from "./db/mongo.js"
 import $db from "./db/index.js"
 dotenv.config()
 
-const $bot = new Telegraf(process.env.TG_BOT_TOKEN)
+const $bot = new Telegraf(process.env.TG_BOT_TOKEN, {
+	telegram: {
+		webhookReply: true,
+	}
+})
 
 export default $bot
 
 // $bot.telegram
 
 // $bot.telegram.deleteMessage
-
 
 // $db.project.add({
 // 	name: "9999999 000000",
