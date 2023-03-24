@@ -11,7 +11,7 @@ const sendStatCatPrivate = async (ctx) => {
 	}
 	const commandText = ctx.match ? ctx.match.input : ctx.message.text
 
-	send(ctx, $i18n(`private.${commandText}`, { lng: 'ru' }), {
+	return send(ctx, $i18n(`private.${commandText}`, { lng: 'ru' }), {
 		reply_markup: {
 			inline_keyboard: [
 				[ { text: $i18n('private.kb.download_csv', { lng: 'ru' }), callback_data: "csv" }, ],

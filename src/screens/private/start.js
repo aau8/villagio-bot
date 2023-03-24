@@ -11,7 +11,7 @@ const sendStartPrivate = async (ctx) => {
 	}
 
 	const text = `⚙ Административная панель`
-	send(ctx, text, {
+	return send(ctx, text, {
 		reply_markup: {
 			inline_keyboard: [
 				[

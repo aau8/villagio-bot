@@ -13,7 +13,7 @@ const sendStatisticPrivate = async (ctx) => {
 		return
 	}
 
-	send(ctx, $i18n('private.statistic', { lng: 'ru' }), {
+	return send(ctx, $i18n('private.statistic', { lng: 'ru' }), {
 		reply_markup: {
 			inline_keyboard: [
 				...createGrid([

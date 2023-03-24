@@ -11,7 +11,7 @@ const sendStatCsvPrivate = async (ctx) => {
 		return
 	}
 
-	send(ctx, "Здесь будет csv-файл", {
+	return send(ctx, "Здесь будет csv-файл", {
 		reply_markup: {
 			inline_keyboard: [
 				[ { text: $i18n('private.statistic', { lng: 'ru' }), callback_data: "statistic" }, ],

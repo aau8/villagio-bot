@@ -1,5 +1,6 @@
 import checkIsAdmin from "../../helpers/checkIsAdmin.js"
 import send from "../../helpers/send.js"
+import { $i18n } from "../../locales/index.js"
 
 const sendHelpPrivate = async (ctx) => {
 	const user = ctx.from
@@ -10,11 +11,11 @@ const sendHelpPrivate = async (ctx) => {
 	}
 
 	const text = 'ℹ Справка об админ. панели\nЗдесь описан основной функционал и команды админки.'
-	send(ctx, text, {
+	return send(ctx, text, {
 		reply_markup: {
 			inline_keyboard: [
 				[
-					{ text: "Обратно", callback_data: "admin" }
+					{ text: $i18n('kb.back'), callback_data: "admin" }
 				]
 			]
 		}
