@@ -21,7 +21,7 @@ ${description}
 <a href="${link}">Ссылка на сайт</a>
 `
 
-	ctx.sendPhoto(img, {
+	return ctx.sendPhoto(img, {
 		caption: text,
 		reply_markup: {
 			inline_keyboard: [

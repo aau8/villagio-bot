@@ -7,11 +7,11 @@ const changeLang = async (ctx) => {
 	const lang = $user.lang === 'ru' ? 'en': 'ru'
 
 	// Изменить данные языка в бд
-	$db.user.setLang(lang, { tg_id: $user.tg_id })
+	await $db.user.setLang(lang, { tg_id: $user.tg_id })
 	setUserLang(lang)
 
 	// Поменять экран, передав обновленный контекст
-	$screen.public.start(ctx)
+	return $screen.public.start(ctx)
 }
 
 export default changeLang

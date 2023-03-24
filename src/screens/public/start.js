@@ -2,7 +2,7 @@ import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
 
 const sendStartPublic = async (ctx) => {
-	send(ctx, $i18n('start'), {
+	return send(ctx, $i18n('start'), {
 		reply_markup: {
 			inline_keyboard: [
 				[ { text: $i18n('kb.project_selection'), callback_data: "quiz_select_project" }, ],

@@ -11,9 +11,10 @@ const setUserData = async (ctx, next) => {
 		let user = await $db.user.get({ tg_id: ctx.from.id })
 
 		if (!user) {
-			$db.user.add(raiseUserData(ctx.from))
+			await $db.user.add(raiseUserData(ctx.from))
 			user = ctx.from
 		}
+
 		setUser(user)
 	}
 	await next()

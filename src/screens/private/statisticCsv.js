@@ -4,7 +4,6 @@ import { $i18n } from "../../locales/index.js"
 
 export const statisticCsvPrefix = 'statistic_csv_'
 const sendStatCsvPrivate = async (ctx) => {
-	console.log('ok')
 	const user = ctx.from
 	const isAdmin = await checkIsAdmin(user.id)
 	if (!isAdmin) {

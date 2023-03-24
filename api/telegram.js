@@ -1,7 +1,7 @@
 import $bot from '../src/index.js'
 
 export default async (data, { json }) => {
-	console.log(data.body)
+	// console.log(data.body)
 
 	const ctx = data.body
 	await $bot.handleUpdate(ctx)
@@ -10,10 +10,6 @@ export default async (data, { json }) => {
 	// console.log(["root POST", ctx]);
 
 	json([])
-
-
-	// console.log(data.body)
-	// console.log('body')
 
 	// $bot.telegram.getUpdates(data.body)
 	// $bot.start(ctx => {

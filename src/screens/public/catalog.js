@@ -7,7 +7,7 @@ import { projectPrefix } from "./project.js"
 export const catalogPrefix = 'catalog_'
 const sendCatalogPublic = async (ctx) => {
 
-	await send(ctx, $i18n('catalog.text'), {
+	return send(ctx, $i18n('catalog.text'), {
 		reply_markup: {
 			inline_keyboard: [
 				...createGrid([

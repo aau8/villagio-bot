@@ -105,8 +105,7 @@ export const checkUser = async (options = {}) => {
  */
 export const setLangUser = async (lang, options = {}) => {
 	try {
-		const user = await updateUser(options, { lang: lang })
-		return user
+		return updateUser(options, { lang: lang })
 	}
 	catch(err) {
 		console.log(err)
@@ -122,8 +121,7 @@ export const setLangUser = async (lang, options = {}) => {
  */
 export const setSubscriptionUser = async (subscribeOn, options = {}) => {
 	try {
-		const user = await updateUser(options, { subscription: subscribeOn })
-		return user
+		return updateUser(options, { subscription: subscribeOn })
 	}
 	catch(err) {
 		console.log(err)

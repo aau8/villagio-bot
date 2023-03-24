@@ -12,6 +12,7 @@ import { statisticPrefix } from "./screens/private/statistic.js"
 import { statisticCsvPrefix } from "./screens/private/statisticCsv.js"
 import { setQuest } from "./contexts/ConsultContext.js"
 import { catalogPrefix } from "./screens/public/catalog.js"
+import { $user, setUserSubscr } from "./contexts/UserContext.js"
 
 // dotenv.config()
 
@@ -40,6 +41,9 @@ $bot.action("change_lang", changeLang)
 // Управление подпиской
 $bot.command("subscribe", $screen.public.subscribe)
 $bot.action("subscribe", $screen.public.subscribe)
+
+// Включить/отключить подписку
+$bot.action('subscribe_change', $screen.public.change_subscribe)
 
 // Каталог
 $bot.command("catalog", $screen.public.catalog)

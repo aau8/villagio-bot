@@ -1,4 +1,5 @@
 import changeLang from "../actions/changeLang.js"
+import changeSubscribe from "../actions/changeSubscribe.js"
 import sendHelpPrivate from "./private/help.js"
 import sendStartPrivate from "./private/start.js"
 import sendStatisticPrivate from "./private/statistic.js"
@@ -22,6 +23,7 @@ const $screen = {
 		catalog_cat: sendCatalogCatPublic,
 		catalog_pdf: sendCatalogPdfPublic,
 		change_lang: changeLang,
+		change_subscribe: changeSubscribe,
 	},
 	private: {
 		start: sendStartPrivate,
