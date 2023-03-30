@@ -10,7 +10,7 @@ import $db from "./db/index.js"
 import { projectPrefix } from "./screens/public/project.js"
 import { statisticPrefix } from "./screens/private/statistic.js"
 import { statisticCsvPrefix } from "./screens/private/statisticCsv.js"
-import { setQuest } from "./contexts/ConsultContext.js"
+import { $consult, setQuest } from "./contexts/ConsultContext.js"
 import { catalogPrefix } from "./screens/public/catalog.js"
 import { $user, setUserSubscr } from "./contexts/UserContext.js"
 
@@ -74,7 +74,8 @@ $bot.command('consult', ctx => {
 	// setQuest(ctx)
 	ctx.scene.enter('consult')
 })
-$bot.action('consult', ctx => {
+$bot.action(/^consult:/, ctx => {
+	setQuest(ctx.match.input.replace(ctx.match[0], ''))
 	ctx.scene.enter('consult')
 })
 
@@ -99,8 +100,8 @@ $bot.command(new RegExp(`^${statisticPrefix}`), $screen.private.statistic_cat)
 $bot.action(new RegExp(`^${statisticPrefix}`), $screen.private.statistic_cat)
 
 // Получить csv-файл по категории
-$bot.command(new RegExp(`^csv`), $screen.private.statistic_csv)
-$bot.action(new RegExp(`^csv`), $screen.private.statistic_csv)
+$bot.command(new RegExp(`^csv_`), $screen.private.statistic_csv)
+$bot.action(new RegExp(`^csv_`), $screen.private.statistic_csv)
 
 
 // export default async (data, { json }) => {
@@ -111,9 +112,9 @@ $bot.action(new RegExp(`^csv`), $screen.private.statistic_csv)
 // 		.then(() => console.log("Webhook bot listening on port", port));
 // }
 
-export default $bot
-// $bot.launch()
+// export default $bot
+$bot.launch()
 
 // // Enable graceful stop
-// process.once("SIGINT", () => $bot.stop("SIGINT"))
-// process.once("SIGTERM", () => $bot.stop("SIGTERM"))
+process.once("SIGINT", () => $bot.stop("SIGINT"))
+process.once("SIGTERM", () => $bot.stop("SIGTERM"))

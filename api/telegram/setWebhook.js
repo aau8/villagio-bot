@@ -1,4 +1,4 @@
-import $bot from '../src/index.js'
+import $bot from '../../src/index.js'
 
 const webhookUrl = (url) => `https://${url}/api/telegram.js`
 

@@ -126,75 +126,103 @@ const stop = async (ctx) => ctx.scene.leave();
 // 	return await ctx.scene.leave();
 // })
 
+
 anotherQuest.on('message', async ctx => {
+	scr.answers.quest = ctx.message.text
 	await goScreen('commun', ctx)
 	return ctx.wizard.next()
 })
 
+// let sceneList = [
+// 	async ctx => {
+// 		console.log('consult start')
+// 		await goScreen('start', ctx)
+// 		return ctx.wizard.next();
+// 	},
+// 	selectQuest,
+// 	anotherQuest,
+// 	async ctx => {
+// 		await goScreen('phone', ctx)
+// 		return ctx.wizard.next();
+// 	},
+// 	async ctx => {
+// 		await goScreen('name', ctx)
+// 		return ctx.wizard.next();
+// 	},
+// 	async ctx => {
+// 		const senderMsg = await goScreen('sender', ctx)
+
+// 		setTimeout(async () => {
+// 			ctx.deleteMessage(senderMsg.message_id)
+
+// 			await goScreen("end", ctx)
+// 		}, 1000)
+// 	},
+// ]
+
+
 const scene = new Scenes.WizardScene(
 	"consult",
 	async ctx => {
-		await goScreen('start', ctx)
-		return ctx.wizard.next();
+		if ($consult.quest) {
+			const quest = JSON.parse($consult.quest)
+			console.log(quest, typeof quest)
+			// console.log($consult.quest, typeof $consult.quest)
+			// console.log(Object.is($consult.quest))
+			if (typeof quest === 'object') {
+				scr.answers.quest = quest.join(', ')
+			}
+			else {
+				scr.answers.quest = $consult.quest
+			}
+			await goScreen('commun', ctx)
+			return ctx.wizard.selectStep(3)
+		}
+		else {
+			await goScreen('start', ctx)
+			return ctx.wizard.next();
+		}
 	},
 	selectQuest,
 	anotherQuest,
 	async ctx => {
-		// if (isStop(ctx)) {
-		// 	stop(ctx)
-		// 	return
-		// }
-		// await ctx.reply("Step 2");
+		scr.answers.commun = ctx.update.callback_query.data.replace('commun:', '')
+		// console.log(answer)
+
 		await goScreen('phone', ctx)
 		return ctx.wizard.next();
 	},
 	async ctx => {
+		scr.answers.phone = ctx.message.text
 		await goScreen('name', ctx)
 		return ctx.wizard.next();
 	},
 	async ctx => {
-		// if (isStop(ctx)) {
-		// 	stop(ctx)
-		// 	return
-		// }
-		// await ctx.reply("Done");
+		scr.answers.name = ctx.message.text
 		const senderMsg = await goScreen('sender', ctx)
 
 		setTimeout(async () => {
-			// console.log(senderMsg)
 			ctx.deleteMessage(senderMsg.message_id)
 
+			console.log(scr.answers)
 			await goScreen("end", ctx)
 		}, 1000)
-		return await ctx.scene.leave();
 	},
 )
 
-// scene.use(async (ctx, next) => {
-// 	console.log(ctx)
-// 	await next()
-// })
+// scene.enter(ctx => {
 
-// scene.on('message', async ctx => {
-// 	if (activeScreen === 'another_quest') {
-// 		return
-// 	}
+// 	// sceneList = $consult.quest ? sceneList.slice(3) : sceneList
 
-
-// 	// console.log('cursor', 4 - ctx.wizard.cursor + 1)
-// 	goScreen('stop', ctx)
-
+// 	// console.log()
 // })
 
 scene.action('resume', async ctx => {
-	// console.log(activeScreen)
 	goScreen(scr.active, ctx)
 })
 
 scene.action(/^stop:/, async ctx => {
 	const command = ctx.match.input.replace('stop:', '').replace('/', '')
-
-	console.log('stop')
 
 	if ($screen.public[command]) {
 		$screen.public[command](ctx)

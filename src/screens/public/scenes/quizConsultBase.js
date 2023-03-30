@@ -49,8 +49,9 @@ const scene = Object.assign( new Scenes.BaseScene('consult'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: $i18n('scenes.qc.commun.kb.tg'), callback_data: `${scene.name}:commun:telegram` },
 							{ text: $i18n('scenes.qc.commun.kb.call'), callback_data: `${scene.name}:commun:call` },
+							{ text: $i18n('scenes.qc.commun.kb.tg'), callback_data: `${scene.name}:commun:telegram` },
+							{ text: $i18n('scenes.qc.commun.kb.whatsapp'), callback_data: `${scene.name}:commun:whatsapp` },
 						],
 					],
 				},
@@ -111,6 +112,11 @@ const goScreen = async (screen, ...args) => {
 }
 
 scene.enter(ctx => {
+	// if ($consult.quest) {
+	// 	goScreen("commun", ctx)
+	// }
+	// else {
+	// }
 	goScreen("start", ctx)
 })
 

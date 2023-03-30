@@ -18,7 +18,7 @@ const sendStatisticPrivate = async (ctx) => {
 			inline_keyboard: [
 				...createGrid([
 					{ text: $i18n('private.kb.statistic_users', { lng: 'ru' }), callback_data: `${statisticPrefix}users` },
-					{ text: $i18n('private.kb.statistic_applics', { lng: 'ru' }), callback_data: `${statisticPrefix}applics` },
+					// { text: $i18n('private.kb.statistic_applics', { lng: 'ru' }), callback_data: `${statisticPrefix}applics` },
 					{ text: $i18n('private.kb.statistic_projects', { lng: 'ru' }), callback_data: `${statisticPrefix}projects` },
 				], 2),
 				[ { text: $i18n('kb.back', { lng: 'ru' }), callback_data: "admin" }, ],

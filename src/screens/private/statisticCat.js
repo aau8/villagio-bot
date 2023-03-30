@@ -14,7 +14,7 @@ const sendStatCatPrivate = async (ctx) => {
 	return send(ctx, $i18n(`private.${commandText}`, { lng: 'ru' }), {
 		reply_markup: {
 			inline_keyboard: [
-				[ { text: $i18n('private.kb.download_csv', { lng: 'ru' }), callback_data: "csv" }, ],
+				[ { text: $i18n('private.kb.download_csv', { lng: 'ru' }), callback_data: `csv_${commandText.replace('statistic_', '')}` }, ],
 				[ { text: $i18n('kb.back', { lng: 'ru' }), callback_data: "statistic" }, ],
 			]
 		}

@@ -1,6 +1,6 @@
 import $bot from "../src/index.js"
 
-export default async (data, { json }) => {
+export default async (req, res) => {
 	const webhookInfo = await $bot.telegram.getWebhookInfo()
-	json(webhookInfo)
+	res.json(webhookInfo)
 }

@@ -5,9 +5,9 @@ import $db from "./db/index.js"
 dotenv.config()
 
 const $bot = new Telegraf(process.env.TG_BOT_TOKEN, {
-	telegram: {
-		webhookReply: true,
-	}
+	// telegram: {
+	// 	webhookReply: true,
+	// }
 })
 
 export default $bot

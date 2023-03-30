@@ -24,7 +24,7 @@ const sendCatalogCatPublic = async (ctx) => {
 			break;
 	}
 
-	const projects = await $db.project.get({ type: catSlug })
+	const projects = await $db.projects.getAll({ type: catSlug })
 
 	const typesToString = (type) => type.map((villa, i) => `${i + 1}. ${villa.name} - \/${projectPrefix + villa.project_id}`).join('\n')
 	const text = `${$i18n('catalog.text')} (${$i18n(`catalog.kb.${catName}`)})\n\n${typesToString(projects)}`

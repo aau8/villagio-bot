@@ -5,7 +5,7 @@ import sendSubscribePublic from "../screens/public/subscribe.js"
 const changeSubscribe = async (ctx) => {
 	const condition = !$user.subscription
 
-	await $db.user.setSubscr(condition, { tg_id: $user.tg_id })
+	await $db.users.setSubscr(condition, { tg_id: $user.tg_id })
 	setUserSubscr(condition)
 
 	return sendSubscribePublic(ctx)

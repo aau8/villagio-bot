@@ -19,7 +19,7 @@ export const addProject = async (data = {}) => {
 	}
 }
 
-export const getProject = async (options) => {
+export const getAllProject = async (options) => {
 	try {
 		await $mongo.connect()
 		return await $mongo
@@ -33,13 +33,41 @@ export const getProject = async (options) => {
 	}
 }
 
-export const changeProject = async (options, set) => {
+export const getProject = async (projectId) => {
 	try {
 		await $mongo.connect()
 		return await $mongo
 			.db($mongo.dbName)
 			.collection($mongo.collection.projects)
-			.updateMany(options, set)
+			.findOne({ project_id: projectId })
+	}
+	catch(err) {
+		console.log(err)
+		throw Error(err)
+	}
+}
+
+export const updateProject = async (options, set) => {
+	try {
+		await $mongo.connect()
+		return await $mongo
+			.db($mongo.dbName)
+			.collection($mongo.collection.projects)
+			.updateMany(options, { $set: set })
+	}
+	catch(err) {
+		console.log(err)
+		throw Error(err)
+	}
+}
+
+export const deleteProject = async (options) => {
+	try {
+		await $mongo.connect()
+		return await $mongo
+			.db($mongo.dbName)
+			.collection($mongo.collection.projects)
+			.deleteOne(options)
 	}
 	catch(err) {
 		console.log(err)

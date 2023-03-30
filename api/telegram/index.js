@@ -1,4 +1,4 @@
-import $bot from '../src/index.js'
+import $bot from '../../src/index.js'
 
 export default async (data, { json }) => {
 	// console.log(data.body)

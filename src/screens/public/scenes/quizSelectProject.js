@@ -35,8 +35,8 @@ const scene = Object.assign( new Scenes.BaseScene('quiz_select_project'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: $i18n('scenes.qsp.2.kb.ready'), callback_data: `${scene.name}:2:Готовая` },
-							{ text: $i18n('scenes.qsp.2.kb.build'), callback_data: `${scene.name}:2:Строящаяся` },
+							{ text: $i18n('scenes.qsp.2.kb.ready'), callback_data: `${scene.name}:2:Готовый` },
+							{ text: $i18n('scenes.qsp.2.kb.build'), callback_data: `${scene.name}:2:Строится` },
 						],
 						// [
 						// 	{ text: $i18n('kb.cancel'), callback_data: "/undo" }
@@ -51,9 +51,9 @@ const scene = Object.assign( new Scenes.BaseScene('quiz_select_project'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: `${checked[0] ? '✅' : '⛔'} ${$i18n('scenes.qsp.3.kb.apartment')}`, callback_data: `${scene.name}:3:Квартира` },
-							{ text: `${checked[1] ? '✅' : '⛔'} ${$i18n('scenes.qsp.3.kb.townhouse')}`, callback_data: `${scene.name}:3:Таунхаус` },
-							{ text: `${checked[2] ? '✅' : '⛔'} ${$i18n('scenes.qsp.3.kb.villa')}`, callback_data: `${scene.name}:3:Вилла` },
+							{ text: `${checked[0] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.apartment')}`, callback_data: `${scene.name}:3:Квартира` },
+							{ text: `${checked[1] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.townhouse')}`, callback_data: `${scene.name}:3:Таунхаус` },
+							{ text: `${checked[2] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.villa')}`, callback_data: `${scene.name}:3:Вилла` },
 						],
 						[
 							{ text: $i18n('kb.continue'), callback_data: `${scene.name}:3:continue` }
@@ -99,7 +99,7 @@ scene.action(new RegExp(`^${scene.name}:1:`), async ctx => {
 scene.action(new RegExp(`^${scene.name}:2:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
 
-	scene.data.stage = value
+	scene.data.status = value
 	goScreen(3, ctx)
 	// scene.screens[2](ctx, [ ...Object.values(screen3Checkboxes) ])
 })
@@ -132,21 +132,25 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 
 	await send(ctx, $i18n('scenes.qsp.select_options'))
 
-	const projects = await $db.project.get({
-		city: scene.data.city
+	console.log('data', ctx.data)
+	console.log({
+		city: scene.data.city,
+		status: scene.data.status,
+		type: scene.data.type,
+	})
+
+	const projects = await $db.projects.getAll({
+		city: scene.data.city,
+		status: scene.data.status,
+		// type: scene.data.type,
 	})
 
 	console.log('projects', projects)
 
-	await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length }), {
+	await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n'), }), {
 		reply_markup: {
 			inline_keyboard: [
-				...createGrid([
-					...projects.map((project, i) => {
-						return { text: i + 1, callback_data: projectPrefix + project.project_id }
-					})
-				], 5),
-				[ { text: $i18n('kb.consult'), callback_data: "consultation" } ],
+				[ { text: $i18n('kb.consult'), callback_data: `consult:${JSON.stringify(projects.map(project => '/id_' + project.project_id))}` } ],
 				[ { text: $i18n('kb.menu'), callback_data: "start" } ],
 			],
 		},
