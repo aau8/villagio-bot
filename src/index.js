@@ -104,16 +104,16 @@ $bot.command(new RegExp(`^csv_`), $screen.private.statistic_csv)
 $bot.action(new RegExp(`^csv_`), $screen.private.statistic_csv)
 
 
-// export default async (data, { json }) => {
-// 	json({ res: 'ok' })
-
-// 	$bot
+// export default async (req, res) => {
+// 	await $bot
 // 		.launch({ webhook: { domain: 'https://fe6ecfe9defe2c.lhr.life/api/telegram.js', port: port } })
 // 		.then(() => console.log("Webhook bot listening on port", port));
+
+// 	res.send('true')
 // }
 
-// export default $bot
-$bot.launch()
+export default $bot
+// $bot.launch()
 
 // // Enable graceful stop
 process.once("SIGINT", () => $bot.stop("SIGINT"))
