@@ -11,15 +11,15 @@
 		},
 		{
 			"src": "/api/users",
-			"dest": "api/telegram/users.js"
+			"dest": "api/users.js"
 		},
 		{
 			"src": "/api/projects",
-			"dest": "api/telegram/projects.js"
+			"dest": "api/projects.js"
 		},
 		{
 			"src": "/api/consults",
-			"dest": "api/telegram/consults.js"
+			"dest": "api/consults.js"
 		}
 	]
 }
