@@ -1,0 +1,25 @@
+{
+	"version": 2,
+	"routes": [
+		{
+			"src": "/api/getWebhookInfo",
+			"dest": "api/telegram/getWebhookInfo.js"
+		},
+		{
+			"src": "/api/setWebhook",
+			"dest": "api/telegram/setWebhook.js"
+		},
+		{
+			"src": "/api/users",
+			"dest": "api/telegram/users.js"
+		},
+		{
+			"src": "/api/projects",
+			"dest": "api/telegram/projects.js"
+		},
+		{
+			"src": "/api/consults",
+			"dest": "api/telegram/consults.js"
+		}
+	]
+}

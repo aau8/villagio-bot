@@ -1,6 +1,5 @@
 import $db from "../src/db/index.js"
 import * as dotenv from "dotenv"
-import { isAuth } from "./helpers.js"
 dotenv.config()
 
 const methods = {}
@@ -9,39 +8,27 @@ methods.get = async (req, res) => {
 	try {
 		const query = req.query
 		const options = query
+		console.log(query)
 
-		if (query.project_id) {
-			options.project_id = Number(query.project_id)
-		}
-		if (query.price_min) {
-			options.price.min = Number(query.price_min)
-		}
-		if (query.price_max) {
-			options.price.max = Number(query.price_max)
-		}
+		if (query.project_id) options.project_id = Number(query.project_id)
+		if (query.price_min) options.price.min = Number(query.price_min)
+		if (query.price_max) options.price.max = Number(query.price_max)
+		if (query.type) options.type = query.type
 
 		const projects = await $db.projects.getAll(options)
+		console.log(projects[0])
 		res.json({ data: projects, total: projects.length })
 	} catch(err) {
-		res.status(500).json('Internal Server Error')
+		res.status(500).send('Internal Server Error')
 	}
 }
 
 methods.post = async (req, res) => {
 	const body = req.body
-	if (!isAuth(req)) {
-		res.status(401).send('Unauthorized')
-		return
-	}
-	if (!body.project_id) {
-		res.status(400).send('Не указан обязательный параметр project_id')
-		return
-	}
-
 	const project = await $db.projects.get(body.project_id)
 
 	if (project) {
-		res.status(400).send('Проект уже существует')
+		res.status(400).send(`В базе данных уже есть проект с project_id ${body.project_id}`)
 		return
 	}
 
@@ -57,24 +44,11 @@ methods.post = async (req, res) => {
 
 methods.patch = async (req, res) => {
 	const body = req.body
-
-	if (!isAuth(req)) {
-		res.status(401).send('Unauthorized')
-		return
-	}
-	if (!body.project_id) {
-		res.status(400).send('Не указан обязательный параметр project_id')
-		return
-	}
-
 	const project = await $db.projects.get(body.project_id)
-	const options = {
-		price: {}
-	}
+	const options = { price: {} }
 
 	if (!project) {
 		res.status(400).send('Проект с переданным id не найден')
-		return
 	}
 
 	if (body.name) options.name = body.name
@@ -101,25 +75,16 @@ methods.patch = async (req, res) => {
 
 methods.delete = async (req, res) => {
 	const body = req.body
-	if (!isAuth(req)) {
-		res.status(401).send('Unauthorized')
-		return
-	}
-	if (!body.project_id) {
-		res.status(400).send('Не указан обязательный параметр project_id')
-		return
-	}
-
 	const project = await $db.projects.get(body.project_id)
 
 	if (!project) {
 		res.status(400).send('Проект с переданным id не найден')
-		return
 	}
 
 	$db.projects.delete({ project_id: body.project_id })
-	.then(data => {
-		res.send(data)
+	.then(() => {
+		res.statusCode = 200
+		res.send('true')
 	})
 	.catch(err => {
 		res.status(500).send('Ошибка при удалении проекта')
@@ -128,10 +93,36 @@ methods.delete = async (req, res) => {
 }
 
 const projects = async (req, res) => {
-	if (req.method === 'GET') methods.get(req, res)
-	if (req.method === 'POST') methods.post(req, res)
-	if (req.method === 'PATCH') methods.patch(req, res)
-	if (req.method === 'DELETE') methods.delete(req, res)
+	const token = req.headers.authorization
+
+	if (!token) {
+		res.status(400).send('Не указан обязательный параметр "token"')
+	}
+	else if (token.replace('Bearer', '').trim() !== process.env.API_TOKEN) {
+		res.status(401).send('Неправильный токен. Доступ закрыт')
+	}
+
+	if (req.method === 'GET') {
+		methods.get(req, res)
+		return
+	}
+
+	if (!req.body.project_id) {
+		res.status(400).send('Не указан обязательный параметр project_id')
+	}
+
+	if (req.method === 'POST') {
+		methods.post(req, res)
+		return
+	}
+	if (req.method === 'PATCH') {
+		methods.patch(req, res)
+		return
+	}
+	if (req.method === 'DELETE') {
+		methods.delete(req, res)
+		return
+	}
 }
 
 export default projects

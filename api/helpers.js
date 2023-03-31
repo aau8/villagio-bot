@@ -3,5 +3,5 @@ dotenv.config()
 
 export const isAuth = (req) => {
 	const token = req.headers.authorization
-	return token && token === process.env.ACCESS_TOKEN
+	return token && token === process.env.API_TOKEN
 }
