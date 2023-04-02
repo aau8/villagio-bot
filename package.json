@@ -7,7 +7,7 @@
   "private": "true",
   "scripts": {
     "vc-dev": "vc dev",
-    "dev": "nodemon ./src/index.js",
+    "dev": "nodemon ./src/telegram.js",
     "tunnel-vc-dev": "ssh -R 80:localhost:3000 nokey@localhost.run & vc dev",
     "tunnel": "ssh -R 80:localhost:3000 nokey@localhost.run"
   },
