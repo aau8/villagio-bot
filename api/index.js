@@ -1,4 +1,4 @@
-import { useWebhook } from "../src/telegram";
+import { useWebhook } from "../src/telegram.js";
 
 export default async function handle(req, res) {
 	try {
