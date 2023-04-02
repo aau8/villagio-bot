@@ -1,4 +1,3 @@
-import $db from "../../db/index.js"
 import checkIsAdmin from "../../helpers/checkIsAdmin.js"
 import send from "../../helpers/send.js"
 

@@ -1,5 +1,4 @@
 import { Composer } from "telegraf"
-import { $i18n } from "../../../../locales/index.js"
 import { goScreen, parseCommand, quests, scr } from "./config.js"
 
 const selectQuest = new Composer()

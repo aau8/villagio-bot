@@ -40,9 +40,7 @@ const localBot = async () => {
 	return new Promise(async (resolve) => {
 		console.log('Bot is running')
 		$bot.telegram.webhookReply = false
-		// const botInfo = await $bot.telegram.getMe()
 
-		await $bot.telegram.deleteWebhook()
 		resolve()
 	})
 }

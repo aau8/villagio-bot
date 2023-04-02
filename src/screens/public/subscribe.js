@@ -1,6 +1,4 @@
-import $bot from "../../bot.js"
-import { $user, setUserSubscr } from "../../contexts/UserContext.js"
-import $db from "../../db/index.js"
+import { $user } from "../../contexts/UserContext.js"
 import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
 

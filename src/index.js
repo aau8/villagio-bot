@@ -1,20 +1,14 @@
 import { Scenes, session } from "telegraf"
-import * as dotenv from "dotenv"
 import $screen from "./screens/index.js"
 import setUserData from "./middlewares/setUserData.js"
 import changeLang from "./actions/changeLang.js"
 import $bot from "./bot.js"
 import scenes from "./screens/public/scenes/index.js"
 import "./locales/index.js"
-import $db from "./db/index.js"
 import { projectPrefix } from "./screens/public/project.js"
 import { statisticPrefix } from "./screens/private/statistic.js"
-import { statisticCsvPrefix } from "./screens/private/statisticCsv.js"
-import { $consult, setQuest } from "./contexts/ConsultContext.js"
+import { setQuest } from "./contexts/ConsultContext.js"
 import { catalogPrefix } from "./screens/public/catalog.js"
-import { $user, setUserSubscr } from "./contexts/UserContext.js"
-
-// dotenv.config()
 
 const stage = new Scenes.Stage([ ...scenes ])
 
@@ -103,18 +97,4 @@ $bot.action(new RegExp(`^${statisticPrefix}`), $screen.private.statistic_cat)
 $bot.command(new RegExp(`^csv_`), $screen.private.statistic_csv)
 $bot.action(new RegExp(`^csv_`), $screen.private.statistic_csv)
 
-
-// export default async (req, res) => {
-// 	await $bot
-// 		.launch({ webhook: { domain: 'https://fe6ecfe9defe2c.lhr.life/api/telegram.js', port: port } })
-// 		.then(() => console.log("Webhook bot listening on port", port));
-
-// 	res.send('true')
-// }
-
 export default $bot
-// $bot.launch()
-
-// // Enable graceful stop
-process.once("SIGINT", () => $bot.stop("SIGINT"))
-process.once("SIGTERM", () => $bot.stop("SIGTERM"))

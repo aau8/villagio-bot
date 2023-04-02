@@ -1,13 +1,8 @@
-import { Markup, Scenes } from "telegraf"
-// import { removeKeyboard } from "telegraf/typings/markup.js"
-// import { keyboard } from "telegraf/typings/markup.js"
-import { $consult } from "../../../contexts/ConsultContext.js"
-import $db from "../../../db/index.js"
+import { Scenes } from "telegraf"
 import createGrid from "../../../helpers/createGrid.js"
 import send from "../../../helpers/send.js"
 import { $i18n } from "../../../locales/index.js"
 import $screen from "../../index.js"
-import { projectPrefix } from "../project.js"
 
 let anotherQuestNow = false
 let phoneNow = false

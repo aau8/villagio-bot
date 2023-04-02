@@ -1,5 +1,4 @@
 import $db from "../../db/index.js"
-import createGrid from "../../helpers/createGrid.js"
 import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
 import { catalogPrefix } from "./catalog.js"

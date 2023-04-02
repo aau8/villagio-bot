@@ -1,10 +1,8 @@
 import { Scenes } from "telegraf"
 import $db from "../../../db/index.js"
-import createGrid from "../../../helpers/createGrid.js"
 import send from "../../../helpers/send.js"
 import { $i18n } from "../../../locales/index.js"
 import $screen from "../../index.js"
-import { projectPrefix } from "../project.js"
 
 const screen3Checkboxes = {
 	"Квартира": true,
@@ -15,39 +13,33 @@ const scene = Object.assign( new Scenes.BaseScene('quiz_select_project'), {
 	name: 'QSP',
 	data: {},
 	screens: [
-		(ctx) => {
-			send(ctx, $i18n('scenes.qsp.1.text'), {
+		async (ctx) => {
+			return await send(ctx, $i18n('scenes.qsp.1.text'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
 							{ text: $i18n('scenes.qsp.1.kb.dubai'), callback_data: `${scene.name}:1:Дубай` },
 							{ text: $i18n('scenes.qsp.1.kb.abudabi'), callback_data: `${scene.name}:1:Абу-Даби` },
 						],
-						// [
-						// 	{ text: $i18n('kb.cancel'), callback_data: "/undo" }
-						// ]
 					],
 				},
 			})
 		},
-		(ctx) => {
-			send(ctx, $i18n('scenes.qsp.2.text'), {
+		async (ctx) => {
+			return await send(ctx, $i18n('scenes.qsp.2.text'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
 							{ text: $i18n('scenes.qsp.2.kb.ready'), callback_data: `${scene.name}:2:Готовый` },
 							{ text: $i18n('scenes.qsp.2.kb.build'), callback_data: `${scene.name}:2:Строится` },
 						],
-						// [
-						// 	{ text: $i18n('kb.cancel'), callback_data: "/undo" }
-						// ]
 					],
 				},
 			})
 		},
-		(ctx) => {
+		async (ctx) => {
 			const checked = [ ...Object.values(screen3Checkboxes) ]
-			send(ctx, $i18n('scenes.qsp.3.text'), {
+			return await send(ctx, $i18n('scenes.qsp.3.text'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
@@ -58,22 +50,18 @@ const scene = Object.assign( new Scenes.BaseScene('quiz_select_project'), {
 						[
 							{ text: $i18n('kb.continue'), callback_data: `${scene.name}:3:continue` }
 						],
-						// [
-						// 	{ text: $i18n('kb.cancel'), callback_data: "/undo" }
-						// ]
 					],
 				},
 			})
 		},
-		(ctx) => {
-			send(ctx, $i18n('scenes.qsp.4.text'), {
+		async (ctx) => {
+			return await send(ctx, $i18n('scenes.qsp.4.text'), {
 				reply_markup: {
 					inline_keyboard: [
 						[ { text: $i18n('scenes.qsp.4.kb.1'), callback_data: `${scene.name}:4:<500` } ],
 						[ { text: $i18n('scenes.qsp.4.kb.2'), callback_data: `${scene.name}:4:500-1000` } ],
 						[ { text: $i18n('scenes.qsp.4.kb.3'), callback_data: `${scene.name}:4:1000-3000` } ],
 						[ { text: $i18n('scenes.qsp.4.kb.4'), callback_data: `${scene.name}:4:>3000` } ],
-						// [ { text: $i18n('kb.cancel'), callback_data: "/undo" } ]
 					],
 				},
 			})
@@ -150,20 +138,19 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 	await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n'), }), {
 		reply_markup: {
 			inline_keyboard: [
-				[ { text: $i18n('kb.consult'), callback_data: `consult:${JSON.stringify(projects.map(project => '/id_' + project.project_id))}` } ],
+				[ { text: $i18n('kb.consult'), callback_data: `consult:${projects.map(project => project.project_id)}` } ],
+				// [ { text: $i18n('kb.consult'), callback_data: `consult:${JSON.stringify(projects.map(project => '/id_' + project.project_id))}` } ],
 				[ { text: $i18n('kb.menu'), callback_data: "start" } ],
 			],
 		},
 	})
 	ctx.scene.leave()
-	// setTimeout(() => {
-	// }, 1000)
 })
 
 scene.on("message", async ctx => {
 	const answered = scene.screens.length - Object.keys(scene.data).length
 
-	send(ctx, $i18n('scenes.qsp.stop.text', { value: answered }), {
+	await send(ctx, $i18n('scenes.qsp.stop.text', { value: answered }), {
 		reply_markup: {
 			inline_keyboard: [
 			[

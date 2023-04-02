@@ -1,13 +1,7 @@
-import { Composer, Markup, Scenes } from "telegraf"
-// import { removeKeyboard } from "telegraf/typings/markup.js"
-// import { keyboard } from "telegraf/typings/markup.js"
+import { Composer, Scenes } from "telegraf"
 import { $consult } from "../../../../contexts/ConsultContext.js"
-import $db from "../../../../db/index.js"
-import createGrid from "../../../../helpers/createGrid.js"
-import send from "../../../../helpers/send.js"
-import { $i18n } from "../../../../locales/index.js"
 import $screen from "../../../index.js"
-import { activeScreen, goScreen, scr } from "./config.js"
+import { goScreen, scr } from "./config.js"
 import selectQuest from "./selectQuest.js"
 // import { projectPrefix } from "../../project.js"
 
@@ -166,7 +160,7 @@ const scene = new Scenes.WizardScene(
 	async ctx => {
 		if ($consult.quest) {
 			const quest = JSON.parse($consult.quest)
-			console.log(quest, typeof quest)
+			// console.log(quest, typeof quest)
 			// console.log($consult.quest, typeof $consult.quest)
 			// console.log(Object.is($consult.quest))
 			if (typeof quest === 'object') {
@@ -209,13 +203,6 @@ const scene = new Scenes.WizardScene(
 		}, 1000)
 	},
 )
-
-// scene.enter(ctx => {
-
-// 	// sceneList = $consult.quest ? sceneList.slice(3) : sceneList
-
-// 	// console.log()
-// })
 
 scene.action('resume', async ctx => {
 	goScreen(scr.active, ctx)
