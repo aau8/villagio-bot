@@ -33,7 +33,15 @@ const sendCatalogCatPublic = async (ctx) => {
 	const typesToString = (type) => type.map((villa, i) => `${i + 1}. ${villa.name} - \/${projectPrefix + villa.project_id}`).join('\n')
 	const text = `${$i18n('catalog.text')} (${$i18n(`catalog.kb.${catName}`)})\n\n${typesToString(projects)}`
 
-	await send(ctx, text, {
+	// await send(ctx, text, {
+	// 	reply_markup: {
+	// 		inline_keyboard: [
+	// 			[ { text: $i18n('kb.back'), callback_data: "catalog" }, ],
+	// 		]
+	// 	}
+	// })
+
+	await ctx.editMessageText(text, {
 		reply_markup: {
 			inline_keyboard: [
 				[ { text: $i18n('kb.back'), callback_data: "catalog" }, ],
