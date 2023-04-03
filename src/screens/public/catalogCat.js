@@ -6,7 +6,8 @@ import { projectPrefix } from "./project.js"
 
 const sendCatalogCatPublic = async (ctx) => {
 	console.log('download start')
-	await send(ctx, $i18n('download'))
+	// await send(ctx, $i18n('download'))
+	ctx.reply($i18n('download'))
 	.then(res => {
 		console.log('download start ok')
 	})
