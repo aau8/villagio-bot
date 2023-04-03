@@ -135,7 +135,8 @@ const RU = {
 			statistic_users: "Пользователи",
 			statistic_applics: "Заявки",
 			statistic_projects: "Объекты",
-			download_csv: "Скачать .csv",
+			download_xlsx: "XLSX",
+			download_json: "JSON",
 		}
 	}
 }

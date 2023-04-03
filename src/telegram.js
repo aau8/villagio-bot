@@ -1,6 +1,6 @@
-import * as dotenv from 'dotenv'
 import $bot from './index.js'
 import { error } from 'console'
+import * as dotenv from 'dotenv'
 dotenv.config()
 
 const isDev = process.env.DEV

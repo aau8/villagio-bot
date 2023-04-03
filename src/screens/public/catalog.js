@@ -16,7 +16,8 @@ const sendCatalogPublic = async (ctx) => {
 				[ { text: $i18n('kb.catalog_pdf'), callback_data: "catalog_pdf" }, ],
 				[ { text: $i18n('kb.back'), callback_data: "start" }, ],
 			]
-		}
+		},
+		// not_edit_message: true,
 	})
 }
 

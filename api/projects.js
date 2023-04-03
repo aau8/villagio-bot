@@ -1,3 +1,4 @@
+import $bot from "../src/bot.js"
 import $db from "../src/db/index.js"
 import * as dotenv from "dotenv"
 dotenv.config()
@@ -24,7 +25,7 @@ methods.post = async (req, res) => {
 
 	const body = req.body
 	const project = await $db.projects.get(body.project_id)
-	const options = { project_id: body.project_id, price: {} }
+	const options = { project_id: body.project_id, price: {}, users: [] }
 
 	if (project) {
 		res.status(400).send(`В базе данных уже есть проект с project_id ${body.project_id}`)
@@ -60,7 +61,8 @@ methods.patch = async (req, res) => {
 	}
 
 	const body = req.body
-	const project = await $db.projects.get(body.project_id)
+	const projectId = body.project_id
+	const project = await $db.projects.get(projectId)
 	const options = { price: {} }
 
 	if (!project) {
@@ -79,9 +81,27 @@ methods.patch = async (req, res) => {
 		options.images = body.images
 	}
 
-	$db.projects.update({ project_id: body.project_id }, options )
+	$db.projects.update({ project_id: projectId }, options )
 	.then(async data => {
-		console.log(data)
+		const users = project.users
+		const text = `<b>🔔 Уведомление!</b>\n\nУ проекта <b>${body.name || project.name}</b> изменилась информация!`
+
+		for (const userId of users) {
+			const user = await $db.users.get({ tg_id: userId })
+
+			if (user.subscription) {
+				await $bot.telegram.sendMessage(userId, text, {
+					reply_markup: {
+						inline_keyboard: [
+							[ { text: "Подробнее", callback_data: `id_${projectId}` } ],
+							// [ { text: "Управление подпиской", callback_data: `subscribe` } ],
+						]
+					},
+					parse_mode: "HTML"
+				})
+			}
+		}
+
 		res.send("ok")
 	})
 	.catch(err => {

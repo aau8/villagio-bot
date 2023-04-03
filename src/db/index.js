@@ -1,13 +1,19 @@
-import { addConsult } from "./consults.js";
+import { addConsults, getAllConsults } from "./consults.js";
 import { addProject, updateProject, getAllProject, getProject, deleteProject } from "./projects.js";
 import { getAdminId, getCatalogPdfLink, getSettings } from "./settings.js";
 import { rejectTest, resolveTest } from "./test.js";
 import { addUser, checkUser, getUser, getUserAll, setLangUser, setSubscriptionUser, updateUser } from "./users.js";
+import { addViewed, getAllViewed, updateViewed } from "./viewed.js";
 
 const $db = {
 	test: {
 		resolve: resolveTest,
 		reject: rejectTest,
+	},
+	viewed: {
+		add: addViewed,
+		getAll: getAllViewed,
+		update: updateViewed,
 	},
 	users: {
 		get: getUser,
@@ -31,7 +37,8 @@ const $db = {
 		delete: deleteProject,
 	},
 	consults: {
-		add: addConsult,
+		add: addConsults,
+		getAll: getAllConsults,
 	}
 }
 

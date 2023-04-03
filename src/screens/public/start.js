@@ -2,7 +2,7 @@ import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
 
 const sendStartPublic = async (ctx) => {
-	// const action = ctx?.update?.callback_query?.data
+	const action = ctx?.update?.callback_query?.data
 
 	return send(ctx, $i18n('start'), {
 		reply_markup: {
@@ -14,8 +14,7 @@ const sendStartPublic = async (ctx) => {
 				[ { text: $i18n('kb.manage_subscr'), callback_data: "subscribe" }, ],
 			]
 		},
-		// not_edit_message: action?.includes('not_edit_message') || false
-		not_edit_message: true,
+		not_edit_message: action?.includes('not_edit_message') || false
 	})
 }
 

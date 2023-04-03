@@ -50,9 +50,15 @@ export const updateUser = async (searchOptions = {}, updateOptions = {}) => {
  */
 export const getUser = async (options = {}) => {
 	try {
-		if (typeof options !== 'object') throw Error('users must be object')
-		const users = await getUserAll(options)
-		return users[0]
+		// if (typeof options !== 'object') throw Error('users must be object')
+		// const users = await getUserAll(options)
+		// return users[0]
+
+		await $mongo.connect()
+		return await $mongo
+			.db($mongo.dbName)
+			.collection($mongo.collection.users)
+			.findOne(options)
 	}
 	catch(err) {
 		console.log(err)

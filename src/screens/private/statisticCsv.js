@@ -1,7 +1,6 @@
 import checkIsAdmin from "../../helpers/checkIsAdmin.js"
 import {stringify} from "csv-stringify"
 import $db from "../../db/index.js"
-import fs from "fs"
 
 export const statisticCsvPrefix = 'statistic_csv_'
 const sendStatCsvPrivate = async (ctx) => {
@@ -19,13 +18,8 @@ const sendStatCsvPrivate = async (ctx) => {
 		header: true,
 	}, (err, output) => {
 		if (err) throw err
-		console.log(output)
 
-		fs.writeFile(`./files/${commandText}.csv`, output, { encoding: 'utf-8' }, err => {
-			if (err) throw err
-
-			return ctx.sendDocument({ source: fs.readFileSync(`./files/${commandText}.csv`), filename: `${commandText}_statistics.csv` })
-		})
+		return ctx.sendDocument({ source: new Buffer(output), filename: `${commandText}_statistics.csv` })
 	})
 }
 
