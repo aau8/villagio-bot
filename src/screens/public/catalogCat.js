@@ -7,10 +7,7 @@ import { projectPrefix } from "./project.js"
 const sendCatalogCatPublic = async (ctx) => {
 	console.log('download start')
 	// await send(ctx, $i18n('download'))
-	await ctx.reply($i18n('download'))
-	.then(res => {
-		console.log('download start ok')
-	})
+	const downloadMsg = await ctx.reply($i18n('download'))
 	console.log('download end')
 
 	const commandText = ctx.match ? ctx.match.input : ctx.message.text
@@ -35,6 +32,10 @@ const sendCatalogCatPublic = async (ctx) => {
 
 	const typesToString = (type) => type.map((villa, i) => `${i + 1}. ${villa.name} - \/${projectPrefix + villa.project_id}`).join('\n')
 	const text = `${$i18n('catalog.text')} (${$i18n(`catalog.kb.${catName}`)})\n\n${typesToString(projects)}`
+
+	console.log('downloadMsg start')
+	await ctx.deleteMessage(downloadMsg.message_id)
+	console.log('downloadMsg end')
 
 	return await send(ctx, text, {
 		reply_markup: {
