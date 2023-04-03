@@ -5,10 +5,10 @@ import { catalogPrefix } from "./catalog.js"
 import { projectPrefix } from "./project.js"
 
 const sendCatalogCatPublic = async (ctx) => {
-	console.log('download start')
+	// console.log('download start')
 	// await send(ctx, $i18n('download'))
-	const downloadMsg = await ctx.reply($i18n('download'))
-	console.log('download end')
+	// const downloadMsg = await ctx.reply($i18n('download'))
+	// console.log('download end')
 
 	const commandText = ctx.match ? ctx.match.input : ctx.message.text
 	const catName = commandText.replace(catalogPrefix, '')
@@ -50,9 +50,9 @@ const sendCatalogCatPublic = async (ctx) => {
 		}
 	})
 
-	console.log('downloadMsg start')
-	await ctx.deleteMessage(downloadMsg.message_id)
-	console.log('downloadMsg end')
+	// console.log('downloadMsg start')
+	// await ctx.deleteMessage(downloadMsg.message_id)
+	// console.log('downloadMsg end')
 }
 
 export default sendCatalogCatPublic
