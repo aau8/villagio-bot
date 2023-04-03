@@ -5,6 +5,7 @@ import { $i18n } from "../../locales/index.js"
 const sendCatalogPdfPublic = async (ctx) => {
 	const link = await $db.settings.getCatalogPdfLink()
 
+	console.log('pdf')
 	return send(ctx, $i18n('catalog_pdf'), {
 		reply_markup: {
 			inline_keyboard: [

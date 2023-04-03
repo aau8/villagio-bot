@@ -2,7 +2,7 @@ import createGrid from "../../helpers/createGrid.js"
 import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
 
-export const catalogPrefix = 'catalog_'
+export const catalogPrefix = 'catalog:'
 const sendCatalogPublic = async (ctx) => {
 
 	return send(ctx, $i18n('catalog.text'), {

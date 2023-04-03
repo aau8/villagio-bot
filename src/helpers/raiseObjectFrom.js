@@ -9,7 +9,7 @@ const raiseUserData = (from) => {
 
 	return {
 		tg_id: id,
-		start_date: new Date(),
+		start_date: new Date().toISOString(),
 		...from,
 		phone: null,
 		lang: from.language_code || null,

@@ -1,8 +1,14 @@
+import { addConsult } from "./consults.js";
 import { addProject, updateProject, getAllProject, getProject, deleteProject } from "./projects.js";
 import { getAdminId, getCatalogPdfLink, getSettings } from "./settings.js";
+import { rejectTest, resolveTest } from "./test.js";
 import { addUser, checkUser, getUser, getUserAll, setLangUser, setSubscriptionUser, updateUser } from "./users.js";
 
 const $db = {
+	test: {
+		resolve: resolveTest,
+		reject: rejectTest,
+	},
 	users: {
 		get: getUser,
 		getAll: getUserAll,
@@ -24,6 +30,9 @@ const $db = {
 		update: updateProject,
 		delete: deleteProject,
 	},
+	consults: {
+		add: addConsult,
+	}
 }
 
 export default $db

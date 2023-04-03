@@ -8,15 +8,10 @@ export const quests = {
 	installment: $i18n('scenes.qc.quests.installment'),
 	stages: $i18n('scenes.qc.quests.stages'),
 }
-export let activeScreen
+
 export const scr = {
-	active: '',
-	answers: {
-		quest: null,
-		commun: null,
-		phone: null,
-		name: null,
-	},
+	active: null,
+	answers: 4,
 	list: {
 		"start": async (ctx) => {
 			return send(ctx, $i18n('scenes.qc.start.text', { quests: Object.values(quests).map((quest, i) => `${i + 1}. ${quest}`).join('\n') }), {
@@ -24,7 +19,6 @@ export const scr = {
 					inline_keyboard: [
 						...createGrid([
 							...Object.entries(quests).map((quest, i) => {
-								// console.log('quest', quest)
 								return { text: i + 1, callback_data: `quest_${quest[0]}` }
 							})
 						], 5),
@@ -57,6 +51,9 @@ export const scr = {
 		"phone": async (ctx) => {
 			return send(ctx, $i18n('scenes.qc.phone.text'))
 		},
+		"phone_error": async (ctx) => {
+			return send(ctx, $i18n('scenes.qc.phone_error.text'))
+		},
 		"name": async (ctx) => {
 			return send(ctx, $i18n('scenes.qc.name.text'))
 		},
@@ -64,24 +61,25 @@ export const scr = {
 			return send(ctx, $i18n('scenes.qc.sender.text'))
 		},
 		"end": async (ctx) => {
-			return send(ctx, $i18n('scenes.qc.end.text', scr.answers), {
+			return send(ctx, $i18n('scenes.qc.end.text', ctx.scene.session.state), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: $i18n('kb.menu'), callback_data: `stop:/start` },
+							{ text: $i18n('kb.menu'), callback_data: `start` },
 						],
 					],
 				},
 			})
 		},
 		"stop": async (ctx) => {
-			const answered = 4 - ctx.wizard.cursor + 1
+			const answered = 4 - Object.keys(ctx.scene.session.state).length
+			console.log('cursor', ctx.wizard.cursor)
 
 			return send(ctx, $i18n('scenes.qsp.stop.text', { value: answered }), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: $i18n('scenes.qsp.stop.kb.yes'), callback_data: `stop:${ctx.message.text}` },
+							{ text: $i18n('scenes.qsp.stop.kb.yes'), callback_data: `stop:${ctx?.message?.text}` },
 							{ text: $i18n('scenes.qsp.stop.kb.no'), callback_data: "resume" },
 						],
 					],
@@ -92,7 +90,9 @@ export const scr = {
 }
 
 export const goScreen = async (screen, ...args) => {
-	scr.active = screen
+	if (screen !== 'stop') {
+		scr.active = screen
+	}
 	return scr.list[screen](...args)
 }
 

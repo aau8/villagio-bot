@@ -6,19 +6,16 @@ export const projectPrefix = 'id_'
 const sendProjectPublic = async (ctx) => {
 	const commandText = ctx.match ? ctx.match.input : ctx.message.text
 	const projectId = commandText.replace(projectPrefix, '').replace('/', '')
-	let data = (await $db.projects.get({ project_id: parseInt(projectId) }))[0]
-
+	let data = await $db.projects.get(parseInt(projectId))
+	console.log(data)
 	const type = data.type[0].toUpperCase() + data.type.slice(1)
 	const name = data.name
 	const description = data.description
-	const link = data.url
+	// const link = data.url
 	const img = data.images[0]
 	const text = `
 ${type} "${name}"\n
---------------------------------------------
 ${description}
---------------------------------------------\n
-<a href="${link}">Ссылка на сайт</a>
 `
 
 	return ctx.sendPhoto(img, {

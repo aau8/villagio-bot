@@ -138,7 +138,7 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 	await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n'), }), {
 		reply_markup: {
 			inline_keyboard: [
-				[ { text: $i18n('kb.consult'), callback_data: `consult:${projects.map(project => project.project_id)}` } ],
+				[ { text: $i18n('kb.consult'), callback_data: `consult:${JSON.stringify(projects.map(project => project.project_id))}` } ],
 				// [ { text: $i18n('kb.consult'), callback_data: `consult:${JSON.stringify(projects.map(project => '/id_' + project.project_id))}` } ],
 				[ { text: $i18n('kb.menu'), callback_data: "start" } ],
 			],
