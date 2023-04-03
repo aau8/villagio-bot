@@ -70,7 +70,6 @@ const scene = new Scenes.WizardScene(
 
 			await $db.test.resolve() // Таймер на 1000ms
 
-			// await ctx.deleteMessage(senderMsg.message_id)
 
 			console.log('start request consults')
 			await $db.consults.add(ctx.scene.session.state)
@@ -78,6 +77,7 @@ const scene = new Scenes.WizardScene(
 			console.log('start screen end')
 			await goScreen("end", ctx)
 			console.log('start leave')
+			await ctx.deleteMessage(senderMsg.message_id)
 			await ctx.scene.leave()
 			console.log('end leave')
 		}
