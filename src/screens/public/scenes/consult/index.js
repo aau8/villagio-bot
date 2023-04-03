@@ -65,20 +65,20 @@ const scene = new Scenes.WizardScene(
 		else {
 			ctx.scene.session.state.name = customName(name)
 			ctx.scene.session.state.timestamp = new Date().toISOString()
-			const senderMsg = await goScreen('sender', ctx)
+			await goScreen('sender', ctx)
 
 			await $db.test.resolve() // Таймер на 1000ms
 
-			console.log('start request consults')
+			// console.log('start request consults')
 			await $db.consults.add(ctx.scene.session.state)
 
-			console.log('start screen end')
+			// console.log('start screen end')
 			await goScreen("end", ctx)
-			console.log('start deleteMessage')
-			await ctx.deleteMessage(senderMsg.message_id)
-			console.log('start leave')
+			// console.log('start deleteMessage')
+			// await ctx.deleteMessage(senderMsg.message_id)
+			// console.log('start leave')
 			await ctx.scene.leave()
-			console.log('end leave')
+			// console.log('end leave')
 		}
 	},
 )
