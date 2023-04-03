@@ -21,9 +21,8 @@ $bot.use(setUserData)
 //////////////////////////////
 
 // Главный экран (публичный)
-$bot.command("main", $screen.public.start)
-$bot.command("start", $screen.public.start)
-$bot.action("start", $screen.public.start)
+$bot.command(/^start[:]?/, $screen.public.start)
+$bot.action(/^start[:]?/, $screen.public.start)
 
 // Помощь
 $bot.command("help", $screen.public.help)

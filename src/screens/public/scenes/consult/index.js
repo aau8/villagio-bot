@@ -44,7 +44,6 @@ const scene = new Scenes.WizardScene(
 	async ctx => {
 		const phone = ctx.message.text
 
-		console.log('phone', isPhone(phone), phone.match(/[^\d()+-\s]+/g))
 		if (isCommand(phone)) {
 			await goScreen('stop', ctx)
 		}
@@ -70,14 +69,14 @@ const scene = new Scenes.WizardScene(
 
 			await $db.test.resolve() // Таймер на 1000ms
 
-
 			console.log('start request consults')
 			await $db.consults.add(ctx.scene.session.state)
 
 			console.log('start screen end')
 			await goScreen("end", ctx)
-			console.log('start leave')
+			console.log('start deleteMessage')
 			await ctx.deleteMessage(senderMsg.message_id)
+			console.log('start leave')
 			await ctx.scene.leave()
 			console.log('end leave')
 		}
