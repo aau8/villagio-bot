@@ -7,6 +7,9 @@ import { projectPrefix } from "./project.js"
 const sendCatalogCatPublic = async (ctx) => {
 	console.log('download start')
 	await send(ctx, $i18n('download'))
+	.then(res => {
+		console.log('download start ok')
+	})
 	console.log('download end')
 
 	const commandText = ctx.match ? ctx.match.input : ctx.message.text

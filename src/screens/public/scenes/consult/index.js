@@ -65,7 +65,7 @@ const scene = new Scenes.WizardScene(
 		else {
 			ctx.scene.session.state.name = customName(name)
 			ctx.scene.session.state.timestamp = new Date().toISOString()
-			await goScreen('sender', ctx)
+			const senderMsg = await goScreen('sender', ctx)
 
 			await $db.test.resolve() // Таймер на 1000ms
 
@@ -75,7 +75,7 @@ const scene = new Scenes.WizardScene(
 			// console.log('start screen end')
 			await goScreen("end", ctx)
 			// console.log('start deleteMessage')
-			// await ctx.deleteMessage(senderMsg.message_id)
+			await ctx.deleteMessage(senderMsg.message_id)
 			// console.log('start leave')
 			await ctx.scene.leave()
 			// console.log('end leave')
