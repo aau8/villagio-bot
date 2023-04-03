@@ -19,8 +19,8 @@ const sendStatCatPrivate = async (ctx) => {
 		reply_markup: {
 			inline_keyboard: [
 				[
-					{ text: $i18n('private.kb.download_json', { lng: 'ru' }), url: `${API_URL}/stats?cat=${command}&format=json` },
-					{ text: $i18n('private.kb.download_xlsx', { lng: 'ru' }), url: `${API_URL}/stats?cat=${command}&format=xlsx` },
+					{ text: $i18n('private.kb.download_json', { lng: 'ru' }), url: `${API_URL}/stats?cat=${command}&format=json&admin_id=${user.id}` },
+					{ text: $i18n('private.kb.download_xlsx', { lng: 'ru' }), url: `${API_URL}/stats?cat=${command}&format=xlsx&admin_id=${user.id}` },
 				],
 				[ { text: $i18n('kb.back', { lng: 'ru' }), callback_data: "statistic" }, ],
 			]

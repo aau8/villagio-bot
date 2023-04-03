@@ -7,15 +7,23 @@ import * as dotenv from "dotenv"
 import formidable from "formidable"
 import { ObjectId } from "mongodb"
 import { updateViewed } from "../src/db/viewed.js"
+import checkIsAdmin from "../src/helpers/checkIsAdmin.js"
 dotenv.config()
 
 const methods = {}
 
 methods.get = async (req, res) => {
 	const query = req.query
+	const adminId = query.admin_id
+
+	console.log(checkIsAdmin(adminId), adminId)
+	if (!checkIsAdmin(adminId)) {
+		res.send('У вас нет прав доступа')
+		return
+	}
+
 	const format = query.format
 	const cat = query.cat
-	const adminId = query.admin_id
 	const data = await $db[cat].getAll()
 	const date = new Date().toLocaleDateString()
 	let parseData = data.map(d => {
@@ -46,7 +54,6 @@ methods.get = async (req, res) => {
 				"Начало использования бота": new Date(d.start_date).toLocaleString(),
 			}
 		} else if (cat === 'consults') {
-			console.log(d)
 			return {
 				"Вопрос": d.quest,
 				"Имя": d.name,

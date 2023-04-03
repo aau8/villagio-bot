@@ -1,11 +1,11 @@
+import { CATALOG_URL } from "../../config.js"
 import $db from "../../db/index.js"
 import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
 
 const sendCatalogPdfPublic = async (ctx) => {
-	const link = await $db.settings.getCatalogPdfLink()
+	const link = CATALOG_URL
 
-	console.log('pdf')
 	return send(ctx, $i18n('catalog_pdf'), {
 		reply_markup: {
 			inline_keyboard: [
