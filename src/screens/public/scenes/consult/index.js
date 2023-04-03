@@ -72,15 +72,13 @@ const scene = new Scenes.WizardScene(
 
 			await ctx.deleteMessage(senderMsg.message_id)
 
+			console.log('start screen end')
+			await goScreen("end", ctx)
+			console.log('start leave')
+			await ctx.scene.leave()
+			console.log('end leave')
 			console.log('start request consults')
-			$db.consults.add(ctx.scene.session.state)
-			.then(async () => {
-				console.log('start screen end')
-				await goScreen("end", ctx)
-				console.log('start leave')
-				await ctx.scene.leave()
-				console.log('end leave')
-			})
+			await $db.consults.add(ctx.scene.session.state)
 		}
 	},
 )
