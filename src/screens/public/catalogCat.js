@@ -41,6 +41,7 @@ const sendCatalogCatPublic = async (ctx) => {
 	// 	}
 	// })
 
+	await ctx.answerCbQuery()
 	await ctx.editMessageText(text, {
 		reply_markup: {
 			inline_keyboard: [
