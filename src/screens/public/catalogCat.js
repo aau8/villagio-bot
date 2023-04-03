@@ -5,7 +5,9 @@ import { catalogPrefix } from "./catalog.js"
 import { projectPrefix } from "./project.js"
 
 const sendCatalogCatPublic = async (ctx) => {
+	console.log('download start')
 	await send(ctx, $i18n('download'))
+	console.log('download end')
 
 	const commandText = ctx.match ? ctx.match.input : ctx.message.text
 	const catName = commandText.replace(catalogPrefix, '')
@@ -23,12 +25,14 @@ const sendCatalogCatPublic = async (ctx) => {
 			break;
 	}
 
+	console.log('projects start')
 	const projects = await $db.projects.getAll({ type: catSlug })
+	console.log('projects end')
 
 	const typesToString = (type) => type.map((villa, i) => `${i + 1}. ${villa.name} - \/${projectPrefix + villa.project_id}`).join('\n')
 	const text = `${$i18n('catalog.text')} (${$i18n(`catalog.kb.${catName}`)})\n\n${typesToString(projects)}`
 
-	return send(ctx, text, {
+	return await send(ctx, text, {
 		reply_markup: {
 			inline_keyboard: [
 				[ { text: $i18n('kb.back'), callback_data: "catalog" }, ],

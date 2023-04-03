@@ -65,7 +65,7 @@ export const scr = {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: $i18n('kb.menu'), callback_data: `start:not_edit_message` },
+							{ text: $i18n('kb.menu'), callback_data: `start` },
 						],
 					],
 				},

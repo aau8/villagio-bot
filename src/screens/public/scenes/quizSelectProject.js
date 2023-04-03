@@ -120,12 +120,12 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 
 	await send(ctx, $i18n('scenes.qsp.select_options'))
 
-	console.log('data', ctx.data)
-	console.log({
-		city: scene.data.city,
-		status: scene.data.status,
-		type: scene.data.type,
-	})
+	// console.log('data', ctx.data)
+	// console.log({
+	// 	city: scene.data.city,
+	// 	status: scene.data.status,
+	// 	type: scene.data.type,
+	// })
 
 	const projects = await $db.projects.getAll({
 		city: scene.data.city,
@@ -133,7 +133,6 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 		// type: scene.data.type,
 	})
 
-	console.log('projects', projects)
 
 	await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n'), }), {
 		reply_markup: {
