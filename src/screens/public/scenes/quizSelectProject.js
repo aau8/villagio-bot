@@ -5,9 +5,9 @@ import { $i18n } from "../../../locales/index.js"
 import $screen from "../../index.js"
 
 const screen3Checkboxes = {
-	"Квартира": true,
-	"Таунхаус": false,
-	"Вилла": false,
+	"апартаменты": true,
+	"таунхаус": false,
+	"вилла": false,
 }
 const scene = Object.assign( new Scenes.BaseScene('quiz_select_project'), {
 	name: 'QSP',
@@ -43,9 +43,9 @@ const scene = Object.assign( new Scenes.BaseScene('quiz_select_project'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: `${checked[0] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.apartment')}`, callback_data: `${scene.name}:3:Квартира` },
-							{ text: `${checked[1] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.townhouse')}`, callback_data: `${scene.name}:3:Таунхаус` },
-							{ text: `${checked[2] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.villa')}`, callback_data: `${scene.name}:3:Вилла` },
+							{ text: `${checked[0] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.apartment')}`, callback_data: `${scene.name}:3:апартаменты` },
+							{ text: `${checked[1] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.townhouse')}`, callback_data: `${scene.name}:3:таунхаус` },
+							{ text: `${checked[2] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.villa')}`, callback_data: `${scene.name}:3:вилла` },
 						],
 						[
 							{ text: $i18n('kb.continue'), callback_data: `${scene.name}:3:continue` }
@@ -58,10 +58,10 @@ const scene = Object.assign( new Scenes.BaseScene('quiz_select_project'), {
 			return await send(ctx, $i18n('scenes.qsp.4.text'), {
 				reply_markup: {
 					inline_keyboard: [
-						[ { text: $i18n('scenes.qsp.4.kb.1'), callback_data: `${scene.name}:4:<500` } ],
-						[ { text: $i18n('scenes.qsp.4.kb.2'), callback_data: `${scene.name}:4:500-1000` } ],
-						[ { text: $i18n('scenes.qsp.4.kb.3'), callback_data: `${scene.name}:4:1000-3000` } ],
-						[ { text: $i18n('scenes.qsp.4.kb.4'), callback_data: `${scene.name}:4:>3000` } ],
+						[ { text: $i18n('scenes.qsp.4.kb.1'), callback_data: `${scene.name}:4:<500000` } ],
+						[ { text: $i18n('scenes.qsp.4.kb.2'), callback_data: `${scene.name}:4:500000-1000000` } ],
+						[ { text: $i18n('scenes.qsp.4.kb.3'), callback_data: `${scene.name}:4:1000000-3000000` } ],
+						[ { text: $i18n('scenes.qsp.4.kb.4'), callback_data: `${scene.name}:4:>3000000` } ],
 					],
 				},
 			})
@@ -108,7 +108,7 @@ scene.action(new RegExp(`^${scene.name}:3:`), async ctx => {
 		}
 	}
 	else {
-		ctx.scene.session.state.type = Object.entries(screen3Checkboxes).filter((type) => type[1]).map((type) => type[0])
+		ctx.scene.session.state.type = Object.entries(screen3Checkboxes).filter((type) => type[1]).map((type) => type[0].toLowerCase())
 		// scene.screens[3](ctx)
 		goScreen(4, ctx)
 	}
@@ -117,32 +117,54 @@ scene.action(new RegExp(`^${scene.name}:3:`), async ctx => {
 scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
 	ctx.scene.session.state.price = value
+	const state = ctx.scene.session.state
+	const filterOptions = {
+		city: state.city,
+		status: state.status,
+		type: { $in: state.type }
+	}
 
 	await send(ctx, $i18n('scenes.qsp.select_options'))
 
-	// console.log('data', ctx.data)
-	// console.log({
-	// 	city: ctx.scene.session.state.city,
-	// 	status: ctx.scene.session.state.status,
-	// 	type: ctx.scene.session.state.type,
-	// })
+	if (state.price.startsWith('<')) {
+		filterOptions["price.min"] = { $lte: Number(state.price.replace('<', '')) }
+	} else if (state.price.startsWith('>')) {
+		filterOptions["price.max"] = { $gte: Number(state.price.replace('>', '')) }
+	} else if (state.price.includes('-')) {
+		const priceParse = state.price.split('-').map(Number)
 
-	const projects = await $db.projects.getAll({
-		city: ctx.scene.session.state.city,
-		status: ctx.scene.session.state.status,
-		// type: ctx.scene.session.state.type,
-	})
+		filterOptions.$or = [
+			{
+				"price.min": {
+					$gte: priceParse[0],
+					$lte: priceParse[1],
+				},
+			},
+			{
+				"price.max": {
+					$gte: priceParse[0],
+					$lte: priceParse[1],
+				},
+			},
+		]
+	}
+
+	console.log('filterOptions', filterOptions)
+
+	const projects = await $db.projects.getAll(filterOptions)
+
+	console.log('projects', projects)
 
 	const { insertedId } = await $db.selectionResults.add({
 		projects: projects.map(project => project.project_id),
-		city: ctx.scene.session.state.city,
-		status: ctx.scene.session.state.status,
-		type: ctx.scene.session.state.type,
-		price: ctx.scene.session.state.price,
+		city: state.city,
+		status: state.status,
+		type: state.type,
+		price: state.price,
 		timestamp: new Date().toISOString(),
 	})
 
-	console.log('insertedId', insertedId)
+	// console.log('insertedId', insertedId)
 
 	// console.log(JSON.stringify(projects.map(project => project.project_id)))
 	await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n'), }), {
