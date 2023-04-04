@@ -80,14 +80,14 @@ scene.enter(ctx => {
 scene.action(new RegExp(`^${scene.name}:1:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
 
-	scene.data.city = value
+	ctx.scene.session.state.city = value
 	goScreen(2, ctx)
 })
 
 scene.action(new RegExp(`^${scene.name}:2:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
 
-	scene.data.status = value
+	ctx.scene.session.state.status = value
 	goScreen(3, ctx)
 	// scene.screens[2](ctx, [ ...Object.values(screen3Checkboxes) ])
 })
@@ -108,7 +108,7 @@ scene.action(new RegExp(`^${scene.name}:3:`), async ctx => {
 		}
 	}
 	else {
-		scene.data.type = Object.keys(screen3Checkboxes).join(', ')
+		ctx.scene.session.state.type = Object.entries(screen3Checkboxes).filter((type) => type[1]).map((type) => type[0])
 		// scene.screens[3](ctx)
 		goScreen(4, ctx)
 	}
@@ -116,28 +116,39 @@ scene.action(new RegExp(`^${scene.name}:3:`), async ctx => {
 
 scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
-	scene.data.price = value
+	ctx.scene.session.state.price = value
 
 	await send(ctx, $i18n('scenes.qsp.select_options'))
 
 	// console.log('data', ctx.data)
 	// console.log({
-	// 	city: scene.data.city,
-	// 	status: scene.data.status,
-	// 	type: scene.data.type,
+	// 	city: ctx.scene.session.state.city,
+	// 	status: ctx.scene.session.state.status,
+	// 	type: ctx.scene.session.state.type,
 	// })
 
 	const projects = await $db.projects.getAll({
-		city: scene.data.city,
-		status: scene.data.status,
-		// type: scene.data.type,
+		city: ctx.scene.session.state.city,
+		status: ctx.scene.session.state.status,
+		// type: ctx.scene.session.state.type,
 	})
 
+	const { insertedId } = await $db.selectionResults.add({
+		projects: projects.map(project => project.project_id),
+		city: ctx.scene.session.state.city,
+		status: ctx.scene.session.state.status,
+		type: ctx.scene.session.state.type,
+		price: ctx.scene.session.state.price,
+		timestamp: new Date().toISOString(),
+	})
 
+	console.log('insertedId', insertedId)
+
+	// console.log(JSON.stringify(projects.map(project => project.project_id)))
 	await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n'), }), {
 		reply_markup: {
 			inline_keyboard: [
-				[ { text: $i18n('kb.consult'), callback_data: `consult:${JSON.stringify(projects.map(project => project.project_id))}` } ],
+				[ { text: $i18n('kb.consult'), callback_data: `consult:sr=${insertedId}` } ],
 				// [ { text: $i18n('kb.consult'), callback_data: `consult:${JSON.stringify(projects.map(project => '/id_' + project.project_id))}` } ],
 				[ { text: $i18n('kb.menu'), callback_data: "start" } ],
 			],

@@ -67,7 +67,7 @@ $bot.command('consult', ctx => {
 	// setQuest(ctx)
 	ctx.scene.enter('consult')
 })
-$bot.action(/^consult:/, ctx => {
+$bot.action(/^consult[:]?/, ctx => {
 	setQuest(ctx.match.input.replace(ctx.match[0], ''))
 	ctx.scene.enter('consult')
 })

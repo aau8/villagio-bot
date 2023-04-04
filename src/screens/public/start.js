@@ -9,7 +9,7 @@ const sendStartPublic = async (ctx) => {
 			inline_keyboard: [
 				[ { text: $i18n('kb.project_selection'), callback_data: "quiz_select_project" }, ],
 				[ { text: $i18n('kb.catalog'), callback_data: "catalog" }, ],
-				[ { text: $i18n('kb.consult'), callback_data: "consult:" }, ],
+				[ { text: $i18n('kb.consult'), callback_data: "consult" }, ],
 				[ { text: $i18n('kb.change_lng'), callback_data: "change_lang" }, ],
 				[ { text: $i18n('kb.manage_subscr'), callback_data: "subscribe" }, ],
 			]

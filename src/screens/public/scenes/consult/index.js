@@ -7,17 +7,19 @@ import $db from "../../../../db/index.js"
 import anotherQuest from "./anotherQuest.js"
 import { isPhone, isCommand } from "../../../../helpers/masks.js"
 import customName from "../../../../helpers/customName.js"
+import { ObjectId } from "mongodb"
 
 const scene = new Scenes.WizardScene(
 	"consult",
 	async ctx => {
 		if ($consult.quest) {
-			const quest = JSON.parse($consult.quest)
-			if (typeof quest === 'object') {
-				ctx.scene.session.state.quest = quest
+			if ($consult.quest.includes('project_id')) {
+				ctx.scene.session.state.quest = [ Number($consult.quest.replace('project_id=', '')) ]
 			}
-			else {
-				ctx.scene.session.state.quest = $consult.quest
+			else if ($consult.quest.includes('sr')) {
+				const result = await $db.selectionResults.get({ _id: ObjectId($consult.quest.replace('sr=', '')) })
+				console.log('result', result)
+				ctx.scene.session.state.quest = result.projects
 			}
 			await goScreen('commun', ctx)
 			return ctx.wizard.selectStep(3)
@@ -67,18 +69,13 @@ const scene = new Scenes.WizardScene(
 			ctx.scene.session.state.timestamp = new Date().toISOString()
 			const senderMsg = await goScreen('sender', ctx)
 
+			// TODO: Сделать отправку заявок на сервер
 			await $db.test.resolve() // Таймер на 1000ms
 
-			// console.log('start request consults')
 			await $db.consults.add(ctx.scene.session.state)
-
-			// console.log('start screen end')
 			await goScreen("end", ctx)
-			// console.log('start deleteMessage')
 			await ctx.deleteMessage(senderMsg.message_id)
-			// console.log('start leave')
 			await ctx.scene.leave()
-			// console.log('end leave')
 		}
 	},
 )

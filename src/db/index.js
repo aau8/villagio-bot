@@ -1,14 +1,19 @@
-import { addConsults, getAllConsults } from "./consults.js";
-import { addProject, updateProject, getAllProject, getProject, deleteProject } from "./projects.js";
-import { getAdminId, getCatalogPdfLink, getSettings } from "./settings.js";
-import { rejectTest, resolveTest } from "./test.js";
 import { addUser, checkUser, getUser, getUserAll, setLangUser, setSubscriptionUser, updateUser } from "./users.js";
+import { addProject, updateProject, getAllProject, getProject, deleteProject } from "./projects.js";
 import { addViewed, getAllViewed, updateViewed } from "./viewed.js";
+import { addConsults, getAllConsults } from "./consults.js";
+import { rejectTest, resolveTest } from "./test.js";
+import { addSelectionResults, getAllSelectionResults, getSelectionResults } from "./selectionResults.js";
 
 const $db = {
 	test: {
 		resolve: resolveTest,
 		reject: rejectTest,
+	},
+	selectionResults: {
+		add: addSelectionResults,
+		getAll: getAllSelectionResults,
+		get: getSelectionResults,
 	},
 	viewed: {
 		add: addViewed,
@@ -23,11 +28,6 @@ const $db = {
 		update: updateUser,
 		setLang: setLangUser,
 		setSubscr: setSubscriptionUser,
-	},
-	settings: {
-		get: getSettings,
-		getAdminId: getAdminId,
-		getCatalogPdfLink: getCatalogPdfLink,
 	},
 	projects: {
 		get: getProject,

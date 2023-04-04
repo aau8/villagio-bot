@@ -7,11 +7,11 @@ const mongoClient = new MongoClient(process.env.MONGODB_URL)
 const $mongo = Object.assign(mongoClient, {
     dbName: "villagio",
     collection: {
-        settings: "settings",
         users: "users",
 		projects: "projects",
 		consults: "consults",
 		viewed: "viewed",
+		selectionResults: "selection_results",
     },
 })
 
