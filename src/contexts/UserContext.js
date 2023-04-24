@@ -8,7 +8,6 @@ export let $user = {
 	phone: null,
 	lang: null,
 	subscription: null,
-	viewed_realty: null
 }
 export const setUser = (data) => $user = data
 export const setUserLang = (lang) => $user = { ...$user, lang: lang }

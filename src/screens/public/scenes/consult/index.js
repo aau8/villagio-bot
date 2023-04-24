@@ -1,16 +1,14 @@
-import { Scenes } from "telegraf"
+import { capitalize, isCommand, isPhone } from "../../../../helpers.js"
 import { $consult } from "../../../../contexts/ConsultContext.js"
-import $screen from "../../../index.js"
+import { CONSULT_APPLIC_URL } from "../../../../config.js"
+import anotherQuest from "./anotherQuest.js"
 import { goScreen, scr } from "./config.js"
 import selectQuest from "./selectQuest.js"
 import $db from "../../../../db/index.js"
-import anotherQuest from "./anotherQuest.js"
-import { isPhone, isCommand } from "../../../../helpers/masks.js"
-import customName from "../../../../helpers/customName.js"
+import $screen from "../../../index.js"
 import { ObjectId } from "mongodb"
-import { $user } from "../../../../contexts/UserContext.js"
+import { Scenes } from "telegraf"
 import axios from "axios"
-import { CONSULT_APPLIC_URL } from "../../../../config.js"
 
 const scene = new Scenes.WizardScene(
 	"consult",
@@ -52,10 +50,9 @@ const scene = new Scenes.WizardScene(
 				ctx.scene.session.state.phone = user.phone
 			}
 			if (user.first_name) {
-				ctx.scene.session.state.name = user.first_name
+				ctx.scene.session.state.name = `${user.first_name} ${user.last_name || ''}`.trim()
 			}
-			// else {
-			// }
+
 			await goScreen('phone', ctx)
 			return ctx.wizard.next();
 		}
@@ -90,11 +87,12 @@ const scene = new Scenes.WizardScene(
 			await goScreen('stop', ctx)
 		}
 		else {
-			ctx.scene.session.state.name = customName(name)
+			ctx.scene.session.state.name = capitalize(name)
 			ctx.scene.session.state.timestamp = new Date().toISOString()
 			const senderMsg = await goScreen('sender', ctx)
 			const state = ctx.scene.session.state
 
+			console.log('Заявка отправлена!')
 			// console.log('state', ctx.scene.session.state)
 			// console.log('data', {
 			// 	name: "Обратный звонок (Bot Telegram)",
@@ -122,39 +120,39 @@ const scene = new Scenes.WizardScene(
 			// 	]
 			// })
 
-			await axios.post(
-				CONSULT_APPLIC_URL,
-				{
-					name: "Обратный звонок (Bot Telegram)",
-					key: "modal",
-					content: "Форма обратного звонка",
-					fields: [
-						{
-							"type": "contacts",
-							"key": "name",
-							"name": "Имя",
-							"value": state.name
-						},
-						{
-							"type": "contacts",
-							"key": "phone",
-							"name": "Телефон",
-							"value": state.phone
-						},
-						{
-							"type": "contacts",
-							"key": `cm_${state.commun}`,
-							"name": "Способ связи",
-							"value": state.commun === "phone" ? "телефон" : state.commun
-						}
-					]
-				},
-				{
-					headers: {
-						"X-Villagio-Forms-Client-Key": "682492df-f6ec-41ea-8b98-d7028a4a07c5"
-					}
-				}
-			)
+			// await axios.post(
+			// 	CONSULT_APPLIC_URL,
+			// 	{
+			// 		name: "Обратный звонок (Bot Telegram)",
+			// 		key: "modal",
+			// 		content: "Форма обратного звонка",
+			// 		fields: [
+			// 			{
+			// 				"type": "contacts",
+			// 				"key": "name",
+			// 				"name": "Имя",
+			// 				"value": state.name
+			// 			},
+			// 			{
+			// 				"type": "contacts",
+			// 				"key": "phone",
+			// 				"name": "Телефон",
+			// 				"value": state.phone
+			// 			},
+			// 			{
+			// 				"type": "contacts",
+			// 				"key": `cm_${state.commun}`,
+			// 				"name": "Способ связи",
+			// 				"value": state.commun === "phone" ? "телефон" : state.commun
+			// 			}
+			// 		]
+			// 	},
+			// 	{
+			// 		headers: {
+			// 			"X-Villagio-Forms-Client-Key": "682492df-f6ec-41ea-8b98-d7028a4a07c5"
+			// 		}
+			// 	}
+			// )
 
 			await $db.consults.add(ctx.scene.session.state)
 			await goScreen("end", ctx)

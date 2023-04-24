@@ -1,5 +1,4 @@
-import checkIsAdmin from "../../helpers/checkIsAdmin.js"
-import send from "../../helpers/send.js"
+import { send, checkIsAdmin } from "../../helpers.js"
 import { $i18n } from "../../locales/index.js"
 import * as dotenv from 'dotenv'
 dotenv.config()

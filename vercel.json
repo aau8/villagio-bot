@@ -3,31 +3,31 @@
 	"routes": [
 		{
 			"src": "/",
-			"dest": "api/index.js"
+			"dest": "/api/index.js"
 		},
 		{
 			"src": "/api/users",
-			"dest": "api/users.js"
+			"dest": "/api/users.js"
 		},
 		{
 			"src": "/api/projects",
-			"dest": "api/projects.js"
+			"dest": "/api/projects.js"
 		},
 		{
 			"src": "/api/consults",
-			"dest": "api/consults.js"
+			"dest": "/api/consults.js"
 		},
 		{
 			"src": "/api/selection_results",
-			"dest": "api/selectionResults.js"
+			"dest": "/api/selectionResults.js"
 		},
 		{
 			"src": "/api/viewed",
-			"dest": "api/viewed.js"
+			"dest": "/api/viewed.js"
 		},
 		{
 			"src": "/api/stats",
-			"dest": "api/stats.js"
+			"dest": "/api/stats.js"
 		}
 	]
 }

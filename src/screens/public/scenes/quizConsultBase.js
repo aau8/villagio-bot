@@ -1,8 +1,7 @@
-import { Scenes } from "telegraf"
-import createGrid from "../../../helpers/createGrid.js"
-import send from "../../../helpers/send.js"
+import { createGrid, send } from "../../../helpers.js"
 import { $i18n } from "../../../locales/index.js"
 import $screen from "../../index.js"
+import { Scenes } from "telegraf"
 
 let anotherQuestNow = false
 let phoneNow = false
@@ -107,11 +106,6 @@ const goScreen = async (screen, ...args) => {
 }
 
 scene.enter(ctx => {
-	// if ($consult.quest) {
-	// 	goScreen("commun", ctx)
-	// }
-	// else {
-	// }
 	goScreen("start", ctx)
 })
 
@@ -171,9 +165,9 @@ scene.on("message", async ctx => {
 		// console.log(scene.data)
 	}
 	else {
-		const answered = Object.keys(scene.screens).length - Object.keys(scene.data).length
+		const remainQuests = Object.keys(scene.screens).length - Object.keys(scene.data).length
 
-		send(ctx, $i18n('scenes.qsp.stop.text', { value: answered }), {
+		send(ctx, $i18n('scenes.qsp.stop.text', { value: remainQuests }), {
 			reply_markup: {
 				inline_keyboard: [
 				[

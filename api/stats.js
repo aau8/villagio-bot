@@ -7,7 +7,8 @@ import * as dotenv from "dotenv"
 import formidable from "formidable"
 import { ObjectId } from "mongodb"
 import { updateViewed } from "../src/db/viewed.js"
-import checkIsAdmin from "../src/helpers/checkIsAdmin.js"
+import { checkIsAdmin } from "../src/helpers.js"
+// import checkIsAdmin from "../src/helpers/checkIsAdmin.js"
 dotenv.config()
 
 const methods = {}

@@ -1,6 +1,6 @@
 import { $user, setUserSubscr } from "../contexts/UserContext.js"
-import $db from "../db/index.js"
 import sendSubscribePublic from "../screens/public/subscribe.js"
+import $db from "../db/index.js"
 
 const changeSubscribe = async (ctx) => {
 	const condition = !$user.subscription

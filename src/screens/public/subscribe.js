@@ -1,6 +1,6 @@
 import { $user } from "../../contexts/UserContext.js"
-import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
+import { send } from "../../helpers.js"
 
 const sendSubscribePublic = async (ctx) => {
 	const action = $user.subscription ? 'on' : 'off'

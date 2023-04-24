@@ -1,14 +1,14 @@
+import { statisticPrefix } from "./screens/private/statistic.js"
+import { catalogPrefix } from "./screens/public/catalog.js"
+import { projectPrefix } from "./screens/public/project.js"
+import { setQuest } from "./contexts/ConsultContext.js"
+import setUserData from "./middlewares/setUserData.js"
+import scenes from "./screens/public/scenes/index.js"
+import changeLang from "./actions/changeLang.js"
 import { Scenes, session } from "telegraf"
 import $screen from "./screens/index.js"
-import setUserData from "./middlewares/setUserData.js"
-import changeLang from "./actions/changeLang.js"
 import $bot from "./bot.js"
-import scenes from "./screens/public/scenes/index.js"
 import "./locales/index.js"
-import { projectPrefix } from "./screens/public/project.js"
-import { statisticPrefix } from "./screens/private/statistic.js"
-import { setQuest } from "./contexts/ConsultContext.js"
-import { catalogPrefix } from "./screens/public/catalog.js"
 
 const stage = new Scenes.Stage([ ...scenes ])
 
@@ -91,9 +91,5 @@ $bot.action("statistic", $screen.private.statistic)
 // Получить статистику по категории
 $bot.command(new RegExp(`^${statisticPrefix}`), $screen.private.statistic_cat)
 $bot.action(new RegExp(`^${statisticPrefix}`), $screen.private.statistic_cat)
-
-// Получить csv-файл по категории
-// $bot.command(new RegExp(`^csv_`), $screen.private.statistic_csv)
-// $bot.action(new RegExp(`^csv_`), $screen.private.statistic_csv)
 
 export default $bot

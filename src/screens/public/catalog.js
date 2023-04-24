@@ -1,5 +1,4 @@
-import createGrid from "../../helpers/createGrid.js"
-import send from "../../helpers/send.js"
+import { createGrid, send } from "../../helpers.js"
 import { $i18n } from "../../locales/index.js"
 
 export const catalogPrefix = 'catalog:'

@@ -1,9 +1,9 @@
 import { addUser, checkUser, getUser, getUserAll, setLangUser, setSubscriptionUser, updateUser } from "./users.js";
+import { addSelectionResults, getAllSelectionResults, getSelectionResults } from "./selectionResults.js";
 import { addProject, updateProject, getAllProject, getProject, deleteProject } from "./projects.js";
 import { addViewed, getAllViewed, updateViewed } from "./viewed.js";
 import { addConsults, getAllConsults } from "./consults.js";
 import { rejectTest, resolveTest } from "./test.js";
-import { addSelectionResults, getAllSelectionResults, getSelectionResults } from "./selectionResults.js";
 
 const $db = {
 	test: {

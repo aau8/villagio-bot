@@ -1,5 +1,5 @@
-import { Composer } from "telegraf"
 import { goScreen } from "./config.js"
+import { Composer } from "telegraf"
 
 // Другой вопрос
 const anotherQuest = new Composer()

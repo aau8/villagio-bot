@@ -1,17 +1,16 @@
-import changeLang from "../actions/changeLang.js"
 import changeSubscribe from "../actions/changeSubscribe.js"
-import sendHelpPrivate from "./private/help.js"
-import sendStartPrivate from "./private/start.js"
-import sendStatisticPrivate from "./private/statistic.js"
 import sendStatCatPrivate from "./private/statisticCat.js"
-// import sendStatCsvPrivate from "./private/statisticCsv.js"
-import sendCatalogPublic from "./public/catalog.js"
+import sendStatisticPrivate from "./private/statistic.js"
 import sendCatalogCatPublic from "./public/catalogCat.js"
 import sendCatalogPdfPublic from "./public/catalogPdf.js"
-import sendHelpPublic from "./public/help.js"
-import sendProjectPublic from "./public/project.js"
-import sendStartPublic from "./public/start.js"
 import sendSubscribePublic from "./public/subscribe.js"
+import sendCatalogPublic from "./public/catalog.js"
+import sendProjectPublic from "./public/project.js"
+import changeLang from "../actions/changeLang.js"
+import sendStartPrivate from "./private/start.js"
+import sendHelpPrivate from "./private/help.js"
+import sendStartPublic from "./public/start.js"
+import sendHelpPublic from "./public/help.js"
 
 const $screen = {
 	public: {
@@ -30,7 +29,6 @@ const $screen = {
 		help: sendHelpPrivate,
 		statistic: sendStatisticPrivate,
 		statistic_cat: sendStatCatPrivate,
-		// statistic_csv: sendStatCsvPrivate,
 	}
 }
 

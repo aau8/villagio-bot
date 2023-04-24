@@ -1,5 +1,4 @@
-import checkIsAdmin from "../../helpers/checkIsAdmin.js"
-import send from "../../helpers/send.js"
+import { checkIsAdmin, send } from "../../helpers.js"
 
 const sendStartPrivate = async (ctx) => {
 	const user = ctx.from

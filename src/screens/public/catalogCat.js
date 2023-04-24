@@ -1,8 +1,7 @@
-import $db from "../../db/index.js"
-import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
 import { catalogPrefix } from "./catalog.js"
 import { projectPrefix } from "./project.js"
+import $db from "../../db/index.js"
 
 const sendCatalogCatPublic = async (ctx) => {
 	// console.log('download start')

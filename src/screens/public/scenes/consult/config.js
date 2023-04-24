@@ -1,7 +1,6 @@
-import $db from "../../../../db/index.js"
-import createGrid from "../../../../helpers/createGrid.js"
-import send from "../../../../helpers/send.js"
+import { createGrid, send } from "../../../../helpers.js"
 import { $i18n } from "../../../../locales/index.js"
+import $db from "../../../../db/index.js"
 
 export const quests = {
 	dubai: $i18n('scenes.qc.quests.dubai'),
@@ -42,8 +41,8 @@ export const scr = {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: $i18n('scenes.qc.commun.kb.call'), callback_data: `commun:phone` },
-							{ text: $i18n('scenes.qc.commun.kb.tg'), callback_data: `commun:telegram` },
+							{ text: $i18n('scenes.qc.commun.kb.phone'), callback_data: `commun:phone` },
+							{ text: $i18n('scenes.qc.commun.kb.telegram'), callback_data: `commun:telegram` },
 							{ text: $i18n('scenes.qc.commun.kb.whatsapp'), callback_data: `commun:whatsapp` },
 						],
 					],
@@ -52,11 +51,12 @@ export const scr = {
 			})
 		},
 		"phone": async (ctx) => {
-			console.log('phone screen', ctx.scene.session.state.phone)
-			return send(ctx, $i18n('scenes.qc.phone.text'), {
+			const phone = ctx.scene.session.state.phone
+
+			return send(ctx, $i18n('scenes.qc.phone.text'), phone && {
 				reply_markup: {
 					keyboard: [
-						[ { text: ctx.scene.session.state.phone } ]
+						[ { text: phone } ]
 					],
 					resize_keyboard: true,
 					one_time_keyboard: true,
@@ -109,18 +109,25 @@ export const scr = {
 		},
 		"end": async (ctx) => {
 			const sessionQuests = ctx.scene.session.state.quest
-			let quest = '\n'
+			const state = ctx.scene.session.state
+			let quest
 
-			// console.log(sessionQuests)
 			if (typeof sessionQuests === 'object') {
 				const projects = await $db.projects.getAll({ $or: sessionQuests.map(id => ({ project_id: id })) })
-				quest += projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n') + '\n'
+				quest = '\n' + projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n') + '\n'
 			}
 			else {
-				quest += ctx.scene.session.state.quest
+				quest = state.quest
 			}
 
-			return send(ctx, $i18n('scenes.qc.end.text', { ...ctx.scene.session.state, quest }), {
+			const msgOptions = {
+				commun: $i18n(`scenes.qc.commun.kb.${state.commun}`),
+				phone: state.phone,
+				name: state.name,
+				quest,
+			}
+
+			return send(ctx, $i18n('scenes.qc.end.text', msgOptions), {
 				reply_markup: {
 					inline_keyboard: [
 						[

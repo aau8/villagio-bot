@@ -1,8 +1,8 @@
-import { Scenes } from "telegraf"
-import $db from "../../../db/index.js"
-import send from "../../../helpers/send.js"
 import { $i18n } from "../../../locales/index.js"
+import { send } from "../../../helpers.js"
+import $db from "../../../db/index.js"
 import $screen from "../../index.js"
+import { Scenes } from "telegraf"
 
 const screen3Checkboxes = {
 	"апартаменты": true,
@@ -126,11 +126,9 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 
 	if (state.price.startsWith('<')) {
 		const price = Number(state.price.replace('<', ''))
-
 		filterOptions["price.min"] = { $lte: price + (price / 100 * OFFSET) }
 	} else if (state.price.startsWith('>')) {
 		const price = Number(state.price.replace('>', ''))
-
 		filterOptions["price.max"] = { $gte: price + (price / 100 * OFFSET) }
 	} else if (state.price.includes('-')) {
 		const priceParse = state.price.split('-').map(Number)
@@ -161,15 +159,28 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 		timestamp: new Date().toISOString(),
 	})
 
-	await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n'), }), {
-		reply_markup: {
-			inline_keyboard: [
-				[ { text: $i18n('kb.consult'), callback_data: `consult:sr=${insertedId}` } ],
-				// [ { text: $i18n('kb.consult'), callback_data: `consult:${JSON.stringify(projects.map(project => '/id_' + project.project_id))}` } ],
-				[ { text: $i18n('kb.menu'), callback_data: "start" } ],
-			],
-		},
-	})
+	if (projects.length === 0) {
+		await send(ctx, $i18n('scenes.qsp.result.empty'), {
+			reply_markup: {
+				inline_keyboard: [
+					[ { text: $i18n('kb.project_selection'), callback_data: "quiz_select_project" }, ],
+					[ { text: $i18n('kb.consult'), callback_data: "consult" }, ],
+					[ { text: $i18n('kb.menu'), callback_data: "start" } ],
+				],
+			},
+		})
+	}
+	else {
+		await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n') }), {
+			reply_markup: {
+				inline_keyboard: [
+					[ { text: $i18n('kb.consult'), callback_data: `consult:sr=${insertedId}` } ],
+					[ { text: $i18n('kb.menu'), callback_data: "start" } ],
+				],
+			},
+		})
+	}
+
 	ctx.scene.leave()
 })
 

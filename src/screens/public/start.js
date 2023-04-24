@@ -1,5 +1,5 @@
-import send from "../../helpers/send.js"
 import { $i18n } from "../../locales/index.js"
+import { send } from "../../helpers.js"
 
 const sendStartPublic = async (ctx) => {
 	const action = ctx?.update?.callback_query?.data

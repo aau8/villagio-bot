@@ -1,5 +1,5 @@
-import i18next from "i18next"
 import { $user } from "../contexts/UserContext.js"
+import i18next from "i18next"
 import EN from "./en.js"
 import RU from "./ru.js"
 
