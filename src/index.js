@@ -39,16 +39,10 @@ $bot.command("help", $screen.public.help)
 
 // Управление подпиской
 $bot.command("subscribe", $screen.public.subscribe)
-$bot.action("subscribe", async ctx => {
-	// await ctx.answerCbQuery()
-	$screen.public.subscribe(ctx)
-})
+$bot.action("subscribe", $screen.public.subscribe)
 
 // Включить/отключить подписку
-$bot.action('subscribe_change', async ctx => {
-	// await ctx.answerCbQuery()
-	$screen.public.change_subscribe(ctx)
-})
+$bot.action('subscribe_change', $screen.public.change_subscribe)
 
 // Каталог
 $bot.command("catalog", $screen.public.catalog)
@@ -59,31 +53,21 @@ $bot.action("catalog", async ctx => {
 
 // Каталог (категории)
 $bot.command(new RegExp(`^${catalogPrefix}`), $screen.public.catalog_cat)
-$bot.action(new RegExp(`^${catalogPrefix}`), async ctx => {
-	// await ctx.answerCbQuery()
-	$screen.public.catalog_cat(ctx)
-})
+$bot.action(new RegExp(`^${catalogPrefix}`), $screen.public.catalog_cat)
 
 // Каталог (pdf-документ)
 $bot.command("catalog_pdf", $screen.public.catalog_pdf)
-$bot.action("catalog_pdf", async ctx => {
-	// await ctx.answerCbQuery()
-	$screen.public.catalog_pdf(ctx)
-})
+$bot.action("catalog_pdf", $screen.public.catalog_pdf)
 
 // Получить проект
 $bot.command(new RegExp(`^${projectPrefix}`), $screen.public.project)
-$bot.action(new RegExp(`^${projectPrefix}`), async ctx => {
-	// await ctx.answerCbQuery()
-	$screen.public.project(ctx)
-})
+$bot.action(new RegExp(`^${projectPrefix}`), $screen.public.project)
 
 // Квиз "Подобрать проект"
 $bot.command('quiz_select_project', ctx => {
 	ctx.scene.enter('quiz_select_project')
 })
 $bot.action('quiz_select_project', async ctx => {
-	// await ctx.answerCbQuery()
 	ctx.scene.enter('quiz_select_project')
 })
 
@@ -92,7 +76,7 @@ $bot.command('consult', ctx => {
 	ctx.scene.enter('consult')
 })
 $bot.action(/^consult[:]?/, async ctx => {
-	// await ctx.answerCbQuery()
+	await ctx.answerCbQuery()
 	ctx.scene.enter('consult', { quest: ctx.match.input.replace(ctx.match[0], '') })
 })
 
@@ -102,24 +86,15 @@ $bot.action(/^consult[:]?/, async ctx => {
 
 // Главный экран (приватный)
 $bot.command("admin", $screen.private.start)
-$bot.action("admin", async ctx => {
-	// await ctx.answerCbQuery()
-	$screen.private.start(ctx)
-})
+$bot.action("admin", $screen.private.start)
 
 // Справка
 $bot.command("admin_help", $screen.private.help)
-$bot.action("admin_help", async ctx => {
-	// await ctx.answerCbQuery()
-	$screen.private.help(ctx)
-})
+$bot.action("admin_help", $screen.private.help)
 
 // Статистика
 $bot.command("statistic", $screen.private.statistic)
-$bot.action("statistic", async ctx => {
-	// await ctx.answerCbQuery()
-	$screen.private.statistic(ctx)
-})
+$bot.action("statistic", $screen.private.statistic)
 
 // Получить статистику по категории
 $bot.command(new RegExp(`^${statisticPrefix}`), $screen.private.statistic_cat)
