@@ -123,7 +123,7 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 	}
 
 	console.log('senderMsg start')
-	const senderMsg = await send(ctx, $i18n('scenes.qsp.select_options'))
+	// const senderMsg = await send(ctx, $i18n('scenes.qsp.select_options'))
 	console.log('senderMsg end')
 
 	if (state.price.startsWith('<')) {
