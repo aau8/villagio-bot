@@ -42,9 +42,9 @@ export const scr = {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: $i18n('scenes.qc.commun.kb.call'), callback_data: `commun:Звонок` },
-							{ text: $i18n('scenes.qc.commun.kb.tg'), callback_data: `commun:Telegram` },
-							{ text: $i18n('scenes.qc.commun.kb.whatsapp'), callback_data: `commun:WhatsApp` },
+							{ text: $i18n('scenes.qc.commun.kb.call'), callback_data: `commun:phone` },
+							{ text: $i18n('scenes.qc.commun.kb.tg'), callback_data: `commun:telegram` },
+							{ text: $i18n('scenes.qc.commun.kb.whatsapp'), callback_data: `commun:whatsapp` },
 						],
 					],
 				},

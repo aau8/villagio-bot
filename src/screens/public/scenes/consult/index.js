@@ -9,6 +9,8 @@ import { isPhone, isCommand } from "../../../../helpers/masks.js"
 import customName from "../../../../helpers/customName.js"
 import { ObjectId } from "mongodb"
 import { $user } from "../../../../contexts/UserContext.js"
+import axios from "axios"
+import { CONSULT_APPLIC_URL } from "../../../../config.js"
 
 const scene = new Scenes.WizardScene(
 	"consult",
@@ -91,9 +93,68 @@ const scene = new Scenes.WizardScene(
 			ctx.scene.session.state.name = customName(name)
 			ctx.scene.session.state.timestamp = new Date().toISOString()
 			const senderMsg = await goScreen('sender', ctx)
+			const state = ctx.scene.session.state
 
-			// TODO: Сделать отправку заявок на сервер
-			await $db.test.resolve() // Таймер на 1000ms
+			// console.log('state', ctx.scene.session.state)
+			// console.log('data', {
+			// 	name: "Обратный звонок (Bot Telegram)",
+			// 	key: "modal",
+			// 	content: "Форма обратного звонка",
+			// 	fields: [
+			// 		{
+			// 			"type": "contacts",
+			// 			"key": "name",
+			// 			"name": "Имя",
+			// 			"value": state.name
+			// 		},
+			// 		{
+			// 			"type": "contacts",
+			// 			"key": "phone",
+			// 			"name": "Телефон",
+			// 			"value": state.phone
+			// 		},
+			// 		{
+			// 			"type": "contacts",
+			// 			"key": `cm_${state.commun}`,
+			// 			"name": "Способ связи",
+			// 			"value": state.commun === "phone" ? "телефон" : state.commun
+			// 		}
+			// 	]
+			// })
+
+			await axios.post(
+				CONSULT_APPLIC_URL,
+				{
+					name: "Обратный звонок (Bot Telegram)",
+					key: "modal",
+					content: "Форма обратного звонка",
+					fields: [
+						{
+							"type": "contacts",
+							"key": "name",
+							"name": "Имя",
+							"value": state.name
+						},
+						{
+							"type": "contacts",
+							"key": "phone",
+							"name": "Телефон",
+							"value": state.phone
+						},
+						{
+							"type": "contacts",
+							"key": `cm_${state.commun}`,
+							"name": "Способ связи",
+							"value": state.commun === "phone" ? "телефон" : state.commun
+						}
+					]
+				},
+				{
+					headers: {
+						"X-Villagio-Forms-Client-Key": "682492df-f6ec-41ea-8b98-d7028a4a07c5"
+					}
+				}
+			)
 
 			await $db.consults.add(ctx.scene.session.state)
 			await goScreen("end", ctx)

@@ -6,14 +6,6 @@
 			"dest": "api/index.js"
 		},
 		{
-			"src": "/api/getWebhookInfo",
-			"dest": "api/telegram/getWebhookInfo.js"
-		},
-		{
-			"src": "/api/setWebhook",
-			"dest": "api/telegram/setWebhook.js"
-		},
-		{
 			"src": "/api/users",
 			"dest": "api/users.js"
 		},
