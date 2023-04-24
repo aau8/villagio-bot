@@ -4,7 +4,7 @@ import { $i18n } from "../../locales/index.js"
 
 const sendHelpPrivate = async (ctx) => {
 	const user = ctx.from
-	const isAdmin = await checkIsAdmin(user.id)
+	const isAdmin = checkIsAdmin(user.id)
 	if (!isAdmin) {
 		console.log(`Пользователь @${user.username} (${user.id}) пытался воспользоваться админ. панелью`)
 		return

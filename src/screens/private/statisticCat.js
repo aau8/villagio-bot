@@ -7,7 +7,7 @@ dotenv.config()
 const API_URL = (process.env.VERCEL_URL || 'https://villagio-bot.vercel.app') + '/api'
 const sendStatCatPrivate = async (ctx) => {
 	const user = ctx.from
-	const isAdmin = await checkIsAdmin(user.id)
+	const isAdmin = checkIsAdmin(user.id)
 	if (!isAdmin) {
 		console.log(`Пользователь @${user.username} (${user.id}) пытался воспользоваться админ. панелью`)
 		return

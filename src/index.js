@@ -93,7 +93,7 @@ $bot.command(new RegExp(`^${statisticPrefix}`), $screen.private.statistic_cat)
 $bot.action(new RegExp(`^${statisticPrefix}`), $screen.private.statistic_cat)
 
 // Получить csv-файл по категории
-$bot.command(new RegExp(`^csv_`), $screen.private.statistic_csv)
-$bot.action(new RegExp(`^csv_`), $screen.private.statistic_csv)
+// $bot.command(new RegExp(`^csv_`), $screen.private.statistic_csv)
+// $bot.action(new RegExp(`^csv_`), $screen.private.statistic_csv)
 
 export default $bot

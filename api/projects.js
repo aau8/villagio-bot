@@ -145,12 +145,6 @@ const projects = async (req, res) => {
 			return
 		}
 		else if (token.replace('Bearer', '').trim() !== process.env.API_TOKEN) {
-			console.log(token.replace('Bearer', '').trim() !== process.env.API_TOKEN)
-			console.log('received token', token.replace('Bearer', '').trim())
-			console.log('API_TOKEN', process.env.API_TOKEN)
-			console.log('MONGODB_URL', process.env.MONGODB_URL)
-			console.log('TG_BOT_TOKEN', process.env.TG_BOT_TOKEN)
-			console.log('process.env', process.env)
 			res.status(401).send('Неправильный токен. Доступ закрыт')
 			return
 		}

@@ -4,7 +4,7 @@ import sendHelpPrivate from "./private/help.js"
 import sendStartPrivate from "./private/start.js"
 import sendStatisticPrivate from "./private/statistic.js"
 import sendStatCatPrivate from "./private/statisticCat.js"
-import sendStatCsvPrivate from "./private/statisticCsv.js"
+// import sendStatCsvPrivate from "./private/statisticCsv.js"
 import sendCatalogPublic from "./public/catalog.js"
 import sendCatalogCatPublic from "./public/catalogCat.js"
 import sendCatalogPdfPublic from "./public/catalogPdf.js"
@@ -30,7 +30,7 @@ const $screen = {
 		help: sendHelpPrivate,
 		statistic: sendStatisticPrivate,
 		statistic_cat: sendStatCatPrivate,
-		statistic_csv: sendStatCsvPrivate,
+		// statistic_csv: sendStatCsvPrivate,
 	}
 }
 
