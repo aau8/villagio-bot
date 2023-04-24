@@ -37,6 +37,7 @@ export const scr = {
 			return send(ctx, $i18n('scenes.qc.another_quest'))
 		},
 		"commun": async (ctx) => {
+            await ctx.answerCbQuery()
 			return send(ctx, $i18n('scenes.qc.commun.text'), {
 				reply_markup: {
 					inline_keyboard: [
@@ -53,7 +54,20 @@ export const scr = {
 		"phone": async (ctx) => {
 			const phone = ctx.scene.session.state.phone
 
-			return send(ctx, $i18n('scenes.qc.phone.text'))
+            await ctx.answerCbQuery()
+			return send(ctx, $i18n('scenes.qc.phone.text'), phone && {
+				reply_markup: {
+					inline_keyboard: [],
+					keyboard: [
+						[ { text: phone } ]
+					],
+					resize_keyboard: true,
+					one_time_keyboard: true,
+					selective: true,
+					inline_keyboard: [ [] ]
+				},
+				not_edit_message: true,
+			})
 		},
 		"phone_error": async (ctx) => {
 			return send(ctx, $i18n('scenes.qc.phone_error.text'))
