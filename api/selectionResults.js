@@ -3,11 +3,11 @@ import $db from "../src/db/index.js"
 const methods = {}
 
 methods.get = async (req, res) => {
-	const consults = await $db.consults.getAll()
-	res.json({ data: consults, total: consults.length })
+	const selectionResults = await $db.selectionResults.getAll()
+	res.json({ data: selectionResults, total: selectionResults.length })
 }
 
-const consults = async (req, res) => {
+const selectionResults = async (req, res) => {
 	try {
 		const token = req.headers.authorization
 
@@ -27,4 +27,4 @@ const consults = async (req, res) => {
 	}
 }
 
-export default consults
+export default selectionResults

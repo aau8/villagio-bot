@@ -8,17 +8,23 @@ import anotherQuest from "./anotherQuest.js"
 import { isPhone, isCommand } from "../../../../helpers/masks.js"
 import customName from "../../../../helpers/customName.js"
 import { ObjectId } from "mongodb"
+import { $user } from "../../../../contexts/UserContext.js"
 
 const scene = new Scenes.WizardScene(
 	"consult",
 	async ctx => {
 		if ($consult.quest) {
-			if ($consult.quest.includes('project_id')) {
+			if ($consult.quest.includes('project_id_update')) {
+				console.log('project_id_update')
+				const project = await $db.projects.get(Number($consult.quest.replace('project_id_update=', '')))
+				ctx.scene.session.state.quest = `Изменение информации у проекта ${project.name} - /id_${project.project_id}`
+			}
+			else if ($consult.quest.includes('project_id')) {
 				ctx.scene.session.state.quest = [ Number($consult.quest.replace('project_id=', '')) ]
 			}
 			else if ($consult.quest.includes('sr')) {
 				const result = await $db.selectionResults.get({ _id: ObjectId($consult.quest.replace('sr=', '')) })
-				console.log('result', result)
+				// console.log('result', result)
 				ctx.scene.session.state.quest = result.projects
 			}
 			await goScreen('commun', ctx)
@@ -38,12 +44,27 @@ const scene = new Scenes.WizardScene(
 		}
 		else {
 			ctx.scene.session.state.commun = ctx.update.callback_query.data.replace('commun:', '')
+			const user = await $db.users.get({ tg_id: ctx.from.id })
 
+			if (user.phone) {
+				ctx.scene.session.state.phone = user.phone
+			}
+			if (user.first_name) {
+				ctx.scene.session.state.name = user.first_name
+			}
+			// else {
+			// }
 			await goScreen('phone', ctx)
 			return ctx.wizard.next();
 		}
 	},
 	async ctx => {
+		// // console.log('phone', ctx)
+		// if (ctx?.update?.callback_query?.data.includes('phone:')) {
+		// 	console.log('ok')
+		// }
+		// else {
+		// }
 		const phone = ctx.message.text
 
 		if (isCommand(phone)) {
@@ -53,7 +74,9 @@ const scene = new Scenes.WizardScene(
 			await goScreen('phone_error', ctx)
 		}
 		else {
+			await $db.users.update({ tg_id: ctx.from.id }, { phone })
 			ctx.scene.session.state.phone = phone
+			// ctx.scene.session.state.name = phone
 			await goScreen('name', ctx)
 			return ctx.wizard.next();
 		}

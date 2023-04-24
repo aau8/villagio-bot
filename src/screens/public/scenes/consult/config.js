@@ -31,6 +31,7 @@ export const scr = {
 						]
 					],
 				},
+				not_edit_message: true,
 			})
 		},
 		"another_quest": async (ctx) => {
@@ -47,34 +48,77 @@ export const scr = {
 						],
 					],
 				},
+				not_edit_message: true,
 			})
 		},
 		"phone": async (ctx) => {
-			return send(ctx, $i18n('scenes.qc.phone.text'))
+			console.log('phone screen', ctx.scene.session.state.phone)
+			return send(ctx, $i18n('scenes.qc.phone.text'), {
+				reply_markup: {
+					keyboard: [
+						[ { text: ctx.scene.session.state.phone } ]
+					],
+					resize_keyboard: true,
+					one_time_keyboard: true,
+					selective: true,
+					inline_keyboard: [ [] ]
+				}
+			})
 		},
+		// "phone_check": async (ctx) => {
+		// 	return send(ctx, $i18n('scenes.qc.phone_check.text', { phone: ctx.scene.session.state.phone }), {
+		// 		reply_markup: {
+		// 			keyboard: [
+		// 				[ { text: 'Hello' } ]
+		// 			],
+		// 			resize_keyboard: true,
+		// 			one_time_keyboard: true,
+		// 			inline_keyboard: []
+		// 		}
+		// 	})
+		// },
 		"phone_error": async (ctx) => {
 			return send(ctx, $i18n('scenes.qc.phone_error.text'))
 		},
 		"name": async (ctx) => {
-			return send(ctx, $i18n('scenes.qc.name.text'))
+			return send(ctx, $i18n('scenes.qc.name.text'), {
+				reply_markup: {
+					keyboard: [
+						[ { text: ctx.scene.session.state.name } ]
+					],
+					resize_keyboard: true,
+					one_time_keyboard: true,
+					selective: true,
+					inline_keyboard: [ [] ]
+				}
+			})
 		},
 		"sender": async (ctx) => {
-			return send(ctx, $i18n('scenes.qc.sender.text'))
+			return send(ctx, $i18n('scenes.qc.sender.text'), {
+				reply_markup: {
+					remove_keyboard: true,
+					// keyboard: [
+					// 	[ { text: ctx.scene.session.state.name } ]
+					// ],
+					// resize_keyboard: true,
+					// one_time_keyboard: true,
+					// selective: true,
+					// inline_keyboard: [ [] ]
+				}
+			})
 		},
 		"end": async (ctx) => {
 			const sessionQuests = ctx.scene.session.state.quest
-			// const sqJSON = JSON.parse(sessionQuests)
-			let quest
+			let quest = '\n'
 
-			console.log(sessionQuests)
+			// console.log(sessionQuests)
 			if (typeof sessionQuests === 'object') {
 				const projects = await $db.projects.getAll({ $or: sessionQuests.map(id => ({ project_id: id })) })
-				quest = '\n' + projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n') + '\n'
+				quest += projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n') + '\n'
 			}
 			else {
-				quest = ctx.scene.session.state.quest
+				quest += ctx.scene.session.state.quest
 			}
-			// console.log('sessionQuests', sessionQuests)
 
 			return send(ctx, $i18n('scenes.qc.end.text', { ...ctx.scene.session.state, quest }), {
 				reply_markup: {

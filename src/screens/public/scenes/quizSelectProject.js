@@ -89,7 +89,6 @@ scene.action(new RegExp(`^${scene.name}:2:`), async ctx => {
 
 	ctx.scene.session.state.status = value
 	goScreen(3, ctx)
-	// scene.screens[2](ctx, [ ...Object.values(screen3Checkboxes) ])
 })
 
 scene.action(new RegExp(`^${scene.name}:3:`), async ctx => {
@@ -104,12 +103,10 @@ scene.action(new RegExp(`^${scene.name}:3:`), async ctx => {
 		}
 		else {
 			goScreen(3, ctx)
-			// scene.screens[2](ctx, [ ...Object.values(screen3Checkboxes) ])
 		}
 	}
 	else {
 		ctx.scene.session.state.type = Object.entries(screen3Checkboxes).filter((type) => type[1]).map((type) => type[0].toLowerCase())
-		// scene.screens[3](ctx)
 		goScreen(4, ctx)
 	}
 })
@@ -118,6 +115,7 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
 	ctx.scene.session.state.price = value
 	const state = ctx.scene.session.state
+	const OFFSET = 50
 	const filterOptions = {
 		city: state.city,
 		status: state.status,
@@ -127,34 +125,33 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 	await send(ctx, $i18n('scenes.qsp.select_options'))
 
 	if (state.price.startsWith('<')) {
-		filterOptions["price.min"] = { $lte: Number(state.price.replace('<', '')) }
+		const price = Number(state.price.replace('<', ''))
+
+		filterOptions["price.min"] = { $lte: price + (price / 100 * OFFSET) }
 	} else if (state.price.startsWith('>')) {
-		filterOptions["price.max"] = { $gte: Number(state.price.replace('>', '')) }
+		const price = Number(state.price.replace('>', ''))
+
+		filterOptions["price.max"] = { $gte: price + (price / 100 * OFFSET) }
 	} else if (state.price.includes('-')) {
 		const priceParse = state.price.split('-').map(Number)
 
 		filterOptions.$or = [
 			{
 				"price.min": {
-					$gte: priceParse[0],
-					$lte: priceParse[1],
+					$gte: priceParse[0] + (priceParse[0] / 100 * OFFSET),
+					$lte: priceParse[1] + (priceParse[1] / 100 * OFFSET),
 				},
 			},
 			{
 				"price.max": {
-					$gte: priceParse[0],
-					$lte: priceParse[1],
+					$gte: priceParse[0] + (priceParse[0] / 100 * OFFSET),
+					$lte: priceParse[1] + (priceParse[1] / 100 * OFFSET),
 				},
 			},
 		]
 	}
 
-	console.log('filterOptions', filterOptions)
-
 	const projects = await $db.projects.getAll(filterOptions)
-
-	console.log('projects', projects)
-
 	const { insertedId } = await $db.selectionResults.add({
 		projects: projects.map(project => project.project_id),
 		city: state.city,
@@ -164,9 +161,6 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 		timestamp: new Date().toISOString(),
 	})
 
-	// console.log('insertedId', insertedId)
-
-	// console.log(JSON.stringify(projects.map(project => project.project_id)))
 	await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n'), }), {
 		reply_markup: {
 			inline_keyboard: [

@@ -16,7 +16,6 @@ methods.get = async (req, res) => {
 	const query = req.query
 	const adminId = query.admin_id
 
-	console.log(checkIsAdmin(adminId), adminId)
 	if (!checkIsAdmin(adminId)) {
 		res.send('У вас нет прав доступа')
 		return

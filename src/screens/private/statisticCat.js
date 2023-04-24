@@ -4,7 +4,7 @@ import { $i18n } from "../../locales/index.js"
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-const API_URL = (process.env.VERCEL_URL || 'http://site.com') + '/api'
+const API_URL = (process.env.VERCEL_URL || 'https://villagio-bot.vercel.app') + '/api'
 const sendStatCatPrivate = async (ctx) => {
 	const user = ctx.from
 	const isAdmin = await checkIsAdmin(user.id)

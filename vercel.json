@@ -26,6 +26,14 @@
 			"dest": "api/consults.js"
 		},
 		{
+			"src": "/api/selection_results",
+			"dest": "api/selectionResults.js"
+		},
+		{
+			"src": "/api/viewed",
+			"dest": "api/viewed.js"
+		},
+		{
 			"src": "/api/stats",
 			"dest": "api/stats.js"
 		}

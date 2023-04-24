@@ -61,6 +61,7 @@ methods.patch = async (req, res) => {
 	}
 
 	const body = req.body
+	const notifyUsers = body.notify
 	const projectId = body.project_id
 	const project = await $db.projects.get(projectId)
 	const options = { price: {} }
@@ -82,23 +83,26 @@ methods.patch = async (req, res) => {
 	}
 
 	$db.projects.update({ project_id: projectId }, options )
-	.then(async data => {
-		const users = project.users
-		const text = `<b>🔔 Уведомление!</b>\n\nУ проекта <b>${body.name || project.name}</b> изменилась информация!`
+	.then(async () => {
+		if (notifyUsers) {
+			const users = project.users
+			const text = `<b>🔔 Уведомление!</b>\n\nУ проекта <b>${body.name || project.name}</b> изменилась информация!`
 
-		for (const userId of users) {
-			const user = await $db.users.get({ tg_id: userId })
+			for (const userId of users) {
+				const user = await $db.users.get({ tg_id: userId })
 
-			if (user.subscription) {
-				await $bot.telegram.sendMessage(userId, text, {
-					reply_markup: {
-						inline_keyboard: [
-							[ { text: "Подробнее", callback_data: `id_${projectId}` } ],
-							// [ { text: "Управление подпиской", callback_data: `subscribe` } ],
-						]
-					},
-					parse_mode: "HTML"
-				})
+				if (user.subscription) {
+					await $bot.telegram.sendMessage(userId, text, {
+						reply_markup: {
+							inline_keyboard: [
+								[ { text: "Посмотреть проект", callback_data: `id_${projectId}` } ],
+								[ { text: "Узнать информацию у менеджера", callback_data: `consult:project_id_update=${projectId}` } ],
+								// [ { text: "Управление подпиской", callback_data: `subscribe` } ],
+							]
+						},
+						parse_mode: "HTML"
+					})
+				}
 			}
 		}
 
@@ -141,6 +145,9 @@ const projects = async (req, res) => {
 			return
 		}
 		else if (token.replace('Bearer', '').trim() !== process.env.API_TOKEN) {
+			console.log(token.replace('Bearer', '').trim() !== process.env.API_TOKEN)
+			console.log('received token', token.replace('Bearer', '').trim())
+			console.log('API_TOKEN', process.env.API_TOKEN)
 			res.status(401).send('Неправильный токен. Доступ закрыт')
 			return
 		}

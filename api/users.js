@@ -4,7 +4,7 @@ const methods = {}
 
 methods.get = async (req, res) => {
 	const users = await $db.users.getAll()
-	res.json(users)
+	res.json({ data: users, total: users.length })
 }
 
 const users = async (req, res) => {
