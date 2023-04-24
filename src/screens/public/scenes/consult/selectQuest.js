@@ -14,9 +14,7 @@ selectQuest.action(/^quest_/, async ctx => {
 	const command = parseCommand(ctx.match.input, 'quest_')
 
 	ctx.scene.session.state.quest = quests[command]
-	console.log('commun start')
 	await goScreen('commun', ctx)
-	console.log('commun end')
 	return await ctx.wizard.selectStep(ctx.wizard.cursor + 2)
 })
 

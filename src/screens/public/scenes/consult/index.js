@@ -46,7 +46,7 @@ const scene = new Scenes.WizardScene(
 	anotherQuest,
 	// Ввод номера телефона
 	async ctx => {
-		console.log('phone start')
+		console.log('phone step start')
 		// Если было отправлено текстовое сообщение, будет отправлен экран с вопросом о продолжении прохождения квиза.
 		if (ctx?.message?.text) {
 			await goScreen('stop', ctx)
@@ -55,7 +55,9 @@ const scene = new Scenes.WizardScene(
 
 		ctx.scene.session.state.commun = ctx.update.callback_query.data.replace('commun:', '')
 
+		console.log('users get start')
 		const user = await $db.users.get({ tg_id: ctx.from.id })
+		console.log('users get end')
 
 		if (user.phone) {
 			ctx.scene.session.state.phone = user.phone
@@ -64,7 +66,9 @@ const scene = new Scenes.WizardScene(
 			ctx.scene.session.state.name = `${user.first_name} ${user.last_name || ''}`.trim()
 		}
 
+		console.log('phone start')
 		await goScreen('phone', ctx)
+		console.log('phone end')
 		return ctx.wizard.next();
 	},
 	// Ввод имени
