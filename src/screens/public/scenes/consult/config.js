@@ -53,17 +53,7 @@ export const scr = {
 		"phone": async (ctx) => {
 			const phone = ctx.scene.session.state.phone
 
-			return send(ctx, $i18n('scenes.qc.phone.text'), phone && {
-				reply_markup: {
-					keyboard: [
-						[ { text: phone } ]
-					],
-					resize_keyboard: true,
-					one_time_keyboard: true,
-					selective: true,
-					inline_keyboard: [ [] ]
-				}
-			})
+			return send(ctx, $i18n('scenes.qc.phone.text'))
 		},
 		"phone_error": async (ctx) => {
 			return send(ctx, $i18n('scenes.qc.phone_error.text'))
