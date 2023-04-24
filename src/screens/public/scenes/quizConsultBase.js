@@ -14,7 +14,6 @@ const quests = {
 }
 const scene = Object.assign( new Scenes.BaseScene('consult'), {
 	name: 'QC',
-	data: {},
 	screens: {
 		"start": (ctx) => {
 			send(ctx, $i18n('scenes.qc.start.text', { quests: Object.values(quests).map((quest, i) => `${i + 1}. ${quest}`).join('\n') }), {
@@ -53,33 +52,6 @@ const scene = Object.assign( new Scenes.BaseScene('consult'), {
 		},
 		"phone": (ctx) => {
 			send(ctx, $i18n('scenes.qc.phone.text'))
-			// ctx.reply($i18n('scenes.qc.phone.text'), {
-			// 	reply_markup: {
-			// 		keyboard: [
-			// 			[ { text: $i18n('scenes.qc.phone.kb.share') + 'fdd', request_contact: true } ]
-			// 			// [
-			// 			// 	{ text: $i18n('scenes.qc.phone.kb.share'), request_contact: true },
-			// 			// ],
-			// 		],
-			// 	},
-			// })
-
-			// console.log(ctx.update.callback_query.message)
-			// ctx.deleteMessage(ctx.update.callback_query.message)
-
-			// ctx.reply($i18n('scenes.qc.phone.text'),
-			// 	Markup.keyboard([
-			// 		[ { text: $i18n('scenes.qc.phone.kb.share') + '111', request_contact: true } ]
-			// 	])
-			// 	.resize()
-
-			// )
-
-			// removeKeyboard()
-
-			// Markup.keyboard([
-			// 	[ { text: 'Hello' } ]
-			// ])
 		},
 		"name": (ctx) => {
 			send(ctx, $i18n('scenes.qc.name.text'))
@@ -98,6 +70,20 @@ const scene = Object.assign( new Scenes.BaseScene('consult'), {
 				},
 			})
 		},
+		"stop": async (ctx) => {
+			const remainQuests = Object.keys(scene.screens).length - Object.keys(scene.data).length
+
+			return send(ctx, $i18n('scenes.qsp.stop.text', { value: remainQuests }), {
+				reply_markup: {
+					inline_keyboard: [
+					[
+						{ text: $i18n('scenes.qsp.stop.kb.yes'), callback_data: `stop:${ctx.message.text}` },
+						{ text: $i18n('scenes.qsp.stop.kb.no'), callback_data: "resume" },
+					],
+					],
+				},
+			})
+		}
 	}
 })
 
@@ -145,15 +131,11 @@ scene.on("message", async ctx => {
 		phoneNow = false
 		nameNow = true
 		goScreen("name", ctx)
-
-		// console.log(scene.data)
 	}
 	else if (nameNow) {
 		scene.data.name = ctx.message.text
 		nameNow = false
 
-		// await goScreen("sender", ctx)
-		// await scene.screens['sender'](ctx)
 		const senderMsg = await goScreen('sender', ctx)
 
 		setTimeout(async () => {
@@ -162,21 +144,9 @@ scene.on("message", async ctx => {
 
 			await goScreen("end", ctx)
 		}, 1000)
-		// console.log(scene.data)
 	}
 	else {
-		const remainQuests = Object.keys(scene.screens).length - Object.keys(scene.data).length
-
-		send(ctx, $i18n('scenes.qsp.stop.text', { value: remainQuests }), {
-			reply_markup: {
-				inline_keyboard: [
-				[
-					{ text: $i18n('scenes.qsp.stop.kb.yes'), callback_data: `stop:${ctx.message.text}` },
-					{ text: $i18n('scenes.qsp.stop.kb.no'), callback_data: "resume" },
-				],
-				],
-			},
-		})
+		goScreen("stop", ctx)
 	}
 })
 

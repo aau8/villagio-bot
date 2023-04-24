@@ -1,5 +1,4 @@
 import { capitalize, isCommand, isPhone } from "../../../../helpers.js"
-import { $consult } from "../../../../contexts/ConsultContext.js"
 import { CONSULT_APPLIC_URL } from "../../../../config.js"
 import anotherQuest from "./anotherQuest.js"
 import { goScreen, scr } from "./config.js"
@@ -12,21 +11,27 @@ import axios from "axios"
 
 const scene = new Scenes.WizardScene(
 	"consult",
+	// Старт сцены
 	async ctx => {
-		if ($consult.quest) {
-			if ($consult.quest.includes('project_id_update')) {
-				console.log('project_id_update')
-				const project = await $db.projects.get(Number($consult.quest.replace('project_id_update=', '')))
+		const questDefault = ctx.scene.session.state.quest
+
+		/**
+		 * Если в начальном состоянии уже есть вопрос, то будет выполнена проверка на категорию вопроса, после чего будет составлен вопрос в правильном формате.
+		 * После чего, будет открыт экран с выбором способа связи.
+		 */
+		if (questDefault) {
+			if (questDefault.includes('project_id_update')) {
+				const project = await $db.projects.get(Number(questDefault.replace('project_id_update=', '')))
 				ctx.scene.session.state.quest = `Изменение информации у проекта ${project.name} - /id_${project.project_id}`
 			}
-			else if ($consult.quest.includes('project_id')) {
-				ctx.scene.session.state.quest = [ Number($consult.quest.replace('project_id=', '')) ]
+			else if (questDefault.includes('project_id')) {
+				ctx.scene.session.state.quest = [ Number(questDefault.replace('project_id=', '')) ]
 			}
-			else if ($consult.quest.includes('sr')) {
-				const result = await $db.selectionResults.get({ _id: ObjectId($consult.quest.replace('sr=', '')) })
-				// console.log('result', result)
+			else if (questDefault.includes('sr')) {
+				const result = await $db.selectionResults.get({ _id: ObjectId(questDefault.replace('sr=', '')) })
 				ctx.scene.session.state.quest = result.projects
 			}
+
 			await goScreen('commun', ctx)
 			return ctx.wizard.selectStep(3)
 		}
@@ -35,35 +40,35 @@ const scene = new Scenes.WizardScene(
 			return ctx.wizard.next();
 		}
 	},
+	// Выбор вопроса
 	selectQuest,
+	// Ввод своего (другого) вопроса
 	anotherQuest,
+	// Ввод номера телефона
 	async ctx => {
-
+		console.log('phone start')
+		// Если было отправлено текстовое сообщение, будет отправлен экран с вопросом о продолжении прохождения квиза.
 		if (ctx?.message?.text) {
 			await goScreen('stop', ctx)
+			return
 		}
-		else {
-			ctx.scene.session.state.commun = ctx.update.callback_query.data.replace('commun:', '')
-			const user = await $db.users.get({ tg_id: ctx.from.id })
 
-			if (user.phone) {
-				ctx.scene.session.state.phone = user.phone
-			}
-			if (user.first_name) {
-				ctx.scene.session.state.name = `${user.first_name} ${user.last_name || ''}`.trim()
-			}
+		ctx.scene.session.state.commun = ctx.update.callback_query.data.replace('commun:', '')
 
-			await goScreen('phone', ctx)
-			return ctx.wizard.next();
+		const user = await $db.users.get({ tg_id: ctx.from.id })
+
+		if (user.phone) {
+			ctx.scene.session.state.phone = user.phone
 		}
+		if (user.first_name) {
+			ctx.scene.session.state.name = `${user.first_name} ${user.last_name || ''}`.trim()
+		}
+
+		await goScreen('phone', ctx)
+		return ctx.wizard.next();
 	},
+	// Ввод имени
 	async ctx => {
-		// // console.log('phone', ctx)
-		// if (ctx?.update?.callback_query?.data.includes('phone:')) {
-		// 	console.log('ok')
-		// }
-		// else {
-		// }
 		const phone = ctx.message.text
 
 		if (isCommand(phone)) {
@@ -75,11 +80,12 @@ const scene = new Scenes.WizardScene(
 		else {
 			await $db.users.update({ tg_id: ctx.from.id }, { phone })
 			ctx.scene.session.state.phone = phone
-			// ctx.scene.session.state.name = phone
+
 			await goScreen('name', ctx)
 			return ctx.wizard.next();
 		}
 	},
+	// Отправка заявки
 	async ctx => {
 		const name = ctx.message.text
 

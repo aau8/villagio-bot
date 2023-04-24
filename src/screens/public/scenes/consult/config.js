@@ -65,18 +65,6 @@ export const scr = {
 				}
 			})
 		},
-		// "phone_check": async (ctx) => {
-		// 	return send(ctx, $i18n('scenes.qc.phone_check.text', { phone: ctx.scene.session.state.phone }), {
-		// 		reply_markup: {
-		// 			keyboard: [
-		// 				[ { text: 'Hello' } ]
-		// 			],
-		// 			resize_keyboard: true,
-		// 			one_time_keyboard: true,
-		// 			inline_keyboard: []
-		// 		}
-		// 	})
-		// },
 		"phone_error": async (ctx) => {
 			return send(ctx, $i18n('scenes.qc.phone_error.text'))
 		},
@@ -97,13 +85,6 @@ export const scr = {
 			return send(ctx, $i18n('scenes.qc.sender.text'), {
 				reply_markup: {
 					remove_keyboard: true,
-					// keyboard: [
-					// 	[ { text: ctx.scene.session.state.name } ]
-					// ],
-					// resize_keyboard: true,
-					// one_time_keyboard: true,
-					// selective: true,
-					// inline_keyboard: [ [] ]
 				}
 			})
 		},
@@ -160,5 +141,3 @@ export const goScreen = async (screen, ...args) => {
 	}
 	return scr.list[screen](...args)
 }
-
-export const parseCommand = (ctx, prefix) => ctx.match.input.replace(prefix, '').replace('/', '')

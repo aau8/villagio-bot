@@ -1,11 +1,10 @@
 import { statisticPrefix } from "./screens/private/statistic.js"
 import { catalogPrefix } from "./screens/public/catalog.js"
 import { projectPrefix } from "./screens/public/project.js"
-import { setQuest } from "./contexts/ConsultContext.js"
 import setUserData from "./middlewares/setUserData.js"
 import scenes from "./screens/public/scenes/index.js"
 import changeLang from "./actions/changeLang.js"
-import { Scenes, session } from "telegraf"
+import { Scenes, Telegraf, session } from "telegraf"
 import $screen from "./screens/index.js"
 import $bot from "./bot.js"
 import "./locales/index.js"
@@ -15,6 +14,8 @@ const stage = new Scenes.Stage([ ...scenes ])
 $bot.use(session())
 $bot.use(stage.middleware())
 $bot.use(setUserData)
+$bot.use(Telegraf.log())
+
 
 //////////////////////////////
 //////////  Публичный доступ
@@ -64,12 +65,10 @@ $bot.action('quiz_select_project', ctx => {
 
 // Квиз "Получить консультацию"
 $bot.command('consult', ctx => {
-	// setQuest(ctx)
 	ctx.scene.enter('consult')
 })
 $bot.action(/^consult[:]?/, ctx => {
-	setQuest(ctx.match.input.replace(ctx.match[0], ''))
-	ctx.scene.enter('consult')
+	ctx.scene.enter('consult', { quest: ctx.match.input.replace(ctx.match[0], '') })
 })
 
 //////////////////////////////

@@ -75,3 +75,6 @@ export const parseUserData = (from) => {
 		subscription: true,
 	}
 }
+
+// Удалить у строки префикс и слэш
+export const parseCommand = (str, prefix) => str.replace(prefix, '').replace('/', '')
