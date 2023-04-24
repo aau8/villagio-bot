@@ -151,10 +151,8 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 		]
 	}
 
-	console.log('projects getAll start')
+	await $db.test.resolve(2000)
 	const projects = await $db.projects.getAll(filterOptions)
-	console.log('projects getAll end')
-	console.log('selectionResults.add start')
 	const { insertedId } = await $db.selectionResults.add({
 		projects: projects.map(project => project.project_id),
 		city: state.city,
@@ -163,9 +161,7 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 		price: state.price,
 		timestamp: new Date().toISOString(),
 	})
-	console.log('selectionResults.add end')
 
-	console.log('message send start')
 	if (projects.length === 0) {
 		await send(ctx, $i18n('scenes.qsp.result.empty'), {
 			reply_markup: {
@@ -187,7 +183,6 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 			},
 		})
 	}
-	console.log('message send end')
 
 	ctx.scene.leave()
 })
