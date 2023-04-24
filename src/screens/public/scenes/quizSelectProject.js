@@ -122,9 +122,9 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 		type: { $in: state.type }
 	}
 
-	console.log('select_options start')
-	await send(ctx, $i18n('scenes.qsp.select_options'))
-	console.log('select_options end')
+	console.log('senderMsg start')
+	const senderMsg = await send(ctx, $i18n('scenes.qsp.select_options'))
+	console.log('senderMsg end')
 
 	if (state.price.startsWith('<')) {
 		const price = Number(state.price.replace('<', ''))
