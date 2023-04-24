@@ -15,6 +15,7 @@ const scene = new Scenes.WizardScene(
 	async ctx => {
 		const questDefault = ctx.scene.session.state.quest
 
+		console.log('consult start')
 		/**
 		 * Если в начальном состоянии уже есть вопрос, то будет выполнена проверка на категорию вопроса, после чего будет составлен вопрос в правильном формате.
 		 * После чего, будет открыт экран с выбором способа связи.

@@ -76,7 +76,7 @@ $bot.command('consult', ctx => {
 	ctx.scene.enter('consult')
 })
 $bot.action(/^consult[:]?/, async ctx => {
-	await ctx.answerCbQuery()
+	// await ctx.answerCbQuery()
 	ctx.scene.enter('consult', { quest: ctx.match.input.replace(ctx.match[0], '') })
 })
 

@@ -122,9 +122,9 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 		type: { $in: state.type }
 	}
 
-	console.log('senderMsg start')
-	// const senderMsg = await send(ctx, $i18n('scenes.qsp.select_options'))
-	console.log('senderMsg end')
+	// console.log('senderMsg start')
+	// // const senderMsg = await send(ctx, $i18n('scenes.qsp.select_options'))
+	// console.log('senderMsg end')
 
 	if (state.price.startsWith('<')) {
 		const price = Number(state.price.replace('<', ''))
@@ -151,7 +151,7 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 		]
 	}
 
-	await $db.test.resolve(2000)
+	// await $db.test.resolve(2000)
 	const projects = await $db.projects.getAll(filterOptions)
 	const { insertedId } = await $db.selectionResults.add({
 		projects: projects.map(project => project.project_id),
