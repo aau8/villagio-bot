@@ -1,11 +1,11 @@
 import { parseCommand } from "../../../../helpers.js"
-import { goScreen, quests } from "./config.js"
+import quiz from "./quiz.js"
 import { Composer } from "telegraf"
 
 const selectQuest = new Composer()
 
 selectQuest.action('another_quest', async ctx => {
-	await goScreen('another_quest', ctx)
+	await quiz.open("another_quest", ctx)
 	return ctx.wizard.next()
 })
 
@@ -13,8 +13,9 @@ selectQuest.action('another_quest', async ctx => {
 selectQuest.action(/^quest_/, async ctx => {
 	const command = parseCommand(ctx.match.input, 'quest_')
 
-	ctx.scene.session.state.quest = quests[command]
-	await goScreen('commun', ctx)
+	ctx.scene.session.state.quest = quiz.data.quests[command]
+	await ctx.answerCbQuery()
+	await quiz.open("commun", ctx)
 	return await ctx.wizard.selectStep(ctx.wizard.cursor + 2)
 })
 

@@ -1,7 +1,7 @@
 import { capitalize, isCommand, isPhone } from "../../../../helpers.js"
 import { CONSULT_APPLIC_URL } from "../../../../config.js"
 import anotherQuest from "./anotherQuest.js"
-import { goScreen, scr } from "./config.js"
+import quiz from "./quiz.js"
 import selectQuest from "./selectQuest.js"
 import $db from "../../../../db/index.js"
 import $screen from "../../../index.js"
@@ -33,11 +33,14 @@ const scene = new Scenes.WizardScene(
 				ctx.scene.session.state.quest = result.projects
 			}
 
-			await goScreen('commun', ctx)
+			console.log('commun start')
+            await ctx.answerCbQuery()
+			await quiz.open("commun", ctx)
+			console.log('commun end')
 			return ctx.wizard.selectStep(3)
 		}
 		else {
-			await goScreen('start', ctx)
+			await quiz.open("start", ctx)
 			return ctx.wizard.next();
 		}
 	},
@@ -49,7 +52,7 @@ const scene = new Scenes.WizardScene(
 	async ctx => {
 		// Если было отправлено текстовое сообщение, будет отправлен экран с вопросом о продолжении прохождения квиза.
 		if (ctx?.message?.text) {
-			await goScreen('stop', ctx)
+			await quiz.open("stop", ctx)
 			return
 		}
 
@@ -64,7 +67,7 @@ const scene = new Scenes.WizardScene(
 			ctx.scene.session.state.name = `${user.first_name} ${user.last_name || ''}`.trim()
 		}
 
-		await goScreen('phone', ctx)
+		await quiz.open("phone", ctx)
 		return ctx.wizard.next();
 	},
 	// Ввод имени
@@ -72,16 +75,16 @@ const scene = new Scenes.WizardScene(
 		const phone = ctx.message.text
 
 		if (isCommand(phone)) {
-			await goScreen('stop', ctx)
+			await quiz.open("stop", ctx)
 		}
 		else if (!isPhone(phone)) {
-			await goScreen('phone_error', ctx)
+			await quiz.open("phone_error", ctx)
 		}
 		else {
 			await $db.users.update({ tg_id: ctx.from.id }, { phone })
 			ctx.scene.session.state.phone = phone
 
-			await goScreen('name', ctx)
+			await quiz.open("name", ctx)
 			return ctx.wizard.next();
 		}
 	},
@@ -90,12 +93,12 @@ const scene = new Scenes.WizardScene(
 		const name = ctx.message.text
 
 		if (isCommand(name)) {
-			await goScreen('stop', ctx)
+			await quiz.open("stop", ctx)
 		}
 		else {
 			ctx.scene.session.state.name = capitalize(name)
 			ctx.scene.session.state.timestamp = new Date().toISOString()
-			const senderMsg = await goScreen('sender', ctx)
+			const senderMsg = await quiz.open("sender", ctx)
 			const state = ctx.scene.session.state
 
 			console.log('Заявка отправлена!')
@@ -161,7 +164,7 @@ const scene = new Scenes.WizardScene(
 			// )
 
 			await $db.consults.add(ctx.scene.session.state)
-			await goScreen("end", ctx)
+			await quiz.open("end", ctx)
 			await ctx.deleteMessage(senderMsg.message_id)
 			await ctx.scene.leave()
 		}
@@ -169,7 +172,8 @@ const scene = new Scenes.WizardScene(
 )
 
 scene.action('resume', async ctx => {
-	goScreen(scr.active, ctx)
+	ctx.answerCbQuery()
+	await quiz.open(quiz.current, ctx)
 })
 
 scene.action(/^stop:/, async ctx => {
@@ -183,6 +187,10 @@ scene.action(/^stop:/, async ctx => {
 	}
 
 	return await ctx.scene.leave();
+})
+
+scene.leave(ctx => {
+	console.log('scene leave')
 })
 
 export default scene
