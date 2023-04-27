@@ -1,8 +1,8 @@
 import { capitalize, isCommand, isPhone } from "../../../../helpers.js"
 import { CONSULT_APPLIC_URL } from "../../../../config.js"
-import anotherQuest from "./anotherQuest.js"
+import anotherQuest from "./composers/anotherQuest.js"
 import quiz from "./quiz.js"
-import selectQuest from "./selectQuest.js"
+import selectQuest from "./composers/selectQuest.js"
 import $db from "../../../../db/index.js"
 import $screen from "../../../index.js"
 import { ObjectId } from "mongodb"
@@ -10,12 +10,11 @@ import { Scenes } from "telegraf"
 import axios from "axios"
 
 const scene = new Scenes.WizardScene(
-	"consult",
+	quiz.name,
 	// Старт сцены
 	async ctx => {
 		const questDefault = ctx.scene.session.state.quest
 
-		console.log('consult start')
 		/**
 		 * Если в начальном состоянии уже есть вопрос, то будет выполнена проверка на категорию вопроса, после чего будет составлен вопрос в правильном формате.
 		 * После чего, будет открыт экран с выбором способа связи.
@@ -33,10 +32,10 @@ const scene = new Scenes.WizardScene(
 				ctx.scene.session.state.quest = result.projects
 			}
 
-			console.log('commun start')
+			// console.log('commun start')
             await ctx.answerCbQuery()
 			await quiz.open("commun", ctx)
-			console.log('commun end')
+			// console.log('commun end')
 			return ctx.wizard.selectStep(3)
 		}
 		else {
@@ -189,8 +188,8 @@ scene.action(/^stop:/, async ctx => {
 	return await ctx.scene.leave();
 })
 
-scene.leave(ctx => {
-	console.log('scene leave')
-})
+// scene.leave(ctx => {
+// 	console.log('scene leave')
+// })
 
 export default scene

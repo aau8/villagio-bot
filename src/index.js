@@ -9,7 +9,7 @@ import $screen from "./screens/index.js"
 import $bot from "./bot.js"
 import "./locales/index.js"
 
-const stage = new Scenes.Stage([ ...scenes ])
+const stage = new Scenes.Stage(scenes)
 
 $bot.use(session())
 $bot.use(stage.middleware())
@@ -64,20 +64,20 @@ $bot.command(new RegExp(`^${projectPrefix}`), $screen.public.project)
 $bot.action(new RegExp(`^${projectPrefix}`), $screen.public.project)
 
 // Квиз "Подобрать проект"
-$bot.command('quiz_select_project', ctx => {
-	ctx.scene.enter('quiz_select_project')
+$bot.command('quiz_select_projects', ctx => {
+	ctx.scene.enter('quiz_select_projects')
 })
-$bot.action('quiz_select_project', async ctx => {
-	ctx.scene.enter('quiz_select_project')
+$bot.action('quiz_select_projects', async ctx => {
+	ctx.scene.enter('quiz_select_projects')
 })
 
 // Квиз "Получить консультацию"
-$bot.command('consult', ctx => {
-	ctx.scene.enter('consult')
+$bot.command('quiz_consult', ctx => {
+	ctx.scene.enter('quiz_consult')
 })
-$bot.action(/^consult[:]?/, async ctx => {
+$bot.action(/^quiz_consult[:]?/, async ctx => {
 	// await ctx.answerCbQuery()
-	ctx.scene.enter('consult', { quest: ctx.match.input.replace(ctx.match[0], '') })
+	ctx.scene.enter('quiz_consult', { quest: ctx.match.input.replace(ctx.match[0], '') })
 })
 
 //////////////////////////////

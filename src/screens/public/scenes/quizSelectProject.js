@@ -9,29 +9,29 @@ const screen3Checkboxes = {
 	"таунхаус": false,
 	"вилла": false,
 }
-const scene = Object.assign( new Scenes.BaseScene('quiz_select_project'), {
+const scene = Object.assign( new Scenes.BaseScene('quiz_select_projects'), {
 	name: 'QSP',
 	data: {},
 	screens: [
 		async (ctx) => {
-			return await send(ctx, $i18n('scenes.qsp.1.text'), {
+			return await send(ctx, $i18n('scenes.qsp.city.text'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: $i18n('scenes.qsp.1.kb.dubai'), callback_data: `${scene.name}:1:Дубай` },
-							{ text: $i18n('scenes.qsp.1.kb.abudabi'), callback_data: `${scene.name}:1:Абу-Даби` },
+							{ text: $i18n('scenes.qsp.city.kb.dubai'), callback_data: `${scene.name}:city:Дубай` },
+							{ text: $i18n('scenes.qsp.city.kb.abudabi'), callback_data: `${scene.name}:city:Абу-Даби` },
 						],
 					],
 				},
 			})
 		},
 		async (ctx) => {
-			return await send(ctx, $i18n('scenes.qsp.2.text'), {
+			return await send(ctx, $i18n('scenes.qsp.status.text'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: $i18n('scenes.qsp.2.kb.ready'), callback_data: `${scene.name}:2:Готовый` },
-							{ text: $i18n('scenes.qsp.2.kb.build'), callback_data: `${scene.name}:2:Строится` },
+							{ text: $i18n('scenes.qsp.status.kb.ready'), callback_data: `${scene.name}:status:Готовый` },
+							{ text: $i18n('scenes.qsp.status.kb.build'), callback_data: `${scene.name}:status:Строится` },
 						],
 					],
 				},
@@ -39,29 +39,29 @@ const scene = Object.assign( new Scenes.BaseScene('quiz_select_project'), {
 		},
 		async (ctx) => {
 			const checked = [ ...Object.values(screen3Checkboxes) ]
-			return await send(ctx, $i18n('scenes.qsp.3.text'), {
+			return await send(ctx, $i18n('scenes.qsp.type.text'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: `${checked[0] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.apartment')}`, callback_data: `${scene.name}:3:апартаменты` },
-							{ text: `${checked[1] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.townhouse')}`, callback_data: `${scene.name}:3:таунхаус` },
-							{ text: `${checked[2] ? '✅' : '🗆'} ${$i18n('scenes.qsp.3.kb.villa')}`, callback_data: `${scene.name}:3:вилла` },
+							{ text: `${checked[0] ? '✅' : '🗆'} ${$i18n('scenes.qsp.type.kb.apartment')}`, callback_data: `${scene.name}:type:апартаменты` },
+							{ text: `${checked[1] ? '✅' : '🗆'} ${$i18n('scenes.qsp.type.kb.townhouse')}`, callback_data: `${scene.name}:type:таунхаус` },
+							{ text: `${checked[2] ? '✅' : '🗆'} ${$i18n('scenes.qsp.type.kb.villa')}`, callback_data: `${scene.name}:type:вилла` },
 						],
 						[
-							{ text: $i18n('kb.continue'), callback_data: `${scene.name}:3:continue` }
+							{ text: $i18n('kb.continue'), callback_data: `${scene.name}:type:continue` }
 						],
 					],
 				},
 			})
 		},
 		async (ctx) => {
-			return await send(ctx, $i18n('scenes.qsp.4.text'), {
+			return await send(ctx, $i18n('scenes.qsp.price.text'), {
 				reply_markup: {
 					inline_keyboard: [
-						[ { text: $i18n('scenes.qsp.4.kb.1'), callback_data: `${scene.name}:4:<500000` } ],
-						[ { text: $i18n('scenes.qsp.4.kb.2'), callback_data: `${scene.name}:4:500000-1000000` } ],
-						[ { text: $i18n('scenes.qsp.4.kb.3'), callback_data: `${scene.name}:4:1000000-3000000` } ],
-						[ { text: $i18n('scenes.qsp.4.kb.4'), callback_data: `${scene.name}:4:>3000000` } ],
+						[ { text: $i18n('scenes.qsp.price.kb.1'), callback_data: `${scene.name}:price:<500000` } ],
+						[ { text: $i18n('scenes.qsp.price.kb.2'), callback_data: `${scene.name}:price:500000-1000000` } ],
+						[ { text: $i18n('scenes.qsp.price.kb.3'), callback_data: `${scene.name}:price:1000000-3000000` } ],
+						[ { text: $i18n('scenes.qsp.price.kb.4'), callback_data: `${scene.name}:price:>3000000` } ],
 					],
 				},
 			})
@@ -77,21 +77,21 @@ scene.enter(ctx => {
 	goScreen(1, ctx)
 })
 
-scene.action(new RegExp(`^${scene.name}:1:`), async ctx => {
+scene.action(new RegExp(`^${scene.name}:city:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
 
 	ctx.scene.session.state.city = value
 	goScreen(2, ctx)
 })
 
-scene.action(new RegExp(`^${scene.name}:2:`), async ctx => {
+scene.action(new RegExp(`^${scene.name}:status:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
 
 	ctx.scene.session.state.status = value
 	goScreen(3, ctx)
 })
 
-scene.action(new RegExp(`^${scene.name}:3:`), async ctx => {
+scene.action(new RegExp(`^${scene.name}:type:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
 
 	// Если пользователь нажал на чекбокс, то его состояние поменяется, только если это не последний активный чекбокс
@@ -111,7 +111,7 @@ scene.action(new RegExp(`^${scene.name}:3:`), async ctx => {
 	}
 })
 
-scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
+scene.action(new RegExp(`^${scene.name}:price:`), async ctx => {
 	const value = ctx.match.input.replace(ctx.match[0], '')
 	ctx.scene.session.state.price = value
 	const state = ctx.scene.session.state
@@ -166,7 +166,7 @@ scene.action(new RegExp(`^${scene.name}:4:`), async ctx => {
 		await send(ctx, $i18n('scenes.qsp.result.empty'), {
 			reply_markup: {
 				inline_keyboard: [
-					[ { text: $i18n('kb.project_selection'), callback_data: "quiz_select_project" }, ],
+					[ { text: $i18n('kb.project_selection'), callback_data: "quiz_select_projects" }, ],
 					[ { text: $i18n('kb.consult'), callback_data: "consult" }, ],
 					[ { text: $i18n('kb.menu'), callback_data: "start" } ],
 				],

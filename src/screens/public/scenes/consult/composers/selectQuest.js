@@ -1,5 +1,5 @@
-import { parseCommand } from "../../../../helpers.js"
-import quiz from "./quiz.js"
+import { parseCommand } from "../../../../../helpers.js"
+import quiz from "../quiz.js"
 import { Composer } from "telegraf"
 
 const selectQuest = new Composer()

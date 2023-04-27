@@ -1,4 +1,4 @@
-import quiz from "./quiz.js"
+import quiz from "../quiz.js"
 import { Composer } from "telegraf"
 
 // Другой вопрос

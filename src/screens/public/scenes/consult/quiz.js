@@ -3,7 +3,7 @@ import { $i18n } from "../../../../locales/index.js"
 import $db from "../../../../db/index.js"
 import Quiz from "../Quiz.js"
 
-export default new Quiz("consult", {
+export default new Quiz("quiz_consult", {
 	answers: 4,
 	data: {
 		quests: {
@@ -58,15 +58,14 @@ export default new Quiz("consult", {
 				await ctx.answerCbQuery()
 				return send(ctx, $i18n('scenes.qc.phone.text'), phone && {
 					reply_markup: {
-						inline_keyboard: [],
+						// inline_keyboard: [],
 						keyboard: [
 							[ { text: phone } ]
 						],
 						resize_keyboard: true,
 						remove_keyboard: true,
-						// one_time_keyboard: true,
 						selective: true,
-						inline_keyboard: [ [] ]
+						// inline_keyboard: [ [] ]
 					},
 					not_edit_message: true,
 				})
@@ -84,7 +83,7 @@ export default new Quiz("consult", {
 						// one_time_keyboard: true,
 						remove_keyboard: true,
 						selective: true,
-						inline_keyboard: [ [] ]
+						// inline_keyboard: [ [] ]
 					}
 				})
 			},
@@ -125,12 +124,9 @@ export default new Quiz("consult", {
 					},
 				})
 			},
-			"stop": async (ctx) => {
-				const answered = quiz.answers - Object.keys(ctx.scene.session.state).length
-
-				// console.log(Object.keys(ctx.scene.session.state), Object.keys(ctx.scene.session.state).length)
-
-				return send(ctx, $i18n('scenes.qsp.stop.text', { value: answered }), {
+			"stop": async (ctx, questNum) => {
+				console.log("stop", quiz.current, questNum)
+				return send(ctx, $i18n('scenes.qsp.stop.text', { value: quiz.answers - questNum + 1 }), {
 					reply_markup: {
 						inline_keyboard: [
 							[
