@@ -44,20 +44,15 @@ export const send = async (ctx, text, extra = {}) => {
 		extra.parse_mode = 'HTML'
 	}
 
-    try {
-		if (ctx.updateType === 'callback_query') {
-			await ctx.answerCbQuery()
-		}
+	if (ctx.updateType === 'callback_query') {
+		await ctx.answerCbQuery()
+	}
 
-		if (ctx.updateType === "message" || extra.not_edit_message) {
-            return await ctx.reply(text, extra)
-        } else if (ctx.updateType === "callback_query") {
-            return await ctx.editMessageText(text, extra)
-        }
-    } catch (err) {
-		// ctx.reply(text, extra)
-        throw new Error(err)
-    }
+	if (ctx.updateType === "message" || extra.not_edit_message || ctx?.callbackQuery?.message?.photo) {
+		return await ctx.reply(text, extra)
+	} else if (ctx.updateType === "callback_query") {
+		return await ctx.editMessageText(text, extra)
+	}
 }
 
 /**

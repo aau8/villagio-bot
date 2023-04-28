@@ -49,10 +49,7 @@ $bot.action('subscribe_change', $screen.public.change_subscribe)
 
 // Каталог
 $bot.command("catalog", $screen.public.catalog)
-$bot.action("catalog", async ctx => {
-	// await ctx.answerCbQuery()
-	$screen.public.catalog(ctx)
-})
+$bot.action("catalog", $screen.public.catalog)
 
 // Каталог (категории)
 $bot.command(new RegExp(`^${catalogPrefix}`), $screen.public.catalog_cat)
