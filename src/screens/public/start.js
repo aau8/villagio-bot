@@ -4,7 +4,7 @@ import { send } from "../../helpers.js"
 const sendStartPublic = async (ctx) => {
 	const action = ctx?.update?.callback_query?.data
 
-	return send(ctx, $i18n('start'), {
+	return await send(ctx, $i18n('start'), {
 		reply_markup: {
 			inline_keyboard: [
 				[ { text: $i18n('kb.project_selection'), callback_data: "quiz_select_projects" }, ],

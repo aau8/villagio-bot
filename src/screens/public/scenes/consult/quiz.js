@@ -32,7 +32,6 @@ export default new Quiz("quiz_consult", {
 							]
 						],
 					},
-					not_edit_message: true,
 				})
 			},
 			"another_quest": async (ctx) => {

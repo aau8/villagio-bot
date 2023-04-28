@@ -32,10 +32,8 @@ const scene = new Scenes.WizardScene(
 				ctx.scene.session.state.quest = result.projects
 			}
 
-			// console.log('commun start')
             await ctx.answerCbQuery()
 			await quiz.open("commun", ctx)
-			// console.log('commun end')
 			return ctx.wizard.selectStep(3)
 		}
 		else {

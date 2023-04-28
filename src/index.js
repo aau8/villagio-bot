@@ -79,8 +79,17 @@ $bot.command('quiz_consult', ctx => {
 	ctx.scene.enter('quiz_consult')
 })
 $bot.action(/^quiz_consult[:]?/, async ctx => {
-	await ctx.answerCbQuery()
-	await ctx.scene.enter('quiz_consult', { quest: ctx.match.input.replace(ctx.match[0], '') })
+	const quest = ctx.match.input.replace(ctx.match[0], '')
+
+	// console.log("quiz_consult", ctx.match.input.replace(ctx.match[0], ''))
+	await ctx.scene.enter('quiz_consult', { quest })
+
+	// if (!quest) {
+	// 	await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
+	// }
+	// else {
+	// 	await ctx.answerCbQuery()
+	// }
 })
 
 //////////////////////////////
