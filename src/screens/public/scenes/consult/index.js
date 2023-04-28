@@ -109,7 +109,7 @@ const scene = new Scenes.WizardScene(
 			ctx.scene.session.state.name = capitalize(name)
 			ctx.scene.session.state.timestamp = new Date().toISOString()
 
-			const senderMsg = await quiz.open("sender", ctx)
+			// const senderMsg = await quiz.open("sender", ctx)
 			const state = ctx.scene.session.state
 
 			console.log('Заявка отправлена!')
@@ -176,7 +176,7 @@ const scene = new Scenes.WizardScene(
 
 			await $db.consults.add(ctx.scene.session.state)
 			await quiz.open("end", ctx)
-			await ctx.deleteMessage(senderMsg.message_id)
+			// await ctx.deleteMessage(senderMsg.message_id)
 			await ctx.scene.leave()
 		}
 	},
