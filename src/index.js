@@ -24,8 +24,8 @@ $bot.use(Telegraf.log())
 // Главный экран (публичный)
 $bot.command(/^start[:]?/, $screen.public.start)
 $bot.action(/^start[:]?/, async ctx => {
-	// await ctx.answerCbQuery()
-	$screen.public.start(ctx)
+	await ctx.answerCbQuery()
+	await $screen.public.start(ctx)
 })
 
 // Помощь
@@ -76,8 +76,8 @@ $bot.command('quiz_consult', ctx => {
 	ctx.scene.enter('quiz_consult')
 })
 $bot.action(/^quiz_consult[:]?/, async ctx => {
-	// await ctx.answerCbQuery()
-	ctx.scene.enter('quiz_consult', { quest: ctx.match.input.replace(ctx.match[0], '') })
+	await ctx.answerCbQuery()
+	await ctx.scene.enter('quiz_consult', { quest: ctx.match.input.replace(ctx.match[0], '') })
 })
 
 //////////////////////////////
