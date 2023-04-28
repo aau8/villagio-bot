@@ -146,7 +146,7 @@ const scene = new Scenes.WizardScene(
 )
 
 scene.action('resume', async ctx => {
-	ctx.answerCbQuery()
+	// ctx.answerCbQuery()
 	await quiz.open(quiz.current, ctx)
 })
 
