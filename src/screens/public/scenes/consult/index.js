@@ -32,7 +32,7 @@ const scene = new Scenes.WizardScene(
 				ctx.scene.session.state.quest = result.projects
 			}
 
-            await ctx.answerCbQuery()
+            // await ctx.answerCbQuery()
 			await quiz.open("commun", ctx)
 			return ctx.wizard.selectStep(3)
 		}
@@ -169,7 +169,7 @@ const scene = new Scenes.WizardScene(
 )
 
 scene.action('resume', async ctx => {
-	ctx.answerCbQuery()
+	// ctx.answerCbQuery()
 	await quiz.open(quiz.current, ctx)
 })
 

@@ -54,7 +54,7 @@ export default new Quiz("quiz_consult", {
 			"phone": async (ctx) => {
 				const phone = ctx.scene.session.state.phone
 
-				await ctx.answerCbQuery()
+				// await ctx.answerCbQuery()
 				return send(ctx, $i18n('scenes.qc.phone.text'), phone && {
 					reply_markup: {
 						// inline_keyboard: [],
