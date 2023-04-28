@@ -96,7 +96,7 @@ const scene = new Scenes.WizardScene(
 		let name
 		if (ctx.updateType === 'callback_query') {
 			name = ctx.callbackQuery.data
-			// await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
+			await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
 		}
 		else if (ctx.updateType === 'message') {
 			name = ctx.message.text
