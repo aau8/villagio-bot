@@ -24,7 +24,7 @@ const sendProjectPublic = async (ctx) => {
 			inline_keyboard: [
 				[ { text: $i18n('kb.more'), callback_data: `quiz_consult:project_id=${projectId}` }, ],
 				[ { text: $i18n('kb.catalog'), callback_data: "catalog" }, ],
-				[ { text: $i18n('kb.menu'), callback_data: "start" }, ],
+				[ { text: $i18n('kb.menu'), callback_data: "start:not_edit_message" }, ],
 			]
 		},
 		parse_mode: 'HTML',
