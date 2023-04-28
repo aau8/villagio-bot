@@ -137,7 +137,7 @@ export default new Quiz("quiz_consult", {
 							],
 						],
 					},
-					not_edit_message: true,
+					// not_edit_message: true,
 				})
 			},
 			"stop": async (ctx, questNum) => {
