@@ -68,7 +68,7 @@ const scene = new Scenes.WizardScene(
 				await quiz.open("type", ctx)
 			}
 			else {
-				ctx.answerCbQuery("Должен быть выбран минимум 1 тип 😊")
+				await ctx.answerCbQuery("Должен быть выбран минимум 1 тип 😊")
 			}
 
 			return ctx.wizard.selectStep(ctx.wizard.cursor)

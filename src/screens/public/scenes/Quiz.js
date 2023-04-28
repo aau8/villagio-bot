@@ -1,5 +1,4 @@
 class Quiz {
-
 	constructor(name, options) {
 		this.name = name
 		this.current = null

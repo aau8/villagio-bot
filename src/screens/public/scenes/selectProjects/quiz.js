@@ -1,6 +1,5 @@
 import { createGrid, send } from "../../../../helpers.js"
 import { $i18n } from "../../../../locales/index.js"
-import $db from "../../../../db/index.js"
 import Quiz from "../Quiz.js"
 
 export default new Quiz("quiz_select_projects", {
@@ -39,8 +38,6 @@ export default new Quiz("quiz_select_projects", {
 				})
 			},
 			"type": async (ctx) => {
-				// const checked = [ ...Object.values(quiz.data.typeChecks) ]
-				console.log('types', ctx.scene.session.state.types)
 				return await send(ctx, $i18n('scenes.qsp.type.text'), {
 					reply_markup: {
 						inline_keyboard: [

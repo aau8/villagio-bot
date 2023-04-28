@@ -1,4 +1,3 @@
-// import quizSelectProject from "./quizSelectProject.js";
 import quizSelectProject from "./selectProjects/index.js"
 import quizConsult from "./consult/index.js";
 

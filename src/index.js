@@ -24,7 +24,7 @@ $bot.use(Telegraf.log())
 // Главный экран (публичный)
 $bot.command(/^start[:]?/, $screen.public.start)
 $bot.action(/^start[:]?/, async ctx => {
-	await ctx.answerCbQuery()
+	// await ctx.answerCbQuery()
 	$screen.public.start(ctx)
 })
 
