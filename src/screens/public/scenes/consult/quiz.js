@@ -66,11 +66,23 @@ export default new Quiz("quiz_consult", {
 						// selective: true,
 						inline_keyboard: [[ { text: phone, callback_data: phone } ]]
 					},
-					// not_edit_message: true,
 				})
 			},
 			"phone_error": async (ctx) => {
-				return send(ctx, $i18n('scenes.qc.phone_error.text'))
+				const phone = ctx.scene.session.state.phone
+
+				return send(ctx, $i18n('scenes.qc.phone_error.text'), phone && {
+					reply_markup: {
+						// inline_keyboard: [],
+						// keyboard: [
+						// 	[ { text: phone } ]
+						// ],
+						// resize_keyboard: true,
+						// remove_keyboard: true,
+						// selective: true,
+						inline_keyboard: [[ { text: phone, callback_data: phone } ]]
+					},
+				})
 			},
 			"name": async (ctx) => {
 				const name = ctx.scene.session.state.name

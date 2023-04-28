@@ -49,7 +49,7 @@ const scene = new Scenes.WizardScene(
 	async ctx => {
 		// Если было отправлено текстовое сообщение, будет отправлен экран с вопросом о продолжении прохождения квиза.
 		if (ctx?.message?.text) {
-			await quiz.open("stop", ctx)
+			await quiz.open("stop", ctx, 2)
 			return
 		}
 
@@ -78,7 +78,7 @@ const scene = new Scenes.WizardScene(
 		}
 
 		if (isCommand(phone)) {
-			await quiz.open("stop", ctx)
+			await quiz.open("stop", ctx, 3)
 		}
 		else if (!isPhone(phone)) {
 			await quiz.open("phone_error", ctx)
@@ -96,17 +96,14 @@ const scene = new Scenes.WizardScene(
 		let name
 		if (ctx.updateType === 'callback_query') {
 			name = ctx.callbackQuery.data
-			await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
+			// await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
 		}
 		else if (ctx.updateType === 'message') {
 			name = ctx.message.text
 		}
 
-		console.log("name", ctx.updateType, name)
-		// const name = ctx.message.text
-
 		if (isCommand(name)) {
-			await quiz.open("stop", ctx)
+			await quiz.open("stop", ctx, 4)
 		}
 		else {
 			ctx.scene.session.state.name = capitalize(name)
@@ -114,9 +111,6 @@ const scene = new Scenes.WizardScene(
 
 			const senderMsg = await quiz.open("sender", ctx)
 			const state = ctx.scene.session.state
-
-			// console.log("message.message_id", ctx.callbackQuery.message.message_id)
-			// console.log("senderMsg", senderMsg)
 
 			console.log('Заявка отправлена!')
 			// console.log('state', ctx.scene.session.state)
