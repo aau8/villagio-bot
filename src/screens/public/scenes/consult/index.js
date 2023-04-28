@@ -53,7 +53,7 @@ const scene = new Scenes.WizardScene(
 			return
 		}
 
-		ctx.scene.session.state.commun = ctx.update.callback_query.data.replace('commun:', '')
+		ctx.scene.session.state.commun = ctx.update.callback_query.data
 
 		const user = await $db.users.get({ tg_id: ctx.from.id })
 
@@ -69,7 +69,13 @@ const scene = new Scenes.WizardScene(
 	},
 	// Ввод имени
 	async ctx => {
-		const phone = ctx.message.text
+		let phone
+		if (ctx.updateType === 'callback_query') {
+			phone = ctx.callbackQuery.data
+		}
+		else if (ctx.updateType === 'message') {
+			phone = ctx.message.text
+		}
 
 		if (isCommand(phone)) {
 			await quiz.open("stop", ctx)
@@ -87,7 +93,17 @@ const scene = new Scenes.WizardScene(
 	},
 	// Отправка заявки
 	async ctx => {
-		const name = ctx.message.text
+		let name
+		if (ctx.updateType === 'callback_query') {
+			name = ctx.callbackQuery.data
+			await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
+		}
+		else if (ctx.updateType === 'message') {
+			name = ctx.message.text
+		}
+
+		console.log("name", ctx.updateType, name)
+		// const name = ctx.message.text
 
 		if (isCommand(name)) {
 			await quiz.open("stop", ctx)
@@ -95,8 +111,12 @@ const scene = new Scenes.WizardScene(
 		else {
 			ctx.scene.session.state.name = capitalize(name)
 			ctx.scene.session.state.timestamp = new Date().toISOString()
+
 			const senderMsg = await quiz.open("sender", ctx)
 			const state = ctx.scene.session.state
+
+			// console.log("message.message_id", ctx.callbackQuery.message.message_id)
+			// console.log("senderMsg", senderMsg)
 
 			console.log('Заявка отправлена!')
 			// console.log('state', ctx.scene.session.state)

@@ -21,7 +21,7 @@ export default new Quiz("quiz_consult", {
 						inline_keyboard: [
 							...createGrid([
 								...Object.entries(quiz.data.quests).map((quest, i) => {
-									return { text: i + 1, callback_data: `quest_${quest[0]}` }
+									return { text: i + 1, callback_data: `quest:${quest[0]}` }
 								})
 							], 5),
 							[
@@ -42,13 +42,13 @@ export default new Quiz("quiz_consult", {
 					reply_markup: {
 						inline_keyboard: [
 							[
-								{ text: $i18n('scenes.qc.commun.kb.phone'), callback_data: `commun:phone` },
-								{ text: $i18n('scenes.qc.commun.kb.telegram'), callback_data: `commun:telegram` },
-								{ text: $i18n('scenes.qc.commun.kb.whatsapp'), callback_data: `commun:whatsapp` },
+								{ text: $i18n('scenes.qc.commun.kb.phone'), callback_data: `phone` },
+								{ text: $i18n('scenes.qc.commun.kb.telegram'), callback_data: `telegram` },
+								{ text: $i18n('scenes.qc.commun.kb.whatsapp'), callback_data: `whatsapp` },
 							],
 						],
 					},
-					not_edit_message: true,
+					// not_edit_message: true,
 				})
 			},
 			"phone": async (ctx) => {
@@ -58,31 +58,34 @@ export default new Quiz("quiz_consult", {
 				return send(ctx, $i18n('scenes.qc.phone.text'), phone && {
 					reply_markup: {
 						// inline_keyboard: [],
-						keyboard: [
-							[ { text: phone } ]
-						],
-						resize_keyboard: true,
-						remove_keyboard: true,
-						selective: true,
-						// inline_keyboard: [ [] ]
+						// keyboard: [
+						// 	[ { text: phone } ]
+						// ],
+						// resize_keyboard: true,
+						// remove_keyboard: true,
+						// selective: true,
+						inline_keyboard: [[ { text: phone, callback_data: phone } ]]
 					},
-					not_edit_message: true,
+					// not_edit_message: true,
 				})
 			},
 			"phone_error": async (ctx) => {
 				return send(ctx, $i18n('scenes.qc.phone_error.text'))
 			},
 			"name": async (ctx) => {
+				const name = ctx.scene.session.state.name
+
 				return send(ctx, $i18n('scenes.qc.name.text'), {
 					reply_markup: {
-						keyboard: [
-							[ { text: ctx.scene.session.state.name } ]
-						],
-						resize_keyboard: true,
-						// one_time_keyboard: true,
-						remove_keyboard: true,
-						selective: true,
+						// keyboard: [
+						// 	[ { text: ctx.scene.session.state.name } ]
+						// ],
+						// resize_keyboard: true,
+						// // one_time_keyboard: true,
+						// remove_keyboard: true,
+						// selective: true,
 						// inline_keyboard: [ [] ]
+						inline_keyboard: [[ { text: name, callback_data: name } ]]
 					}
 				})
 			},
@@ -90,7 +93,8 @@ export default new Quiz("quiz_consult", {
 				return send(ctx, $i18n('scenes.qc.sender.text'), {
 					reply_markup: {
 						remove_keyboard: true,
-					}
+					},
+					not_edit_message: true,
 				})
 			},
 			"end": async (ctx) => {
@@ -121,10 +125,11 @@ export default new Quiz("quiz_consult", {
 							],
 						],
 					},
+					not_edit_message: true,
 				})
 			},
 			"stop": async (ctx, questNum) => {
-				console.log("stop", quiz.current, questNum)
+				// console.log("stop", quiz.current, questNum)
 				return send(ctx, $i18n('scenes.qsp.stop.text', { value: quiz.answers - questNum + 1 }), {
 					reply_markup: {
 						inline_keyboard: [

@@ -10,8 +10,8 @@ selectQuest.action('another_quest', async ctx => {
 })
 
 // Если был выбран заготовленный вопрос, то в сцене пропускается 2 шаг с вводом своего (другого) вопроса, а сразу открывается экран с выбором способа связи.
-selectQuest.action(/^quest_/, async ctx => {
-	const command = parseCommand(ctx.match.input, 'quest_')
+selectQuest.action(/^quest:/, async ctx => {
+	const command = parseCommand(ctx.update.callback_query.data, 'quest:')
 
 	ctx.scene.session.state.quest = quiz.data.quests[command]
 	// await ctx.answerCbQuery()
