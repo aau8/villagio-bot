@@ -14,8 +14,7 @@ export const addConsults = async (data = {}) => {
 			.insertOne(data)
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -28,7 +27,6 @@ export const getAllConsults = async (options) => {
 			.find(options).toArray()
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }

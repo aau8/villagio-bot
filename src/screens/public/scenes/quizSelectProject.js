@@ -122,10 +122,6 @@ scene.action(new RegExp(`^${scene.name}:price:`), async ctx => {
 		type: { $in: state.type }
 	}
 
-	// console.log('senderMsg start')
-	// // const senderMsg = await send(ctx, $i18n('scenes.qsp.select_options'))
-	// console.log('senderMsg end')
-
 	if (state.price.startsWith('<')) {
 		const price = Number(state.price.replace('<', ''))
 		filterOptions["price.min"] = { $lte: price + (price / 100 * OFFSET) }
@@ -151,7 +147,6 @@ scene.action(new RegExp(`^${scene.name}:price:`), async ctx => {
 		]
 	}
 
-	// await $db.test.resolve(2000)
 	const projects = await $db.projects.getAll(filterOptions)
 	const { insertedId } = await $db.selectionResults.add({
 		projects: projects.map(project => project.project_id),

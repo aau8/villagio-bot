@@ -48,7 +48,6 @@ export default new Quiz("quiz_consult", {
 							],
 						],
 					},
-					// not_edit_message: true,
 				})
 			},
 			"phone": async (ctx) => {
@@ -137,11 +136,9 @@ export default new Quiz("quiz_consult", {
 							],
 						],
 					},
-					// not_edit_message: true,
 				})
 			},
 			"stop": async (ctx, questNum) => {
-				// console.log("stop", quiz.current, questNum)
 				return send(ctx, $i18n('scenes.qsp.stop.text', { value: quiz.answers - questNum + 1 }), {
 					reply_markup: {
 						inline_keyboard: [

@@ -1,15 +1,9 @@
-import { stringify } from "csv-stringify"
-import $bot from "../src/bot.js"
 import $db from "../src/db/index.js"
-import xlsx from "json-as-xlsx"
 import * as XLSX from "xlsx"
-import * as dotenv from "dotenv"
-import formidable from "formidable"
-import { ObjectId } from "mongodb"
-import { updateViewed } from "../src/db/viewed.js"
 import { checkIsAdmin } from "../src/helpers.js"
-// import checkIsAdmin from "../src/helpers/checkIsAdmin.js"
-dotenv.config()
+import { config as dotenvConfig } from "dotenv"
+
+dotenvConfig()
 
 const methods = {}
 

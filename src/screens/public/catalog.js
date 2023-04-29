@@ -18,7 +18,6 @@ const sendCatalogPublic = async (ctx) => {
 			]
 		},
 		not_edit_message: action?.includes('not_edit_message') || false,
-		// not_edit_message: true,
 	})
 }
 

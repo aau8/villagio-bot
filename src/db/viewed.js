@@ -13,8 +13,7 @@ export const addViewed = async (userId, projectId) => {
 			})
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -27,8 +26,7 @@ export const getAllViewed = async (options) => {
 			.find(options).toArray()
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -41,7 +39,6 @@ export const updateViewed = async (userId, projectId) => {
 			.updateMany({}, { $rename: { project: 'project_id' } })
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }

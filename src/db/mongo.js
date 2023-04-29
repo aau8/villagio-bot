@@ -1,7 +1,7 @@
+import { config as dotenvConfig } from "dotenv"
 import { MongoClient } from "mongodb"
-import * as dotenv from "dotenv"
 
-dotenv.config()
+dotenvConfig()
 
 const mongoClient = new MongoClient(process.env.MONGODB_URL)
 const $mongo = Object.assign(mongoClient, {

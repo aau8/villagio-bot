@@ -15,8 +15,7 @@ export const getUserAll = async (options = {}) => {
 			.find(options).toArray()
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -37,8 +36,7 @@ export const updateUser = async (searchOptions = {}, updateOptions = {}) => {
 			.updateOne(searchOptions, { $set: updateOptions })
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -49,10 +47,6 @@ export const updateUser = async (searchOptions = {}, updateOptions = {}) => {
  */
 export const getUser = async (options = {}) => {
 	try {
-		// if (typeof options !== 'object') throw Error('users must be object')
-		// const users = await getUserAll(options)
-		// return users[0]
-
 		await $mongo.connect()
 		return await $mongo
 			.db($mongo.dbName)
@@ -60,8 +54,7 @@ export const getUser = async (options = {}) => {
 			.findOne(options)
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -80,8 +73,7 @@ export const addUser = async (user = {}) => {
 			.insertOne(user)
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -97,8 +89,7 @@ export const checkUser = async (options = {}) => {
 		return !!user
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -113,8 +104,7 @@ export const setLangUser = async (lang, options = {}) => {
 		return updateUser(options, { lang: lang })
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -129,7 +119,6 @@ export const setSubscriptionUser = async (subscribeOn, options = {}) => {
 		return updateUser(options, { subscription: subscribeOn })
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }

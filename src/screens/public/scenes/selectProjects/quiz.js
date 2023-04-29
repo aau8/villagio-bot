@@ -67,7 +67,7 @@ export default new Quiz("quiz_select_projects", {
 				})
 			},
 			"result": async (ctx, projects, insertedId) => {
-				await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n') }), {
+				return await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n') }), {
 					reply_markup: {
 						inline_keyboard: [
 							[ { text: $i18n('kb.consult'), callback_data: `quiz_consult:sr=${insertedId}` } ],
@@ -77,7 +77,7 @@ export default new Quiz("quiz_select_projects", {
 				})
 			},
 			"not_result": async (ctx) => {
-				await send(ctx, $i18n('scenes.qsp.result.empty'), {
+				return await send(ctx, $i18n('scenes.qsp.result.empty'), {
 					reply_markup: {
 						inline_keyboard: [
 							[ { text: $i18n('kb.project_selection'), callback_data: "quiz_select_projects" }, ],
@@ -88,9 +88,7 @@ export default new Quiz("quiz_select_projects", {
 				})
 			},
 			"stop": async (ctx, questNum) => {
-				console.log("stop", quiz.current, questNum)
-
-				await send(ctx, $i18n('scenes.qsp.stop.text', { value: quiz.answers - questNum + 1 }), {
+				return await send(ctx, $i18n('scenes.qsp.stop.text', { value: quiz.answers - questNum + 1 }), {
 					reply_markup: {
 						inline_keyboard: [
 							[

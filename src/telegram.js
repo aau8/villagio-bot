@@ -1,6 +1,7 @@
-import * as dotenv from 'dotenv'
+import { config as dotenvConfig } from "dotenv"
 import $bot from './index.js'
-dotenv.config()
+
+dotenvConfig()
 
 const isDev = process.env.DEV
 const VERCEL_URL = process.env.VERCEL_URL

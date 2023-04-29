@@ -16,8 +16,7 @@ export const addSelectionResults = async ({ projects, city, status, type, price,
 			})
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -30,8 +29,7 @@ export const getAllSelectionResults = async (options) => {
 			.find(options).toArray()
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -44,7 +42,6 @@ export const getSelectionResults = async (options) => {
 			.findOne(options)
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }

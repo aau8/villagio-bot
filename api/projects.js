@@ -1,7 +1,8 @@
 import $bot from "../src/bot.js"
 import $db from "../src/db/index.js"
-import * as dotenv from "dotenv"
-dotenv.config()
+import { config as dotenvConfig } from "dotenv"
+
+dotenvConfig()
 
 const methods = {}
 
@@ -46,7 +47,6 @@ methods.post = async (req, res) => {
 
 	$db.projects.add(options)
 	.then(data => {
-		console.log(data)
 		res.send("ok")
 	})
 	.catch(err => {
@@ -97,7 +97,6 @@ methods.patch = async (req, res) => {
 							inline_keyboard: [
 								[ { text: "Посмотреть проект", callback_data: `id_${projectId}` } ],
 								[ { text: "Узнать информацию у менеджера", callback_data: `consult:project_id_update=${projectId}` } ],
-								// [ { text: "Управление подпиской", callback_data: `subscribe` } ],
 							]
 						},
 						parse_mode: "HTML"

@@ -14,8 +14,7 @@ export const addProject = async (data = {}) => {
 			.insertOne(data)
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -28,8 +27,7 @@ export const getAllProject = async (options) => {
 			.find(options).toArray()
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -42,8 +40,7 @@ export const getProject = async (projectId) => {
 			.findOne({ project_id: projectId })
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -56,8 +53,7 @@ export const updateProject = async (options, set) => {
 			.updateMany(options, { $set: set })
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }
 
@@ -70,7 +66,6 @@ export const deleteProject = async (options) => {
 			.deleteOne(options)
 	}
 	catch(err) {
-		console.log(err)
-		throw Error(err)
+		throw new Error(err)
 	}
 }

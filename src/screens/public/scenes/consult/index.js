@@ -32,7 +32,6 @@ const scene = new Scenes.WizardScene(
 				ctx.scene.session.state.quest = result.projects
 			}
 
-            // await ctx.answerCbQuery()
 			await quiz.open("commun", ctx)
 			return ctx.wizard.selectStep(3)
 		}
@@ -96,7 +95,6 @@ const scene = new Scenes.WizardScene(
 		let name
 		if (ctx.updateType === 'callback_query') {
 			name = ctx.callbackQuery.data
-			// await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
 		}
 		else if (ctx.updateType === 'message') {
 			name = ctx.message.text
@@ -109,36 +107,9 @@ const scene = new Scenes.WizardScene(
 			ctx.scene.session.state.name = capitalize(name)
 			ctx.scene.session.state.timestamp = new Date().toISOString()
 
-			// const senderMsg = await quiz.open("sender", ctx)
 			const state = ctx.scene.session.state
 
 			console.log('Заявка отправлена!')
-			// console.log('state', ctx.scene.session.state)
-			// console.log('data', {
-			// 	name: "Обратный звонок (Bot Telegram)",
-			// 	key: "modal",
-			// 	content: "Форма обратного звонка",
-			// 	fields: [
-			// 		{
-			// 			"type": "contacts",
-			// 			"key": "name",
-			// 			"name": "Имя",
-			// 			"value": state.name
-			// 		},
-			// 		{
-			// 			"type": "contacts",
-			// 			"key": "phone",
-			// 			"name": "Телефон",
-			// 			"value": state.phone
-			// 		},
-			// 		{
-			// 			"type": "contacts",
-			// 			"key": `cm_${state.commun}`,
-			// 			"name": "Способ связи",
-			// 			"value": state.commun === "phone" ? "телефон" : state.commun
-			// 		}
-			// 	]
-			// })
 
 			// await axios.post(
 			// 	CONSULT_APPLIC_URL,
@@ -174,19 +145,16 @@ const scene = new Scenes.WizardScene(
 			// 	}
 			// )
 
+
+
 			await $db.consults.add(ctx.scene.session.state)
 			await quiz.open("end", ctx)
-			// if (ctx.updateType === 'callback_query') {
-			// 	await ctx.deleteMessage(ctx.callbackQuery.message.message_id)
-			// }
-			// await ctx.deleteMessage(senderMsg.message_id)
 			await ctx.scene.leave()
 		}
 	},
 )
 
 scene.action('resume', async ctx => {
-	// ctx.answerCbQuery()
 	await quiz.open(quiz.current, ctx)
 })
 
@@ -202,9 +170,5 @@ scene.action(/^stop:/, async ctx => {
 
 	return await ctx.scene.leave();
 })
-
-// scene.leave(ctx => {
-// 	console.log('scene leave')
-// })
 
 export default scene
