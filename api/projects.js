@@ -92,9 +92,6 @@ methods.patch = async (req, res) => {
 				const user = await $db.users.get({ tg_id: userId })
 
 				if (user?.subscription) {
-					console.log('notify send start')
-					console.log('userId', userId)
-					console.log('text', text)
 					await $bot.telegram.sendMessage(userId, text, {
 						reply_markup: {
 							inline_keyboard: [
@@ -104,7 +101,8 @@ methods.patch = async (req, res) => {
 						},
 						parse_mode: "HTML"
 					})
-					console.log('notify send end')
+
+					console.log(`Пользователям было отправлено уведомление об обновлении проекта - ${body.name} (${projectId})`)
 				}
 			}
 		}

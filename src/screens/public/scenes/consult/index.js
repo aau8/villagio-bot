@@ -19,8 +19,10 @@ const scene = new Scenes.WizardScene(
 		 * Если в начальном состоянии уже есть вопрос, то будет выполнена проверка на категорию вопроса, после чего будет составлен вопрос в правильном формате.
 		 * После чего, будет открыт экран с выбором способа связи.
 		 */
+		console.log('Scene consult start')
 		if (questDefault) {
 			if (questDefault.includes('project_id_update')) {
+				console.log('Scene consult project_id_update')
 				const project = await $db.projects.get(Number(questDefault.replace('project_id_update=', '')))
 				ctx.scene.session.state.quest = `Изменение информации у проекта ${project.name} - /id_${project.project_id}`
 			}
