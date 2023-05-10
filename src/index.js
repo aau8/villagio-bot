@@ -8,13 +8,22 @@ import { Scenes, Telegraf, session } from "telegraf"
 import $screen from "./screens/index.js"
 import $bot from "./bot.js"
 import "./locales/index.js"
+// import { Mongo } from "@telegraf/session/mongodb"
+// import $mongo from "./db/mongo.js"
 
 const stage = new Scenes.Stage(scenes)
+// const store = Mongo({
+// 	url: $mongo.url,
+// 	database: $mongo.dbName,
+// })
 
+// $bot.use(session({ store }))
 $bot.use(session())
 $bot.use(stage.middleware())
+// $bot.use(Telegraf.log())
+
 $bot.use(setUserData)
-$bot.use(Telegraf.log())
+// $bot.use(setUserData)
 
 
 //////////////////////////////
@@ -31,10 +40,10 @@ $bot.action(/^start[:]?/, async ctx => {
 $bot.command("help", $screen.public.help)
 
 // Изменить язык
-// $bot.command("change_lang", changeLang)
-// $bot.action("change_lang", async ctx => {
-// 	changeLang(ctx)
-// })
+$bot.command("change_lang", changeLang)
+$bot.action("change_lang", async ctx => {
+	changeLang(ctx)
+})
 
 // Управление подпиской
 $bot.command("subscribe", $screen.public.subscribe)

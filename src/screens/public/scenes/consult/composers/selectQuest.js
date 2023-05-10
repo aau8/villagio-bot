@@ -13,7 +13,7 @@ selectQuest.action('another_quest', async ctx => {
 selectQuest.action(/^quest:/, async ctx => {
 	const command = parseCommand(ctx.update.callback_query.data, 'quest:')
 
-	ctx.scene.session.state.quest = quiz.data.quests[command]
+	ctx.scene.session.state.quest = ctx.scene.session.state.quests[command]
 	await quiz.open("commun", ctx)
 	return await ctx.wizard.selectStep(ctx.wizard.cursor + 2)
 })

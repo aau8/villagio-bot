@@ -14,24 +14,24 @@ const scene = Object.assign( new Scenes.BaseScene('quiz_select_projects'), {
 	data: {},
 	screens: [
 		async (ctx) => {
-			return await send(ctx, $i18n('scenes.qsp.city.text'), {
+			return await send(ctx, $i18n(ctx, 'scenes.qsp.city.text'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: $i18n('scenes.qsp.city.kb.dubai'), callback_data: `${scene.name}:city:Дубай` },
-							{ text: $i18n('scenes.qsp.city.kb.abudabi'), callback_data: `${scene.name}:city:Абу-Даби` },
+							{ text: $i18n(ctx, 'scenes.qsp.city.kb.dubai'), callback_data: `${scene.name}:city:Дубай` },
+							{ text: $i18n(ctx, 'scenes.qsp.city.kb.abudabi'), callback_data: `${scene.name}:city:Абу-Даби` },
 						],
 					],
 				},
 			})
 		},
 		async (ctx) => {
-			return await send(ctx, $i18n('scenes.qsp.status.text'), {
+			return await send(ctx, $i18n(ctx, 'scenes.qsp.status.text'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: $i18n('scenes.qsp.status.kb.ready'), callback_data: `${scene.name}:status:Готовый` },
-							{ text: $i18n('scenes.qsp.status.kb.build'), callback_data: `${scene.name}:status:Строится` },
+							{ text: $i18n(ctx, 'scenes.qsp.status.kb.ready'), callback_data: `${scene.name}:status:Готовый` },
+							{ text: $i18n(ctx, 'scenes.qsp.status.kb.build'), callback_data: `${scene.name}:status:Строится` },
 						],
 					],
 				},
@@ -39,29 +39,29 @@ const scene = Object.assign( new Scenes.BaseScene('quiz_select_projects'), {
 		},
 		async (ctx) => {
 			const checked = [ ...Object.values(screen3Checkboxes) ]
-			return await send(ctx, $i18n('scenes.qsp.type.text'), {
+			return await send(ctx, $i18n(ctx, 'scenes.qsp.type.text'), {
 				reply_markup: {
 					inline_keyboard: [
 						[
-							{ text: `${checked[0] ? '✅' : '🗆'} ${$i18n('scenes.qsp.type.kb.apartment')}`, callback_data: `${scene.name}:type:апартаменты` },
-							{ text: `${checked[1] ? '✅' : '🗆'} ${$i18n('scenes.qsp.type.kb.townhouse')}`, callback_data: `${scene.name}:type:таунхаус` },
-							{ text: `${checked[2] ? '✅' : '🗆'} ${$i18n('scenes.qsp.type.kb.villa')}`, callback_data: `${scene.name}:type:вилла` },
+							{ text: `${checked[0] ? '✅' : '🗆'} ${$i18n(ctx, 'scenes.qsp.type.kb.apartment')}`, callback_data: `${scene.name}:type:апартаменты` },
+							{ text: `${checked[1] ? '✅' : '🗆'} ${$i18n(ctx, 'scenes.qsp.type.kb.townhouse')}`, callback_data: `${scene.name}:type:таунхаус` },
+							{ text: `${checked[2] ? '✅' : '🗆'} ${$i18n(ctx, 'scenes.qsp.type.kb.villa')}`, callback_data: `${scene.name}:type:вилла` },
 						],
 						[
-							{ text: $i18n('kb.continue'), callback_data: `${scene.name}:type:continue` }
+							{ text: $i18n(ctx, 'kb.continue'), callback_data: `${scene.name}:type:continue` }
 						],
 					],
 				},
 			})
 		},
 		async (ctx) => {
-			return await send(ctx, $i18n('scenes.qsp.price.text'), {
+			return await send(ctx, $i18n(ctx, 'scenes.qsp.price.text'), {
 				reply_markup: {
 					inline_keyboard: [
-						[ { text: $i18n('scenes.qsp.price.kb.1'), callback_data: `${scene.name}:price:<500000` } ],
-						[ { text: $i18n('scenes.qsp.price.kb.2'), callback_data: `${scene.name}:price:500000-1000000` } ],
-						[ { text: $i18n('scenes.qsp.price.kb.3'), callback_data: `${scene.name}:price:1000000-3000000` } ],
-						[ { text: $i18n('scenes.qsp.price.kb.4'), callback_data: `${scene.name}:price:>3000000` } ],
+						[ { text: $i18n(ctx, 'scenes.qsp.price.kb.1'), callback_data: `${scene.name}:price:<500000` } ],
+						[ { text: $i18n(ctx, 'scenes.qsp.price.kb.2'), callback_data: `${scene.name}:price:500000-1000000` } ],
+						[ { text: $i18n(ctx, 'scenes.qsp.price.kb.3'), callback_data: `${scene.name}:price:1000000-3000000` } ],
+						[ { text: $i18n(ctx, 'scenes.qsp.price.kb.4'), callback_data: `${scene.name}:price:>3000000` } ],
 					],
 				},
 			})
@@ -158,22 +158,22 @@ scene.action(new RegExp(`^${scene.name}:price:`), async ctx => {
 	})
 
 	if (projects.length === 0) {
-		await send(ctx, $i18n('scenes.qsp.result.empty'), {
+		await send(ctx, $i18n(ctx, 'scenes.qsp.result.empty'), {
 			reply_markup: {
 				inline_keyboard: [
-					[ { text: $i18n('kb.project_selection'), callback_data: "quiz_select_projects" }, ],
-					[ { text: $i18n('kb.consult'), callback_data: "consult" }, ],
-					[ { text: $i18n('kb.menu'), callback_data: "start" } ],
+					[ { text: $i18n(ctx, 'kb.project_selection'), callback_data: "quiz_select_projects" }, ],
+					[ { text: $i18n(ctx, 'kb.consult'), callback_data: "consult" }, ],
+					[ { text: $i18n(ctx, 'kb.menu'), callback_data: "start" } ],
 				],
 			},
 		})
 	}
 	else {
-		await send(ctx, $i18n('scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n') }), {
+		await send(ctx, $i18n(ctx, 'scenes.qsp.result.text', { value: projects.length, list: projects.map((project, index) => `${index + 1}. ${project.name} - /id_${project.project_id}`).join('\n') }), {
 			reply_markup: {
 				inline_keyboard: [
-					[ { text: $i18n('kb.consult'), callback_data: `consult:sr=${insertedId}` } ],
-					[ { text: $i18n('kb.menu'), callback_data: "start" } ],
+					[ { text: $i18n(ctx, 'kb.consult'), callback_data: `consult:sr=${insertedId}` } ],
+					[ { text: $i18n(ctx, 'kb.menu'), callback_data: "start" } ],
 				],
 			},
 		})
@@ -185,12 +185,12 @@ scene.action(new RegExp(`^${scene.name}:price:`), async ctx => {
 scene.on("message", async ctx => {
 	const answered = scene.screens.length - Object.keys(scene.data).length
 
-	await send(ctx, $i18n('scenes.qsp.stop.text', { value: answered }), {
+	await send(ctx, $i18n(ctx, 'scenes.qsp.stop.text', { value: answered }), {
 		reply_markup: {
 			inline_keyboard: [
 			[
-				{ text: $i18n('scenes.qsp.stop.kb.yes'), callback_data: `stop:${ctx.message.text}` },
-				{ text: $i18n('scenes.qsp.stop.kb.no'), callback_data: "resume" },
+				{ text: $i18n(ctx, 'scenes.qsp.stop.kb.yes'), callback_data: `stop:${ctx.message.text}` },
+				{ text: $i18n(ctx, 'scenes.qsp.stop.kb.no'), callback_data: "resume" },
 			],
 			],
 		},

@@ -10,16 +10,16 @@ const sendStatisticPrivate = async (ctx) => {
 		return
 	}
 
-	return send(ctx, $i18n('private.statistic', { lng: 'ru' }), {
+	return send(ctx, $i18n(ctx, 'private.statistic', { lng: 'ru' }), {
 		reply_markup: {
 			inline_keyboard: [
 				...createGrid([
-					{ text: $i18n('private.kb.statistic_users', { lng: 'ru' }), callback_data: `${statisticPrefix}users` },
-					{ text: $i18n('private.kb.statistic_projects', { lng: 'ru' }), callback_data: `${statisticPrefix}projects` },
-					{ text: $i18n('private.kb.statistic_consults', { lng: 'ru' }), callback_data: `${statisticPrefix}consults` },
-					{ text: $i18n('private.kb.statistic_viewed', { lng: 'ru' }), callback_data: `${statisticPrefix}viewed` },
+					{ text: $i18n(ctx, 'private.kb.statistic_users', { lng: 'ru' }), callback_data: `${statisticPrefix}users` },
+					{ text: $i18n(ctx, 'private.kb.statistic_projects', { lng: 'ru' }), callback_data: `${statisticPrefix}projects` },
+					{ text: $i18n(ctx, 'private.kb.statistic_consults', { lng: 'ru' }), callback_data: `${statisticPrefix}consults` },
+					{ text: $i18n(ctx, 'private.kb.statistic_viewed', { lng: 'ru' }), callback_data: `${statisticPrefix}viewed` },
 				], 2),
-				[ { text: $i18n('kb.back', { lng: 'ru' }), callback_data: "admin" }, ],
+				[ { text: $i18n(ctx, 'kb.back', { lng: 'ru' }), callback_data: "admin" }, ],
 			]
 		}
 	})

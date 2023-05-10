@@ -5,11 +5,11 @@ import { send } from "../../helpers.js"
 const sendCatalogPdfPublic = async (ctx) => {
 	const link = CATALOG_URL
 
-	return send(ctx, $i18n('catalog_pdf'), {
+	return send(ctx, $i18n(ctx, 'catalog_pdf'), {
 		reply_markup: {
 			inline_keyboard: [
-				[ { text: $i18n('kb.catalog_pdf_link'), url: link }, ],
-				[ { text: $i18n('kb.back'), callback_data: "catalog" }, ],
+				[ { text: $i18n(ctx, 'kb.catalog_pdf_link'), url: link }, ],
+				[ { text: $i18n(ctx, 'kb.back'), callback_data: "catalog" }, ],
 			]
 		}
 	})

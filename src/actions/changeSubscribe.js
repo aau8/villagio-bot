@@ -1,12 +1,11 @@
-import { $user, setUserSubscr } from "../contexts/UserContext.js"
 import sendSubscribePublic from "../screens/public/subscribe.js"
 import $db from "../db/index.js"
 
 const changeSubscribe = async (ctx) => {
-	const condition = !$user.subscription
+	const state = !ctx.session.user.subscription
 
-	await $db.users.setSubscr(condition, { tg_id: $user.tg_id })
-	setUserSubscr(condition)
+	await $db.users.setSubscr(state, { tg_id: ctx.from.id })
+	ctx.session.user.subscription = state
 
 	return sendSubscribePublic(ctx)
 }

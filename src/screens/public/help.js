@@ -3,10 +3,10 @@ import { send } from "../../helpers.js"
 
 const sendHelpPublic = async (ctx) => {
 
-	return send(ctx, $i18n('help'), {
+	return send(ctx, $i18n(ctx, 'help'), {
 		reply_markup: {
 			inline_keyboard: [
-				[ { text: $i18n('kb.back'), callback_data: "start" }, ],
+				[ { text: $i18n(ctx, 'kb.back'), callback_data: "start" }, ],
 			]
 		}
 	})

@@ -41,7 +41,11 @@ const scene = new Scenes.WizardScene(
 
 		/* ========== Переход к следующему шагу ========== */
 		// Начальное состояние выбранных типов
-		ctx.scene.session.state.types = quiz.data.types
+		ctx.scene.session.state.types = [
+			{ state: true, text: $i18n(ctx, 'scenes.qsp.type.kb.apartment'), callback_data: "апартаменты" },
+			{ state: false, text: $i18n(ctx, 'scenes.qsp.type.kb.townhouse'), callback_data: "таунхаус" },
+			{ state: false, text: $i18n(ctx, 'scenes.qsp.type.kb.villa'), callback_data: "вилла" },
+		]
 
 		await quiz.open("type", ctx)
 		return ctx.wizard.next()

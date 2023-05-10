@@ -14,7 +14,7 @@ const sendHelpPrivate = async (ctx) => {
 		reply_markup: {
 			inline_keyboard: [
 				[
-					{ text: $i18n('kb.back'), callback_data: "admin" }
+					{ text: $i18n(ctx, 'kb.back'), callback_data: "admin" }
 				]
 			]
 		}

@@ -22,13 +22,13 @@ const sendCatalogCatPublic = async (ctx) => {
 
 	const projects = await $db.projects.getAll({ type: catSlug })
 	const typesToString = (type) => type.map((villa, i) => `${i + 1}. ${villa.name} - \/${projectPrefix + villa.project_id}`).join('\n')
-	const text = `${$i18n('catalog.text')} (${$i18n(`catalog.kb.${catName}`)})\n\n${typesToString(projects)}`
+	const text = `${$i18n(ctx, 'catalog.text')} (${$i18n(ctx, `catalog.kb.${catName}`)})\n\n${typesToString(projects)}`
 
 	await ctx.answerCbQuery()
 	await ctx.editMessageText(text, {
 		reply_markup: {
 			inline_keyboard: [
-				[ { text: $i18n('kb.back'), callback_data: "catalog" }, ],
+				[ { text: $i18n(ctx, 'kb.back'), callback_data: "catalog" }, ],
 			]
 		}
 	})

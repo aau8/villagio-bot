@@ -15,4 +15,4 @@ i18next.init({
 	}
 })
 
-export const $i18n = (value, vars) => i18next.t(value, { lng: $user.lang || $user.language_code, ...vars })
+export const $i18n = (ctx, value, vars) => i18next.t(value, { lng: ctx.session.user.lang || ctx.from.language_code, ...vars })

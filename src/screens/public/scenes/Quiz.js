@@ -2,7 +2,7 @@ class Quiz {
 	constructor(name, options) {
 		this.name = name
 		this.current = null
-		this.data = options.data
+		// this.data = options.data()
 		this.answers = options.answers
 		this.screens = options.screens(this)
 	}

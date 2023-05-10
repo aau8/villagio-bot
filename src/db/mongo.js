@@ -2,9 +2,10 @@ import { config as dotenvConfig } from "dotenv"
 import { MongoClient } from "mongodb"
 
 dotenvConfig()
-
-const mongoClient = new MongoClient(process.env.MONGODB_URL)
+const MONGODB_URL = process.env.MONGODB_URL
+const mongoClient = new MongoClient(MONGODB_URL)
 const $mongo = Object.assign(mongoClient, {
+	url: MONGODB_URL,
     dbName: "villagio",
     collection: {
         users: "users",
