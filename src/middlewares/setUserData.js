@@ -30,7 +30,7 @@ export const addUserData = async (ctx) => {
 
 const setUserData = async (ctx, next) => {
 	let user = await $db.users.get({ tg_id: ctx.from.id })
-	console.log('user', user)
+	// console.log('user', user)
 
 	if (!user) {
 		const userData = parseUserData(ctx.from)
@@ -42,10 +42,10 @@ const setUserData = async (ctx, next) => {
 		// const from = ctx.from
 		// delete from.id
 
-		console.log('ctx.from', ctx.from)
+		// console.log('ctx.from', ctx.from)
 		const res = await $db.users.update({ tg_id: ctx.from.id }, ctx.from)
 
-		console.log(res)
+		// console.log(res)
 	}
 
 	ctx.session.user = user

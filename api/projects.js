@@ -96,7 +96,7 @@ methods.patch = async (req, res) => {
 						reply_markup: {
 							inline_keyboard: [
 								[ { text: "Посмотреть проект", callback_data: `id_${projectId}` } ],
-								[ { text: "Узнать информацию у менеджера", callback_data: `consult:project_id_update=${projectId}` } ],
+								[ { text: "Узнать информацию у менеджера", callback_data: `quiz_consult:project_id_update=${projectId}` } ],
 							]
 						},
 						parse_mode: "HTML"
