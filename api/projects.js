@@ -1,6 +1,7 @@
 import $bot from "../src/bot.js"
 import $db from "../src/db/index.js"
 import { config as dotenvConfig } from "dotenv"
+import Logger from "./helpers.js"
 
 dotenvConfig()
 
@@ -11,8 +12,8 @@ methods.get = async (req, res) => {
 	const options = query
 
 	if (query.project_id) options.project_id = Number(query.project_id)
-	if (query.price_min) options.price.min = Number(query.price_min)
-	if (query.price_max) options.price.max = Number(query.price_max)
+	if (query?.price?.min) options.price.min = Number(query?.price?.min)
+	if (query?.price?.max) options.price.max = Number(query?.price?.max)
 	if (query.type) options.type = query.type
 
 	const projects = await $db.projects.getAll(options)
@@ -20,8 +21,11 @@ methods.get = async (req, res) => {
 }
 
 methods.post = async (req, res) => {
+	const logger = new Logger(res)
+
 	if (!req.body.project_id) {
-		res.status(400).send('Не указан обязательный параметр project_id')
+		logger.error(400, 'Не указан обязательный параметр project_id')
+		// res.status(400).send('Не указан обязательный параметр project_id')
 	}
 
 	const body = req.body
@@ -29,7 +33,8 @@ methods.post = async (req, res) => {
 	const options = { project_id: body.project_id, price: {}, users: [] }
 
 	if (project) {
-		res.status(400).send(`В базе данных уже есть проект с project_id ${body.project_id}`)
+		logger.error(400, `В базе данных уже есть проект с project_id ${body.project_id}`)
+		// res.status(400).send(`В базе данных уже есть проект с project_id ${body.project_id}`)
 		return
 	}
 
@@ -47,11 +52,11 @@ methods.post = async (req, res) => {
 
 	$db.projects.add(options)
 	.then(data => {
+		logger.done(`Проект ${body.project_id} создан!`)
 		res.send("ok")
 	})
 	.catch(err => {
-		res.status(500).send('Ошибка при создании проекта')
-		throw err
+		logger.error(500, 'Ошибка при создании проекта')
 	})
 }
 
