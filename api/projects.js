@@ -1,7 +1,7 @@
 import $bot from "../src/bot.js"
 import $db from "../src/db/index.js"
 import { config as dotenvConfig } from "dotenv"
-import Logger from "./helpers.js"
+import Logger from "./helpers/Logger.js"
 
 dotenvConfig()
 
@@ -52,11 +52,11 @@ methods.post = async (req, res) => {
 
 	$db.projects.add(options)
 	.then(data => {
-		logger.done(`Проект ${body.project_id} создан!`)
+		logger.done(`Проект ${body.project_id} создан`)
 		res.send("ok")
 	})
 	.catch(err => {
-		logger.error(500, 'Ошибка при создании проекта')
+		logger.error(500, 'Ошибка при создании проекта', err)
 	})
 }
 
