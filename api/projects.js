@@ -50,10 +50,10 @@ methods.post = async (req, res) => {
 		options.images = body.images
 	}
 
-	$db.projects.add(options)
+	await $db.projects.add(options)
 	.then(data => {
 		logger.done(`Проект ${body.project_id} создан`)
-		res.send("ok")
+		// res.send("ok")
 	})
 	.catch(err => {
 		logger.error(500, 'Ошибка при создании проекта', err)
