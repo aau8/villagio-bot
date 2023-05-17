@@ -143,7 +143,7 @@ methods.delete = async (req, res, logger) => {
 }
 
 const projects = async (req, res) => {
-	const logger = new Logger(res)
+	const logger = new Logger(req, res)
 
 	try {
 		const token = req.headers.authorization
