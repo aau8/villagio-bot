@@ -20,12 +20,11 @@ methods.get = async (req, res) => {
 	res.json({ data: projects, total: projects.length })
 }
 
-methods.post = async (req, res) => {
-	const logger = new Logger(res)
+methods.post = async (req, res, logger) => {
+	// const logger = new Logger(res)
 
 	if (!req.body.project_id) {
-		logger.error(400, 'Не указан обязательный параметр project_id')
-		// res.status(400).send('Не указан обязательный параметр project_id')
+		logger.sendError(400, 'Не указан обязательный параметр project_id')
 	}
 
 	const body = req.body
@@ -33,8 +32,7 @@ methods.post = async (req, res) => {
 	const options = { project_id: body.project_id, price: {}, users: [] }
 
 	if (project) {
-		logger.error(400, `В базе данных уже есть проект с project_id ${body.project_id}`)
-		// res.status(400).send(`В базе данных уже есть проект с project_id ${body.project_id}`)
+		logger.sendError(400, `В базе данных уже есть проект с project_id ${body.project_id}`)
 		return
 	}
 
@@ -51,18 +49,20 @@ methods.post = async (req, res) => {
 	}
 
 	await $db.projects.add(options)
-	.then(data => {
-		logger.done(`Проект ${body.project_id} создан`)
-		// res.send("ok")
+	.then(_ => {
+		logger.send(`Проект ${body.project_id} создан`)
 	})
 	.catch(err => {
-		logger.error(500, 'Ошибка при создании проекта', err)
+		logger.sendError(500, 'Ошибка при создании проекта', err)
 	})
 }
 
-methods.patch = async (req, res) => {
+methods.patch = async (req, res, logger) => {
+	// const logger = new Logger(res)
+
 	if (!req.body.project_id) {
-		res.status(400).send('Не указан обязательный параметр project_id')
+		// res.status(400).send('Не указан обязательный параметр project_id')
+		logger.sendError(400, 'Не указан обязательный параметр project_id')
 	}
 
 	const body = req.body
@@ -72,7 +72,8 @@ methods.patch = async (req, res) => {
 	const options = { price: {} }
 
 	if (!project) {
-		res.status(400).send('Проект с переданным id не найден')
+		logger.sendError(400, 'Проект с переданным id не найден')
+		// res.status(400).send('Проект с переданным id не найден')
 	}
 
 	if (body.name) options.name = body.name
@@ -87,7 +88,7 @@ methods.patch = async (req, res) => {
 		options.images = body.images
 	}
 
-	$db.projects.update({ project_id: projectId }, options )
+	await $db.projects.update({ project_id: projectId }, options )
 	.then(async () => {
 		if (notifyUsers) {
 			const users = project.users
@@ -107,74 +108,86 @@ methods.patch = async (req, res) => {
 						parse_mode: "HTML"
 					})
 
-					console.log(`Пользователям было отправлено уведомление об обновлении проекта - ${body.name} (${projectId})`)
+					logger.log(`Пользователям было отправлено уведомление об обновлении проекта - ${body.name} (${projectId})`)
+					// console.log(`Пользователям было отправлено уведомление об обновлении проекта - ${body.name} (${projectId})`)
 				}
 			}
 		}
 
-		res.send("ok")
+		logger.send(`Проект ${projectId} обновлен`)
+		// res.send("ok")
 	})
 	.catch(err => {
-		res.status(500).send('Ошибка при обновлении проекта')
-		throw err
+		logger.sendError(500, 'Ошибка при обновлении проекта')
+		// res.status(500).send('Ошибка при обновлении проекта')
+		// throw err
 	})
 }
 
-methods.delete = async (req, res) => {
+methods.delete = async (req, res, logger) => {
+	// const logger = new Logger(res)
+
 	if (!req.query.project_id) {
-		res.status(400).send('Не указан обязательный параметр project_id')
+		logger.send('Не указан обязательный параметр project_id')
 	}
 	const query = req.query
 	const project = await $db.projects.get(Number(query.project_id))
 
 	if (!project) {
-		res.status(400).send('Проект с переданным id не найден')
+		logger.sendError(400, 'Проект с переданным id не найден')
 	}
 
-	$db.projects.delete({ project_id: Number(query.project_id) })
+	await $db.projects.delete({ project_id: Number(query.project_id) })
 	.then(() => {
-		res.statusCode = 200
-		res.send("ok")
+		// res.statusCode = 200
+		// res.send("ok")
+		logger.send(`Проект ${query.project_id} удален`)
 	})
 	.catch(err => {
-		res.status(500).send('Ошибка при удалении проекта')
-		throw err
+		logger.sendError(500, 'Ошибка при удалении проекта')
+		// res.status(500).send('Ошибка при удалении проекта')
+		// throw err
 	})
 }
 
 const projects = async (req, res) => {
+	const logger = new Logger(res)
+
 	try {
 		const token = req.headers.authorization
 
 		if (!token) {
-			res.status(400).send('Не указан обязательный параметр "token"')
+			logger.sendError(400, 'Не указан обязательный параметр "token"')
+			// res.status(400).send('Не указан обязательный параметр "token"')
 			return
 		}
 		else if (token.replace('Bearer', '').trim() !== process.env.API_TOKEN) {
-			res.status(401).send('Неправильный токен. Доступ закрыт')
+			logger.sendError(401, 'Неправильный токен. Доступ закрыт')
+			// res.status(401).send('Неправильный токен. Доступ закрыт')
 			return
 		}
 
 		if (req.method === 'GET') {
-			methods.get(req, res)
+			methods.get(req, res, logger)
 			return
 		}
 
 		if (req.method === 'POST') {
-			methods.post(req, res)
+			methods.post(req, res, logger)
 			return
 		}
 		if (req.method === 'PATCH') {
-			methods.patch(req, res)
+			methods.patch(req, res, logger)
 			return
 		}
 		if (req.method === 'DELETE') {
-			methods.delete(req, res)
+			methods.delete(req, res, logger)
 			return
 		}
 	} catch(err) {
-		res.status(500).send('Internal Server Error')
-		throw err
+		logger.sendError(500, 'Ошибка сервера', err)
+		// res.status(500).send('Internal Server Error')
+		// throw err
 	}
 }
 

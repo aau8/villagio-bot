@@ -3,13 +3,17 @@ class Logger {
 		this.res = res
 	}
 
-	done(text) {
+	log(text) {
+
+	}
+
+	send(text) {
 		console.log(text)
 		this.res.send(text)
 	}
 
-	error(status, text) {
-		console.warn(text)
+	sendError(status, text, err) {
+		console.warn(text, err ? err : '')
 		this.res.status(status).send(text)
 	}
 }
