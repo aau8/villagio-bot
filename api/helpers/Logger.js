@@ -11,6 +11,8 @@ class Logger {
 	sendReqData() {
 		let data = {}
 
+		console.log('[body]: ', this.req.body)
+
 		if (this?.req?.query && Object.keys(this.req.query).length !== 0) {
 			data.query = this.req.query
 		}
