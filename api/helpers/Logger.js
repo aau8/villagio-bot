@@ -8,7 +8,7 @@ class Logger {
 		console.log(text)
 	}
 
-	getReqData() {
+	sendReqData() {
 		let data = {}
 
 		if (Object.keys(this.req.query).length !== 0) {
@@ -17,18 +17,21 @@ class Logger {
 		if (Object.keys(this.req.body).length !== 0) {
 			data.body = this.req.body
 		}
-
-		return data
+		if (Object.keys(data).length !== 0) {
+			console.log("Приходящие данные", JSON.stringify(data))
+		}
 	}
 
 	send(text) {
-		console.log(text, this.getReqData())
+		console.log(text)
+		this.sendReqData()
 		this.res.send(text)
 	}
 
 	sendError(status, text, err) {
+
 		console.warn(text, err ? err : '')
-		console.log("Приходящие данные", this.getReqData())
+		this.sendReqData()
 		this.res.status(status).send(text)
 	}
 }

@@ -49,7 +49,7 @@ methods.post = async (req, res, logger) => {
 	}
 
 	await $db.projects.add(options)
-	.then(_ => {
+	.then(() => {
 		logger.send(`Проект ${body.project_id} создан`)
 	})
 	.catch(err => {
@@ -107,8 +107,7 @@ methods.patch = async (req, res, logger) => {
 						parse_mode: "HTML"
 					})
 
-					logger.log(`Пользователям было отправлено уведомление об обновлении проекта - ${body.name} (${projectId})`)
-					// console.log(`Пользователям было отправлено уведомление об обновлении проекта - ${body.name} (${projectId})`)
+					logger.log(`Отправлено уведомление об обновлении проекта ${projectId}`)
 				}
 			}
 		}
@@ -150,12 +149,10 @@ const projects = async (req, res) => {
 
 		if (!token) {
 			logger.sendError(400, 'Не указан обязательный параметр "token"')
-			// res.status(400).send('Не указан обязательный параметр "token"')
 			return
 		}
 		else if (token.replace('Bearer', '').trim() !== process.env.API_TOKEN) {
 			logger.sendError(401, 'Неправильный токен. Доступ закрыт')
-			// res.status(401).send('Неправильный токен. Доступ закрыт')
 			return
 		}
 
@@ -178,8 +175,6 @@ const projects = async (req, res) => {
 		}
 	} catch(err) {
 		logger.sendError(500, 'Ошибка сервера', err)
-		// res.status(500).send('Internal Server Error')
-		// throw err
 	}
 }
 
