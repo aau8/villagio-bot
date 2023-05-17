@@ -21,10 +21,10 @@ methods.get = async (req, res) => {
 }
 
 methods.post = async (req, res, logger) => {
-	// const logger = new Logger(res)
 
 	if (!req.body.project_id) {
 		logger.sendError(400, 'Не указан обязательный параметр project_id')
+		return
 	}
 
 	const body = req.body
@@ -58,11 +58,10 @@ methods.post = async (req, res, logger) => {
 }
 
 methods.patch = async (req, res, logger) => {
-	// const logger = new Logger(res)
 
 	if (!req.body.project_id) {
-		// res.status(400).send('Не указан обязательный параметр project_id')
 		logger.sendError(400, 'Не указан обязательный параметр project_id')
+		return
 	}
 
 	const body = req.body
@@ -73,7 +72,7 @@ methods.patch = async (req, res, logger) => {
 
 	if (!project) {
 		logger.sendError(400, 'Проект с переданным id не найден')
-		// res.status(400).send('Проект с переданным id не найден')
+		return
 	}
 
 	if (body.name) options.name = body.name
@@ -115,17 +114,13 @@ methods.patch = async (req, res, logger) => {
 		}
 
 		logger.send(`Проект ${projectId} обновлен`)
-		// res.send("ok")
 	})
 	.catch(err => {
-		logger.sendError(500, 'Ошибка при обновлении проекта')
-		// res.status(500).send('Ошибка при обновлении проекта')
-		// throw err
+		logger.sendError(500, 'Ошибка при обновлении проекта', err)
 	})
 }
 
 methods.delete = async (req, res, logger) => {
-	// const logger = new Logger(res)
 
 	if (!req.query.project_id) {
 		logger.send('Не указан обязательный параметр project_id')
@@ -135,18 +130,15 @@ methods.delete = async (req, res, logger) => {
 
 	if (!project) {
 		logger.sendError(400, 'Проект с переданным id не найден')
+		return
 	}
 
 	await $db.projects.delete({ project_id: Number(query.project_id) })
 	.then(() => {
-		// res.statusCode = 200
-		// res.send("ok")
 		logger.send(`Проект ${query.project_id} удален`)
 	})
 	.catch(err => {
-		logger.sendError(500, 'Ошибка при удалении проекта')
-		// res.status(500).send('Ошибка при удалении проекта')
-		// throw err
+		logger.sendError(500, 'Ошибка при удалении проекта', err)
 	})
 }
 
