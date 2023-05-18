@@ -10,13 +10,13 @@ const sendCatalogCatPublic = async (ctx) => {
 
 	switch (catName) {
 		case 'villas':
-			catSlug = 'вилла'
+			catSlug = /(Дом)|(Вилла)/
 			break;
 		case 'townhouses':
-			catSlug = 'таунхаус'
+			catSlug = /(Таунхаус)/
 			break;
 		case 'aparts':
-			catSlug = 'апартаменты'
+			catSlug = /(Апартаменты)|(Квартира)/
 			break;
 	}
 
