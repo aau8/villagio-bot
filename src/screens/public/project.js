@@ -8,6 +8,20 @@ const sendProjectPublic = async (ctx) => {
 	await $db.viewed.add(ctx.from.id, projectId)
 
 	let data = await $db.projects.get(projectId)
+
+	if (!data) {
+		return await ctx.sendMessage("Объекта с указанным id не существует\nУточните информацию у вашего менеджера!", {
+			reply_markup: {
+				inline_keyboard: [
+					[ { text: $i18n(ctx, 'kb.consult'), callback_data: "quiz_consult" }, ],
+					[ { text: $i18n(ctx, 'kb.menu'), callback_data: "start" }, ],
+				]
+			},
+			parse_mode: 'HTML',
+			disable_web_page_preview: true,
+		})
+	}
+
 	const type = data.type[0].toUpperCase() + data.type.slice(1)
 	const text = `${type} "${data.name}"\n${data.description}`
 	const users = data.users || []
@@ -17,18 +31,36 @@ const sendProjectPublic = async (ctx) => {
 		await $db.projects.update({ project_id: projectId }, { users: [ ...users, ctx.from.id ] })
 	}
 
-	return ctx.sendPhoto(data.images[0], {
-		caption: text,
+	const images = data.images.map(url => ({
+		type: 'photo',
+		media: url,
+	}))
+
+	await ctx.sendMediaGroup(images, { disable_notification: true })
+	return await ctx.sendMessage(text, {
 		reply_markup: {
 			inline_keyboard: [
 				[ { text: $i18n(ctx, 'kb.more'), callback_data: `quiz_consult:project_id=${projectId}` }, ],
-				[ { text: $i18n(ctx, 'kb.catalog'), callback_data: "catalog" }, ],
+				[ { text: $i18n(ctx, 'kb.catalog'), callback_data: "catalog:not_edit_message" }, ],
 				[ { text: $i18n(ctx, 'kb.menu'), callback_data: "start:not_edit_message" }, ],
 			]
 		},
 		parse_mode: 'HTML',
-		not_edit_message: true,
+		disable_web_page_preview: true,
 	})
+
+	// return ctx.sendPhoto(data.images[0], {
+	// 	caption: text,
+	// 	reply_markup: {
+	// 		inline_keyboard: [
+	// 			[ { text: $i18n(ctx, 'kb.more'), callback_data: `quiz_consult:project_id=${projectId}` }, ],
+	// 			[ { text: $i18n(ctx, 'kb.catalog'), callback_data: "catalog" }, ],
+	// 			[ { text: $i18n(ctx, 'kb.menu'), callback_data: "start:not_edit_message" }, ],
+	// 		]
+	// 	},
+	// 	parse_mode: 'HTML',
+	// 	not_edit_message: true,
+	// })
 }
 
 export default sendProjectPublic

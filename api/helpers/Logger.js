@@ -5,13 +5,12 @@ class Logger {
 	}
 
 	log(text) {
+		// return console.log
 		console.log(text)
 	}
 
 	sendReqData() {
 		let data = {}
-
-		console.log('data', this.req.formData)
 
 		if (this?.req?.query && Object.keys(this.req.query).length !== 0) {
 			data.query = this.req.query

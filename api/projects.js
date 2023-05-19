@@ -2,6 +2,7 @@ import $bot from "../src/bot.js"
 import $db from "../src/db/index.js"
 import { config as dotenvConfig } from "dotenv"
 import Logger from "./helpers/Logger.js"
+import getParseDescr from "./helpers/removeUselessTags.js"
 
 dotenvConfig()
 
@@ -37,7 +38,7 @@ methods.post = async (req, res, logger) => {
 	}
 
 	if (body.name) options.name = body.name
-	if (body.description) options.description = body.description
+	if (body.description) options.description = getParseDescr(body)
 	if (body.city) options.city = body.city
 	if (body.status) options.status = body.status
 	if (body.url) options.url = body.url
@@ -75,8 +76,9 @@ methods.patch = async (req, res, logger) => {
 		return
 	}
 
+	// TODO: Укоротить приходящий текст до 2000 символов. Telegram не допускает текст в 1 сообщении больше 4096 символов
 	if (body.name) options.name = body.name
-	if (body.description) options.description = body.description
+	if (body.description) options.description = getParseDescr(body)
 	if (body.city) options.city = body.city
 	if (body.status) options.status = body.status
 	if (body.url) options.url = body.url
