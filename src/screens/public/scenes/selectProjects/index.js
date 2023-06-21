@@ -3,6 +3,7 @@ import quiz from "./quiz.js"
 import $db from "../../../../db/index.js"
 import { Scenes } from "telegraf"
 import $screen from "../../../index.js"
+import { $i18n } from "../../../../locales/index.js"
 
 const scene = new Scenes.WizardScene(
 	quiz.name,
