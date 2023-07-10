@@ -20,6 +20,8 @@ const scene = Object.assign( new Scenes.BaseScene('quiz_select_projects'), {
 						[
 							{ text: $i18n(ctx, 'scenes.qsp.city.kb.dubai'), callback_data: `${scene.name}:city:Дубай` },
 							{ text: $i18n(ctx, 'scenes.qsp.city.kb.abudabi'), callback_data: `${scene.name}:city:Абу-Даби` },
+							{ text: $i18n(ctx, 'scenes.qsp.city.kb.raselhajma'), callback_data: `${scene.name}:city:Рас-Эль-Хайма` },
+							{ text: $i18n(ctx, 'scenes.qsp.city.kb.oae'), callback_data: `${scene.name}:city:ОАЭ` },
 						],
 					],
 				},

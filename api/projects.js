@@ -2,7 +2,7 @@ import $bot from "../src/bot.js"
 import $db from "../src/db/index.js"
 import { config as dotenvConfig } from "dotenv"
 import Logger from "./helpers/Logger.js"
-import getParseDescr from "./helpers/removeUselessTags.js"
+import getParseDescr from "./helpers/getParseDescr.js"
 
 dotenvConfig()
 

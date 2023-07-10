@@ -11,4 +11,11 @@ anotherQuest.on('message', async ctx => {
 	return ctx.wizard.next()
 })
 
+anotherQuest.on("callback_query", async ctx => {
+	if (ctx.update?.callback_query?.data === 'back') {
+		await quiz.open("start", ctx)
+		return ctx.wizard.selectStep(1)
+	}
+})
+
 export default anotherQuest

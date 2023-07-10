@@ -16,6 +16,11 @@ const scene = new Scenes.WizardScene(
 	},
 	async ctx => {
 		/* ========== Обработка предыдущего шага ========== */
+		if (ctx.update?.callback_query?.data === 'back') {
+			await quiz.open("city", ctx)
+			return ctx.wizard.back()
+		}
+
 		if (ctx?.message?.text) {
 			await quiz.open("stop", ctx, 1)
 			return
@@ -31,6 +36,11 @@ const scene = new Scenes.WizardScene(
 	},
 	async ctx => {
 		/* ========== Обработка предыдущего шага ========== */
+		if (ctx.update?.callback_query?.data === 'back') {
+			await quiz.open("city", ctx)
+			return ctx.wizard.back()
+		}
+
 		if (ctx?.message?.text) {
 			await quiz.open("stop", ctx, 2)
 			return
@@ -53,6 +63,11 @@ const scene = new Scenes.WizardScene(
 	},
 	async ctx => {
 		/* ========== Обработка предыдущего шага ========== */
+		if (ctx.update?.callback_query?.data === 'back') {
+			await quiz.open("status", ctx)
+			return ctx.wizard.back()
+		}
+
 		if (ctx?.message?.text) {
 			await quiz.open("stop", ctx, 3)
 			return
@@ -85,6 +100,11 @@ const scene = new Scenes.WizardScene(
 	},
 	async ctx => {
 		/* ========== Обработка предыдущего шага ========== */
+		if (ctx.update?.callback_query?.data === 'back') {
+			await quiz.open("type", ctx)
+			return ctx.wizard.back()
+		}
+
 		if (ctx?.message?.text) {
 			await quiz.open("stop", ctx, 4)
 			return

@@ -18,12 +18,17 @@ export default new Quiz("quiz_consult", {
 	screens: (quiz) => {
 		return {
 			"start": async (ctx) => {
+				if (!ctx.scene.session.state.quest) {
+					ctx.scene.session.state.quest = ''
+				}
 				ctx.scene.session.state.quests = {
 					dubai: $i18n(ctx, 'scenes.qc.quests.dubai'),
 					abudabi: $i18n(ctx, 'scenes.qc.quests.abudabi'),
 					installment: $i18n(ctx, 'scenes.qc.quests.installment'),
 					stages: $i18n(ctx, 'scenes.qc.quests.stages')
 				}
+
+				// console.log(ctx.scene.session.state, ctx.wizard.cursor)
 
 				return send(ctx, $i18n(ctx, 'scenes.qc.start.text', { quests: Object.values(ctx.scene.session.state.quests).map((quest, i) => `${i + 1}. ${quest}`).join('\n') }), {
 					reply_markup: {
@@ -37,14 +42,24 @@ export default new Quiz("quiz_consult", {
 								{ text: $i18n(ctx, 'scenes.qc.start.kb.another'), callback_data: `another_quest` },
 							],
 							[
-								{ text: $i18n(ctx, 'kb.menu'), callback_data: `stop:/start` },
+								{ text: $i18n(ctx, 'kb.back'), callback_data: `stop:/start` },
 							]
 						],
 					},
 				})
 			},
 			"another_quest": async (ctx) => {
-				return send(ctx, $i18n(ctx, 'scenes.qc.another_quest'))
+				// console.log(ctx.scene.session.state)
+
+				return send(ctx, $i18n(ctx, 'scenes.qc.another_quest'), {
+					reply_markup: {
+						inline_keyboard: [
+							[
+								{ text: $i18n(ctx, 'kb.back'), callback_data: 'back' },
+							]
+						]
+					}
+				})
 			},
 			"commun": async (ctx) => {
 				return send(ctx, $i18n(ctx, 'scenes.qc.commun.text'), {
@@ -54,6 +69,9 @@ export default new Quiz("quiz_consult", {
 								{ text: $i18n(ctx, 'scenes.qc.commun.kb.phone'), callback_data: `phone` },
 								{ text: $i18n(ctx, 'scenes.qc.commun.kb.telegram'), callback_data: `telegram` },
 								{ text: $i18n(ctx, 'scenes.qc.commun.kb.whatsapp'), callback_data: `whatsapp` },
+							],
+							[
+								{ text: $i18n(ctx, 'kb.back'), callback_data: 'back' },
 							],
 						],
 					},
@@ -72,7 +90,14 @@ export default new Quiz("quiz_consult", {
 						// resize_keyboard: true,
 						// remove_keyboard: true,
 						// selective: true,
-						inline_keyboard: [[ { text: phone, callback_data: phone } ]]
+						inline_keyboard: [
+							[
+								{ text: phone, callback_data: phone },
+							],
+							[
+								{ text: $i18n(ctx, 'kb.back'), callback_data: 'back' },
+							],
+						],
 					},
 				})
 			},
@@ -88,7 +113,14 @@ export default new Quiz("quiz_consult", {
 						// resize_keyboard: true,
 						// remove_keyboard: true,
 						// selective: true,
-						inline_keyboard: [[ { text: phone, callback_data: phone } ]]
+						inline_keyboard: [
+							[
+								{ text: phone, callback_data: phone },
+							],
+							[
+								{ text: $i18n(ctx, 'kb.back'), callback_data: 'back' },
+							],
+						],
 					},
 				})
 			},
@@ -105,7 +137,14 @@ export default new Quiz("quiz_consult", {
 						// remove_keyboard: true,
 						// selective: true,
 						// inline_keyboard: [ [] ]
-						inline_keyboard: [[ { text: name, callback_data: name } ]]
+						inline_keyboard: [
+							[
+								{ text: name, callback_data: name },
+							],
+							[
+								{ text: $i18n(ctx, 'kb.back'), callback_data: 'back' },
+							],
+						],
 					}
 				})
 			},

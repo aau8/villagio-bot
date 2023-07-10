@@ -19,10 +19,15 @@ export default new Quiz("quiz_select_projects", {
 				return await send(ctx, $i18n(ctx, 'scenes.qsp.city.text'), {
 					reply_markup: {
 						inline_keyboard: [
-							[
+							...createGrid([
 								{ text: $i18n(ctx, 'scenes.qsp.city.kb.dubai'), callback_data: `Дубай` },
 								{ text: $i18n(ctx, 'scenes.qsp.city.kb.abudabi'), callback_data: `Абу-Даби` },
-							],
+								{ text: $i18n(ctx, 'scenes.qsp.city.kb.raselhajma'), callback_data: `Рас-Эль-Хайма` },
+								{ text: $i18n(ctx, 'scenes.qsp.city.kb.oae'), callback_data: `ОАЭ` },
+							], 2),
+							[
+								{ text: $i18n(ctx, 'kb.back'), callback_data: `stop:/start` },
+							]
 						],
 					},
 				})
@@ -35,6 +40,9 @@ export default new Quiz("quiz_select_projects", {
 								{ text: $i18n(ctx, 'scenes.qsp.status.kb.ready'), callback_data: `Готовый` },
 								{ text: $i18n(ctx, 'scenes.qsp.status.kb.build'), callback_data: `Строится` },
 							],
+							[
+								{ text: $i18n(ctx, 'kb.back'), callback_data: 'back' },
+							]
 						],
 					},
 				})
@@ -50,6 +58,7 @@ export default new Quiz("quiz_select_projects", {
 								}
 							}), 3),
 							[
+								{ text: $i18n(ctx, 'kb.back'), callback_data: 'back' },
 								{ text: $i18n(ctx, 'kb.continue'), callback_data: `continue` }
 							],
 						],
@@ -64,6 +73,9 @@ export default new Quiz("quiz_select_projects", {
 							[ { text: $i18n(ctx, 'scenes.qsp.price.kb.2'), callback_data: `500000-1000000` } ],
 							[ { text: $i18n(ctx, 'scenes.qsp.price.kb.3'), callback_data: `1000000-3000000` } ],
 							[ { text: $i18n(ctx, 'scenes.qsp.price.kb.4'), callback_data: `>3000000` } ],
+							[
+								{ text: $i18n(ctx, 'kb.back'), callback_data: 'back' },
+							]
 						],
 					},
 				})
